@@ -1,3 +1,4 @@
+from glob import escape
 from flask import Flask, redirect, render_template, request, session, url_for
 from wtforms import StringField, PasswordField
 from wtforms.validators import DataRequired, Email, EqualTo
@@ -45,17 +46,24 @@ def login():
         password = form.password.data
         
         #Servicio login usuario
-        LoginUser(username, password)
+        if LoginUser(username, password):
+            return redirect(url_for('dashboard'))
+        else:
+            return redirect(url_for('login'))
 
     return render_template('login.html', title='Login', form=form)
 
-@app.route('/')
+
+@app.route('/dashboard')
 def dashboard():
-    if not session.get('username'):
+    if 'username' not in session:
         return redirect(url_for('login'))
-    return 'Hello, World!'
+    return 'Hello, World! You are logged in as ' + session['username'] + '.<br><br><a href="/cierresesion">Cerrar sesión</a>'
 
-
+@app.route('/cierresesion')
+def cierresesion():
+    session.pop('username', None)
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run(debug=True)

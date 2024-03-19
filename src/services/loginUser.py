@@ -5,9 +5,12 @@ def LoginUser(username, password):
     db = DBController()
     db.connect()
     resultados = db.fetch_data("SELECT * FROM usuario WHERE usuario = ? AND passwd = ?", (username, password))
-    if not resultados:
-        db.disconnect()
-        return redirect(url_for('login'))
     db.disconnect()
-    session['username'] = username  
-    return redirect(url_for('dashboard'))
+    init = False
+    for resultado in resultados:
+        init = True
+        print(resultado)
+
+    if  init:
+        session['username'] = username  
+    return init
