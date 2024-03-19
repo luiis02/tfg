@@ -1,0 +1,23 @@
+<!-- register.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }}</title>
+</head>
+<body>
+    <h1>Register</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <p>{{ form.username.label }}<br>{{ form.username }}</p>
+        <p>{{ form.email.label }}<br>{{ form.email }}</p>
+        <p>{{ form.nombre.label }}<br>{{ form.nombre }}</p>
+        <p>{{ form.apellido.label }}<br>{{ form.apellido }}</p>
+        <p>{{ form.provincia.label }}<br>{{ form.provincia }}</p>
+        <p>{{ form.establecimiento.label }}<br>{{ form.establecimiento }}</p>
+        <p>{{ form.telefono.label }}<br>{{ form.telefono }}</p>
+        <p>{{ form.password.label }}<br>{{ form.password }}</p>
+        <p>{{ form.confirm_password.label }}<br>{{ form.confirm_password }}</p>
+        <p><input type="submit" value="Register"></p>
+    </form>
+</body>
+</html>

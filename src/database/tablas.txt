@@ -1,0 +1,10 @@
+CREATE TABLE usuario (
+    nombre TEXT NOT NULL,
+    apellido TEXT NOT NULL,
+    establecimiento TEXT,
+    provincia TEXT,
+    email TEXT UNIQUE NOT NULL,
+    passwd TEXT NOT NULL,
+    usuario TEXT PRIMARY KEY,
+    telefono TEXT
+);

@@ -1,0 +1,22 @@
+# Ignore compiled object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Ignore executables
+*.exe
+*.out
+*.app
+
+# Ignore libraries
+*.a
+*.lib
+
+# Ignore log files
+*.log
+
+# Ignore build directories
+build/
+dist/
+venv/
