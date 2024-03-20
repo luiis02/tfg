@@ -34,7 +34,7 @@
                 <tr></tr>
                 {% for carta in cartas %}
                 <tr>
-                    <td>{{ carta[0] }}</td>
+                    <td><a href="/carta/{{ carta[0] }}">{{ carta[0] }}</a></td>
                     <td>{{ carta[1] }}</td>
                     <td>{{ carta[2] }}</td>
                     <td><button onclick="editform('{{ carta[0] }}','{{ carta[1] }}','{{ carta[2] }}')">Editar</button>
