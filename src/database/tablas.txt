@@ -8,3 +8,13 @@ CREATE TABLE usuario (
     usuario TEXT PRIMARY KEY,
     telefono TEXT
 );
+
+CREATE TABLE cartas (
+    nombre TEXT NOT NULL,
+    usuario  TEXT NOT NULL REFERENCES usuario(usuario),
+    indice INTEGER NOT NULL,
+    status BOOLEAN,
+    PRIMARY KEY(contenido, usuario)
+);
+
+

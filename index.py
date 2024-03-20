@@ -1,8 +1,9 @@
 from glob import escape
-from flask import Flask, redirect, render_template, request, session, url_for
+from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 from wtforms import StringField, PasswordField
 from wtforms.validators import DataRequired, Email, EqualTo
 from flask import redirect, url_for
+import json
 
 ##########################################################################
 ##################################### SRC ################################
@@ -10,13 +11,13 @@ from flask import redirect, url_for
 
 from src.models.forms.registerForm import RegistrationForm
 from src.database.dbcontroller import DBController
-from src.services.createUser import CreateUser
 from src.models.forms.loginForm import LoginForm
-from src.services.loginUser import LoginUser
+from src.services.getCartasAPI import getCartasAPI
+from src.services.manageUser import CreateUser, LoginUser
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tu_clave_secreta_aqui'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -58,7 +59,93 @@ def login():
 def dashboard():
     if 'username' not in session:
         return redirect(url_for('login'))
-    return 'Hello, World! You are logged in as ' + session['username'] + '.<br><br><a href="/cierresesion">Cerrar sesión</a>'
+    
+    ###############################################################################
+    ################################# Obtener las cartas ##########################
+    ###############################################################################
+
+    variable = json.loads(getCartas())
+    count_cartas = variable['num_cartas']
+    # Obtener las cartas
+    cartas = variable['cartas']
+
+    cartas_vector = []
+    # Iterar sobre las cartas e imprimir su contenido
+    for carta in cartas:
+        nombre_carta = carta['nombre']
+        indice_carta = carta['indice']
+        if carta['status'] == 0:
+            status_carta = "Inactiva"
+        else:
+            status_carta = "Activa"
+        cartas_vector.append((nombre_carta, indice_carta, status_carta))
+        
+
+    return render_template('dashboard.html', username=session["username"], count_cartas=count_cartas, cartas=cartas_vector)
+
+
+
+@app.route('/getCartas', methods=['GET'])
+def getCartas():
+    return getCartasAPI()
+
+@app.route('/removeCarta', methods=['POST'])
+def remove_carta():
+    try:
+        if 'username' not in session:
+            return redirect(url_for('login'))
+        
+        data = request.get_json()  
+        carta = data.get('cartaId') 
+        bd = DBController()
+        bd.connect()
+        bd.execute_query("DELETE FROM cartas WHERE nombre = ? AND usuario = ?", (carta,session["username"]))
+        bd.connection.commit()
+        bd.disconnect()
+        return jsonify({"message": "Carta eliminada correctamente"})
+    except Exception as e:
+        return jsonify({"error": str(e)})
+    
+
+@app.route('/createCarta', methods=['POST'])
+def create_carta():
+    try:
+        nombre_carta = request.form.get('nombre_carta')
+        indice_carta = request.form.get('indice')
+        status_carta = request.form.get('estado')
+        if status_carta == 'on':
+            status_carta = True
+        else:
+            status_carta = False
+        bd = DBController()
+        bd.connect()
+        bd.execute_query("INSERT INTO cartas (nombre, indice, status, usuario) VALUES (?,?,?,?)", (nombre_carta, indice_carta, status_carta, session["username"]))
+        bd.connection.commit()
+        bd.disconnect()
+        return jsonify({"message": "Datos recibidos correctamente"})
+    except Exception as e:
+        return jsonify({"error": str(e)})
+
+@app.route('/editCarta', methods=['POST'])
+def edit_carta():
+    try:
+        nombre_anterior = request.form.get('edita')
+        nombre_carta = request.form.get('nombre_carta_editar')
+        indice_carta = request.form.get('indice_editar')
+        status_carta = request.form.get('estado_editar')
+        print(nombre_anterior, nombre_carta, indice_carta, status_carta)
+        if status_carta == 'on':
+            status_carta = True
+        else:
+            status_carta = False
+        bd = DBController()
+        bd.connect()
+        bd.execute_query("UPDATE cartas SET nombre = ?, indice = ?, status = ? WHERE nombre = ? AND usuario = ?", (nombre_carta, indice_carta, status_carta, nombre_anterior, session["username"]))
+        bd.connection.commit()
+        bd.disconnect()
+        return jsonify({"message": "Carta editada correctamente"})
+    except Exception as e:
+        return jsonify({"error": str(e)})
 
 @app.route('/cierresesion')
 def cierresesion():

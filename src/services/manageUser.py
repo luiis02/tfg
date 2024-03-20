@@ -1,10 +1,9 @@
-from flask import redirect, url_for
+from flask import redirect, url_for, session
 from src.database.dbcontroller import DBController
 
 def CreateUser(nombre, apellido, establecimiento, provincia, email, password, username, telefono):
     db = DBController()
     db.connect()
-    db.execute_query("CREATE TABLE IF NOT EXISTS usuario (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, apellido TEXT, establecimiento TEXT, provincia TEXT, email TEXT, passwd TEXT, usuario TEXT, telefono TEXT)")
 
     resultados = db.fetch_data("SELECT * FROM usuario WHERE usuario = ?", (username,))
     if resultados:
@@ -25,3 +24,16 @@ def CreateUser(nombre, apellido, establecimiento, provincia, email, password, us
     db.connection.commit()
     db.disconnect()
     return redirect(url_for('login'))
+
+def LoginUser(username, password):
+    db = DBController()
+    db.connect()
+    resultados = db.fetch_data("SELECT * FROM usuario WHERE usuario = ? AND passwd = ?", (username, password))
+    db.disconnect()
+    init = False
+    for resultado in resultados:
+        init = True
+
+    if  init:
+        session['username'] = username  
+    return init
