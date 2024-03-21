@@ -12,12 +12,15 @@ import json
 from src.models.forms.registerForm import RegistrationForm
 from src.database.dbcontroller import DBController
 from src.models.forms.loginForm import LoginForm
+from src.models.forms.confirmForm import ConfirmForm
 from src.services.getCartasAPI import getCartasAPI
-from src.services.manageUser import CreateUser, LoginUser
+from src.services.manageUser import CreateUser, LoginUser, ConfirmUser
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tu_clave_secreta_aqui'
+
+
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -35,7 +38,8 @@ def register():
         
         #Servicio crear usuario
         CreateUser(nombre, apellido, establecimiento, provincia, email, password, username, telefono)
-
+        return redirect(url_for('confirm', username=username))
+    
     return render_template('register.html', title='Register', form=form)
 
 
@@ -54,6 +58,19 @@ def login():
 
     return render_template('login.html', title='Login', form=form)
 
+
+
+@app.route('/confirm/<username>', methods=['GET', 'POST'])
+def confirm(username):
+    form = ConfirmForm()
+    if form.validate_on_submit():
+        codigo = form.codigo.data
+        estado= ConfirmUser(username, codigo)
+        if estado==0:
+            return redirect(url_for('login'))
+        else:
+            return redirect(url_for('confirm', username=username))
+    return render_template('confirm.html', title='Confirm', form=form, username=username)
 
 @app.route('/dashboard')
 def dashboard():

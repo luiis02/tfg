@@ -1,23 +1,90 @@
-<!-- register.html -->
 <!DOCTYPE html>
-<html>
+<html lang="es">
+
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
+    <style>
+        .tab {
+            display: none;
+        }
+
+        #navigationButtons {
+            margin-top: 20px;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Register</h1>
-    <form method="POST">
+    <h1>Crea tu cuenta!</h1>
+    <form id="registrationForm" method="POST">
         {{ form.hidden_tag() }}
-        <p>{{ form.username.label }}<br>{{ form.username }}</p>
-        <p>{{ form.email.label }}<br>{{ form.email }}</p>
-        <p>{{ form.nombre.label }}<br>{{ form.nombre }}</p>
-        <p>{{ form.apellido.label }}<br>{{ form.apellido }}</p>
-        <p>{{ form.provincia.label }}<br>{{ form.provincia }}</p>
-        <p>{{ form.establecimiento.label }}<br>{{ form.establecimiento }}</p>
-        <p>{{ form.telefono.label }}<br>{{ form.telefono }}</p>
-        <p>{{ form.password.label }}<br>{{ form.password }}</p>
-        <p>{{ form.confirm_password.label }}<br>{{ form.confirm_password }}</p>
-        <p><input type="submit" value="Register"></p>
+        <div class="tab" id="basicInfoTab">
+            <p>Datos básicos:</p>
+            <p>{{ form.username.label }}<br>{{ form.username }}</p>
+            <p>{{ form.nombre.label }}<br>{{ form.nombre }}</p>
+            <p>{{ form.apellido.label }}<br>{{ form.apellido }}</p>
+        </div>
+        <div class="tab" id="basicInfoTab">
+            <p>Crea tu contraseña</p>
+            <p>{{ form.password.label }}<br>{{ form.password }}</p>
+            <p>{{ form.confirm_password.label }}<br>{{ form.confirm_password }}</p>
+        </div>
+        <div class="tab" id="contactInfoTab">
+            <p>Datos de contacto:</p>
+            <p>{{ form.email.label }}<br>{{ form.email }}</p>
+            <p>{{ form.telefono.label }}<br>{{ form.telefono }}</p>
+        </div>
+        <div class="tab" id="localInfoTab">
+            <p>Datos del local:</p>
+            <p>{{ form.provincia.label }}<br>{{ form.provincia }}</p>
+            <p>{{ form.establecimiento.label }}<br>{{ form.establecimiento }}</p>
+        </div>
+        <div id="navigationButtons">
+            <button type="button" id="prevBtn" onclick="previousTab()">Anterior</button>
+            <button type="button" id="nextBtn" onclick="nextTab()">Siguiente</button>
+            <button type="submit" id="submitBtn">Registrar</button>
+        </div>
     </form>
+
+    <script>
+        var currentTab = 0;
+        showTab(currentTab);
+
+        function showTab(n) {
+            var tabs = document.getElementsByClassName("tab");
+            tabs[n].style.display = "block";
+
+            if (n === 0) {
+                document.getElementById("prevBtn").style.display = "none";
+            } else {
+                document.getElementById("prevBtn").style.display = "inline";
+            }
+
+            if (n === (tabs.length - 1)) {
+                document.getElementById("nextBtn").style.display = "none";
+                document.getElementById("submitBtn").style.display = "inline";
+            } else {
+                document.getElementById("nextBtn").style.display = "inline";
+                document.getElementById("submitBtn").style.display = "none";
+            }
+        }
+
+        function nextTab() {
+            var tabs = document.getElementsByClassName("tab");
+            tabs[currentTab].style.display = "none";
+            currentTab++;
+            showTab(currentTab);
+        }
+
+        function previousTab() {
+            var tabs = document.getElementsByClassName("tab");
+            tabs[currentTab].style.display = "none";
+            currentTab--;
+            showTab(currentTab);
+        }
+    </script>
 </body>
+
 </html>

@@ -5,13 +5,13 @@
     <title>{{ title }}</title>
 </head>
 <body>
-    <h1>Register</h1>
+    <h1>Inicio de sesión</h1>
     <form method="POST">
         {{ form.hidden_tag() }}
         <p>{{ form.username.label }}<br>{{ form.username }}</p>
         <p>{{ form.password.label }}<br>{{ form.password }}</p>
         
-        <p><input type="submit" value="Register"></p>
+        <p><input type="submit" value="Iniciar sesión"></p>
     </form>
     <a href="/register">Aun no tengo cuenta</a>
 
