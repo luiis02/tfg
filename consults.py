@@ -11,10 +11,5 @@ def vaciar():
     a.disconnect()
 
 
-a = DBController()
-a.connect()
-b = a.fetch_data("SELECT * FROM usuario;")
-for i in b:
-    print(i)
-a.disconnect()
+vaciar()
 

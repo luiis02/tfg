@@ -5,48 +5,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
-    <style>
-        .tab {
-            display: none;
-        }
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
 
-        #navigationButtons {
-            margin-top: 20px;
-        }
-    </style>
 </head>
 
 <body>
-    <h1>Crea tu cuenta!</h1>
-    <form id="registrationForm" method="POST">
-        {{ form.hidden_tag() }}
-        <div class="tab" id="basicInfoTab">
-            <p>Datos básicos:</p>
-            <p>{{ form.username.label }}<br>{{ form.username }}</p>
-            <p>{{ form.nombre.label }}<br>{{ form.nombre }}</p>
-            <p>{{ form.apellido.label }}<br>{{ form.apellido }}</p>
+    <div class="container">
+        <div class="sub-container">
+            <h1 id="tittle">Crea tu cuenta!</h1>
+            <form id="registrationForm" method="POST">
+                {{ form.hidden_tag() }}
+                <div class="tab" id="basicInfoTab">
+                    <p id="step">Datos básicos</p>
+                    <p>{{ form.username.label }}<br>{{ form.username }}</p>
+                    <p class="warning" id="warning-username"></p>
+                    <p>{{ form.nombre.label }}<br>{{ form.nombre }}</p>
+                    <p class="warning" id="warning-nombre"></p>
+                    <p>{{ form.apellido.label }}<br>{{ form.apellido }}</p>
+                    <p class="warning" id="warning-apellido"></p>
+
+                </div>
+                <div class="tab" id="basicInfoTab">
+                    <p id="step">Crea tu contraseña</p>
+                    <p>{{ form.password.label }}<br>{{ form.password }}</p>
+                    <p class="warning" id="warning-password"></p>
+                    <p>{{ form.confirm_password.label }}<br>{{ form.confirm_password }}</p>
+                </div>
+                <div class="tab" id="contactInfoTab">
+                    <p id="step">Datos de contacto:</p>
+                    <p>{{ form.email.label }}<br>{{ form.email }}</p>
+                    <p class="warning" id="warning-email"></p>
+                    <p>{{ form.telefono.label }}<br>{{ form.telefono }}</p>
+                    <p class="warning" id="warning-telefono"></p>
+                </div>
+                <div class="tab" id="localInfoTab">
+                    <p id="step">Datos del local:</p>
+                    <p>{{ form.provincia.label }}<br>{{ form.provincia }}</p>
+                    <p class="warning" id="warning-provincia"></p>
+                    <p>{{ form.establecimiento.label }}<br>{{ form.establecimiento }}</p>
+                    <p class="warning" id="warning-establecimiento"></p>
+                </div>
+                <div id="navigationButtons">
+                    <button type="button" id="prevBtn" onclick="previousTab()">Anterior</button>
+                    <button type="button" id="nextBtn" onclick="nextTab()">Siguiente</button>
+                    <button type="submit" id="submitBtn">Registrar</button>
+                </div>
         </div>
-        <div class="tab" id="basicInfoTab">
-            <p>Crea tu contraseña</p>
-            <p>{{ form.password.label }}<br>{{ form.password }}</p>
-            <p>{{ form.confirm_password.label }}<br>{{ form.confirm_password }}</p>
-        </div>
-        <div class="tab" id="contactInfoTab">
-            <p>Datos de contacto:</p>
-            <p>{{ form.email.label }}<br>{{ form.email }}</p>
-            <p>{{ form.telefono.label }}<br>{{ form.telefono }}</p>
-        </div>
-        <div class="tab" id="localInfoTab">
-            <p>Datos del local:</p>
-            <p>{{ form.provincia.label }}<br>{{ form.provincia }}</p>
-            <p>{{ form.establecimiento.label }}<br>{{ form.establecimiento }}</p>
-        </div>
-        <div id="navigationButtons">
-            <button type="button" id="prevBtn" onclick="previousTab()">Anterior</button>
-            <button type="button" id="nextBtn" onclick="nextTab()">Siguiente</button>
-            <button type="submit" id="submitBtn">Registrar</button>
-        </div>
-    </form>
+
+        </form>
+    </div>
 
     <script>
         var currentTab = 0;
@@ -72,10 +82,14 @@
         }
 
         function nextTab() {
-            var tabs = document.getElementsByClassName("tab");
-            tabs[currentTab].style.display = "none";
-            currentTab++;
-            showTab(currentTab);
+            if (validateForm()) {
+                var tabs = document.getElementsByClassName("tab");
+                tabs[currentTab].style.display = "none";
+                currentTab++;
+                showTab(currentTab);
+            }
+
+
         }
 
         function previousTab() {
@@ -84,6 +98,123 @@
             currentTab--;
             showTab(currentTab);
         }
+
+        function validateForm() {
+            var tabs = document.getElementsByClassName("tab");
+            var currentTabInputs = tabs[currentTab].getElementsByTagName("input");
+            var isValid = true;
+
+            if (currentTab===0){
+
+            var usernameInput = document.getElementById("username");
+            var usernameValue = usernameInput.value.trim();
+            if (usernameValue === "" || usernameValue.length < 3) {
+                var warningUsername = document.getElementById("warning-username");
+                warningUsername.textContent = "Ingrese un nombre de usuario válido.";
+                isValid = false;
+            } else {
+                var warningUsername = document.getElementById("warning-username");
+                warningUsername.textContent = "";
+            }
+
+            var nombre = document.getElementById("nombre");
+            var nombreValue = nombre.value.trim();
+            if (nombreValue === "" || nombreValue.length < 3) {
+                var warningNombre = document.getElementById("warning-nombre");
+                warningNombre.textContent = "Ingrese un nombre válido.";
+                isValid = false;
+
+            } else {
+                var warningNombre = document.getElementById("warning-nombre");
+                warningNombre.textContent = "";
+            }
+
+            var apellido = document.getElementById("apellido");
+            var apellidoValue = apellido.value.trim();
+            if (apellidoValue === "" || apellidoValue.length < 3) {
+                var warningApellido = document.getElementById("warning-apellido");
+                warningApellido.textContent = "Ingrese un apellido válido.";
+                isValid = false;
+
+            } else {
+                var warningApellido = document.getElementById("warning-apellido");
+                warningApellido.textContent = "";
+            }
+
+            }else if (currentTab === 1) {
+                var password = document.getElementById("password");
+                var passwordValue = password.value.trim();
+                if (passwordValue === "" || passwordValue.length < 8) {
+                    isValid = false;
+                    var warningPassword = document.getElementById("warning-password");
+                    warningPassword.textContent = "Ingrese una contraseña con al menos 8 caracteres.";
+                } else {
+                    var warningPassword = document.getElementById("warning-password");
+                    warningPassword.textContent = "";
+                    var confirmPassword = document.getElementById("confirm_password");
+                var confirmPasswordValue = confirmPassword.value.trim();
+                if (confirmPasswordValue === "" || confirmPasswordValue !== passwordValue) {
+                    isValid = false;
+                    var warningConfirmPassword = document.getElementById("warning-password");
+                    warningConfirmPassword.textContent = "Las contraseñas no coinciden.";
+                } else {
+                    var warningConfirmPassword = document.getElementById("warning-password");
+                    warningConfirmPassword.textContent = "";
+                }
+                }
+
+            } else if(currentTab === 2){
+                var email = document.getElementById("email");
+                var emailValue = email.value.trim();
+                console.log("emailValue");
+                if (emailValue === "" || emailValue.length < 3 || !emailValue.includes("@")) {
+                    isValid = false;
+                    var warningEmail = document.getElementById("warning-email");
+                    warningEmail.textContent = "Ingrese un email válido.";
+                } else {
+                    var warningEmail = document.getElementById("warning-email");
+                    warningEmail.textContent = "";
+                }
+
+                var telefono = document.getElementById("telefono");
+                var telefonoValue = telefono.value.trim();
+                if (telefonoValue === "" || telefonoValue.length != 9) {
+                    var warningTelefono = document.getElementById("warning-telefono");
+                    warningTelefono.textContent = "Ingrese un teléfono válido.";
+                    isValid = false;
+                } else {
+                    var warningTelefono = document.getElementById("warning-telefono");
+                    warningTelefono.textContent = "";
+                }
+            }else if (currentTab === 3) {
+                var provincia = document.getElementById("provincia");
+                var provinciaValue = provincia.value.trim();
+                if (provinciaValue === "") {
+                    var warningProvincia = document.getElementById("warning-provincia");
+                    warningProvincia.textContent = "Seleccione una provincia.";
+                    isValid = false;
+                } else {
+                    var warningProvincia = document.getElementById("warning-provincia");
+                    warningProvincia.textContent = "";
+                }
+
+                var establecimiento = document.getElementById("establecimiento");
+                var establecimientoValue = establecimiento.value.trim();
+                if (establecimientoValue === "") {
+                    var warningEstablecimiento = document.getElementById("warning-establecimiento");
+                    warningEstablecimiento.textContent = "Ingrese un nombre de establecimiento.";
+                    isValid = false;
+                } else {
+                    var warningEstablecimiento = document.getElementById("warning-establecimiento");
+                    warningEstablecimiento.textContent = "";
+                }
+            }
+            return isValid;
+        }
+
+
+
+
     </script>
 </body>
 

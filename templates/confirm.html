@@ -1,18 +1,46 @@
-<html lang="en">
+<!DOCTYPE html>
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
-</head>
-<body>
-    <h1>Confirme su cuenta {{username}}</h1>
-    <form method="POST" action="{{ url_for('confirm', username=username) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
 
-        {{ form.hidden_tag() }}
-        <label for="codigo">Código:</label>
-        {{ form.codigo(size=32) }}
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="sub-container">
+            <h1 id="tittle">Confirme su cuenta {{username}}</h1>
+            <form class="confirmform" method="POST" action="{{ url_for('confirm', username=username) }}" onsubmit="return validateForm()">
+                {{ form.hidden_tag() }}
+                <label for="codigo">Código:</label>
+                {{ form.codigo(size=32, id="codigo") }}
+                <p class="warning" id="warning-password"></p>
+                <button type="submit">Confirmar</button>
+            </form>
+        </div>
         
-        <button type="submit">Confirmar</button>
-    </form>
+        <script>
+            function validateForm() {
+                var codigo = document.querySelector('#codigo').value.trim();
+                if (codigo === '' || codigo.length !== 6) {
+                    document.querySelector('#warning-password').innerHTML = 'Ingrese un código de 6 caracteres';
+                    return false;
+                }else{
+                    document.querySelector('#warning-password').innerHTML = '';
+                }
+                return true;
+            }
+        </script>
+        
+
+
 </body>
+
 </html>
