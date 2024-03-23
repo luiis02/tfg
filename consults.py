@@ -17,12 +17,6 @@ def userRoot():
     a.connection.commit()
     a.disconnect()
 
-#vaciar()
-#userRoot()
+vaciar()
+userRoot()
 
-a = DBController()
-a.connect()
-a.execute_query("DROP TABLE IF EXISTS sección;")
-a.execute_query("CREATE TABLE seccion (nombre TEXT NOT NULL, usuario TEXT NOT NULL REFERENCES usuario(usuario), carta TEXT NOT NULL REFERENCES cartas(nombre), indice INTEGER NOT NULL, status BOOLEAN, PRIMARY KEY(nombre, usuario, carta));")
-a.connection.commit()
-a.disconnect()

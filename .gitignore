@@ -20,3 +20,6 @@
 build/
 dist/
 venv/
+pycache/
+__pycache__/
+

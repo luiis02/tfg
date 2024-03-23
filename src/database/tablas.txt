@@ -29,10 +29,21 @@ CREATE TABLE cartas (
     PRIMARY KEY(nombre, usuario)
 );
 
-CREATE TABLE sección (
+CREATE TABLE seccion (
     nombre TEXT NOT NULL,
     usuario  TEXT NOT NULL REFERENCES usuario(usuario),
     carta TEXT NOT NULL REFERENCES cartas(nombre),
+    indice INTEGER NOT NULL,
+    status BOOLEAN,
+    PRIMARY KEY(nombre, usuario, carta)
+);
+
+CREATE TABLE platos (
+    nombre TEXT NOT NULL,
+    descripcion TEXT NOT NULL
+    usuario  TEXT NOT NULL REFERENCES usuario(usuario),
+    carta TEXT NOT NULL REFERENCES cartas(nombre),
+    seccion TEXT NOT NULL REFERENCES seccion(nombre)
     indice INTEGER NOT NULL,
     status BOOLEAN,
     PRIMARY KEY(nombre, usuario, carta)

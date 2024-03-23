@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    <h1>Carta: {{nombre}}!</h1>
+    <h1>Carta: {{nombre}}</h1>
     <div id="1">
         Se han encontrado {{count_secciones}} secciones.
         <div>
@@ -35,7 +35,7 @@
                     <tr></tr>
                     {% for seccion in secciones %}
                     <tr>
-                        <td><a href="/seccion/{{ seccion[0] }}">{{ seccion[0] }}</a></td>
+                        <td><a href="/plato/{{ seccion[0] }}">{{ seccion[0] }}</a></td>
                         <td>{{ seccion[1] }}</td>
                         <td>{{ seccion[2] }}</td>
                         <td><button
@@ -110,23 +110,21 @@
             formData.append("edita", edita); // Agregar la variable "edita" al formulario
 
             console.log("Formulario a enviar:", formData);
-            fetch("/editCarta", {
+            console.log(formData.get("nombre_seccion_editar"));
+            console.log(formData.get("indice_editar"));
+            console.log(formData.get("estado_editar"));
+
+            fetch("/editSeccion", {
                 method: "POST",
                 body: formData
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Hubo un error al enviar el formulario.");
-                }
-                window.location.reload();
-                return response.json();
-            })
-            .then(data => {
-                window.location.reload();
-            })
-            .catch(error => {
-                console.error("Error al enviar el formulario:", error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    window.location.reload();
+                })
+                .catch(error => {
+                    console.error(error);
+                });
             }
 
 
