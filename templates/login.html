@@ -1,19 +1,78 @@
-<!-- register.html -->
 <!DOCTYPE html>
 <html>
-<head>
-    <title>{{ title }}</title>
-</head>
-<body>
-    <h1>Inicio de sesión</h1>
-    <form method="POST">
-        {{ form.hidden_tag() }}
-        <p>{{ form.username.label }}<br>{{ form.username }}</p>
-        <p>{{ form.password.label }}<br>{{ form.password }}</p>
-        
-        <p><input type="submit" value="Iniciar sesión"></p>
-    </form>
-    <a href="/register">Aun no tengo cuenta</a>
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div class="sub-container">
+
+            <form method="POST" class="confirmform" onsubmit="return validateForm()">
+                <h1 id="tittlemini">Iniciar sesión</h1>
+                {{ form.hidden_tag() }}
+                <p>{{ form.username.label }}<br>{{ form.username }}</p>
+                <p>{{ form.password.label }}<br>{{ form.password }}</p>
+
+                <button type="submit">Iniciar sesión</button>
+                <p class="warning" id="warning-error"></p>
+            </form>
+            <div id="enlace">
+                <a class="enlaceaux" href="/register">Aun no tengo cuenta</a>
+            </div>
+
+
+
+
+        </div>
+    </div>
+    <div id="burbleadvice">
+        <img id="checkimg" src="../static/img/casilla-verificacion-3d-marca-verificacion-ilustracion-3d_115990-1862-removebg-preview.png" alt="">
+        <p id="descripmsg">Ahora puedes iniciar sesión</p>
+        <p id="count">7</p>
+    </div>
+
+    <script>
+        var urlParams = new URLSearchParams(window.location.search);
+        var nextStep = urlParams.get('cdg');
+
+        if (nextStep === '1') {
+            var burbleAdvice = document.querySelector('#burbleadvice');
+            burbleAdvice.style.display = 'flex';
+
+            var countElement = document.querySelector('#count');
+            var count = 7;
+            var countdown = setInterval(function () {
+                count--;
+                countElement.textContent = count;
+                if (count <= 0) {
+                    clearInterval(countdown);
+                }
+            }, 1000);
+
+            setTimeout(function () {
+                burbleAdvice.style.display = 'none';
+            }, 7000);
+        }
+        function validateForm() {
+            var username = document.querySelector('#username').value.trim();
+            var password = document.querySelector('#password').value.trim();
+            if (username === '' || password === '') {
+                document.querySelector('#warning-error').innerHTML = 'Ingrese un usuario y contraseña';
+                return false;
+            } else {
+                document.querySelector('#warning-error').innerHTML = '';
+            }
+            return true;
+        }
+    </script>
 </body>
+
 </html>

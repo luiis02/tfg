@@ -26,7 +26,35 @@
             </form>
         </div>
         
+        <div id="burbleadvice">
+            <img id="checkimg" src="../static/img/casilla-verificacion-3d-marca-verificacion-ilustracion-3d_115990-1862-removebg-preview.png" alt="">
+            <p id="descripmsg">El código está en tu email</p>
+            <p id="count">7</p>
+        </div>
+
         <script>
+            var urlParams = new URLSearchParams(window.location.search);
+        var nextStep = urlParams.get('cdg');
+
+        if (nextStep === '1') {
+            var burbleAdvice = document.querySelector('#burbleadvice');
+            burbleAdvice.style.display = 'flex';
+
+            var countElement = document.querySelector('#count');
+            var count = 7;
+            var countdown = setInterval(function () {
+                count--;
+                countElement.textContent = count;
+                if (count <= 0) {
+                    clearInterval(countdown);
+                }
+            }, 1000);
+
+            setTimeout(function () {
+                burbleAdvice.style.display = 'none';
+            }, 7000);
+        }
+
             function validateForm() {
                 var codigo = document.querySelector('#codigo').value.trim();
                 if (codigo === '' || codigo.length !== 6) {
@@ -34,7 +62,7 @@
                     return false;
                 }else{
                     document.querySelector('#warning-password').innerHTML = '';
-                }
+                } 
                 return true;
             }
         </script>

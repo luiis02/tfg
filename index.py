@@ -38,7 +38,7 @@ def register():
         
         #Servicio crear usuario
         CreateUser(nombre, apellido, establecimiento, provincia, email, password, username, telefono)
-        return redirect(url_for('confirm', username=username))
+        return redirect(url_for('confirm', username=username) + '?cdg=1')
     
     return render_template('register.html', title='Register', form=form)
 
@@ -67,10 +67,11 @@ def confirm(username):
         codigo = form.codigo.data
         estado= ConfirmUser(username, codigo)
         if estado==0:
-            return redirect(url_for('login'))
+            return redirect(url_for('login')+ '?cdg=1')
         else:
             return redirect(url_for('confirm', username=username))
     return render_template('confirm.html', title='Confirm', form=form, username=username)
+
 
 @app.route('/dashboard')
 def dashboard():
