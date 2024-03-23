@@ -57,6 +57,13 @@
 
         </form>
     </div>
+    <div id="burbleadvice">
+        <img id="checkimg"
+            src="../static/img/casilla-verificacion-3d-marca-verificacion-ilustracion-3d_115990-1862-removebg-preview.png"
+            alt="">
+        <p id="descripmsg"></p>
+        <p id="count">7</p>
+    </div>
 
     <script>
         var currentTab = 0;
@@ -213,6 +220,34 @@
         }
 
 
+        var urlParams = new URLSearchParams(window.location.search);
+        var err = urlParams.get('err');
+
+        if (err) {
+            if (err==='1'){
+                document.getElementById("descripmsg").textContent = "Usuario en uso, prueba otro";
+            }else if(err==='2'){
+                document.getElementById("descripmsg").textContent = "Email en uso, prueba otro";
+            }else if(err==='3'){
+                document.getElementById("descripmsg").textContent = "Teléfono en uso, prueba otro";
+            }
+            var burbleAdvice = document.querySelector('#burbleadvice');
+            burbleAdvice.style.display = 'flex';
+
+            var countElement = document.querySelector('#count');
+            var count = 7;
+            var countdown = setInterval(function () {
+                count--;
+                countElement.textContent = count;
+                if (count <= 0) {
+                    clearInterval(countdown);
+                }
+            }, 1000);
+
+            setTimeout(function () {
+                burbleAdvice.style.display = 'none';
+            }, 7000);
+        }
 
 
     </script>

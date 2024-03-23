@@ -142,7 +142,7 @@ p {
 #burbleadvice {
     display: none;
     flex-direction: row;
-    background-color: rgb(34, 34, 34);
+    background-color: rgba(34, 34, 34, 0.979);
     min-width: 25vw;
     min-height: 10vh;
     font-family: "RocknRoll One", sans-serif;

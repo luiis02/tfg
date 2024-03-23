@@ -9,15 +9,6 @@ CREATE TABLE usuario (
     telefono TEXT
 );
 
-CREATE TABLE cartas (
-    nombre TEXT NOT NULL,
-    usuario  TEXT NOT NULL REFERENCES usuario(usuario),
-    indice INTEGER NOT NULL,
-    status BOOLEAN,
-    PRIMARY KEY(contenido, usuario)
-);
-
-
 CREATE TABLE usuario_sin_confirmar (
     nombre TEXT NOT NULL,
     apellido TEXT NOT NULL,
@@ -28,4 +19,21 @@ CREATE TABLE usuario_sin_confirmar (
     usuario TEXT PRIMARY KEY,
     telefono TEXT,
     codigo INTEGRER
+);
+
+CREATE TABLE cartas (
+    nombre TEXT NOT NULL,
+    usuario  TEXT NOT NULL REFERENCES usuario(usuario),
+    indice INTEGER NOT NULL,
+    status BOOLEAN,
+    PRIMARY KEY(nombre, usuario)
+);
+
+CREATE TABLE sección (
+    nombre TEXT NOT NULL,
+    usuario  TEXT NOT NULL REFERENCES usuario(usuario),
+    carta TEXT NOT NULL REFERENCES cartas(nombre),
+    indice INTEGER NOT NULL,
+    status BOOLEAN,
+    PRIMARY KEY(nombre, usuario, carta)
 );

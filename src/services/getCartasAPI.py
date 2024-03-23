@@ -32,7 +32,7 @@ def getCartasAPI():
         data = {"num_cartas": num_cartas, "cartas": []}
         
         if num_cartas > 0:
-            obteninfo = db.fetch_data("SELECT nombre, indice, status FROM cartas WHERE usuario = ?", (session['username'],))
+            obteninfo = db.fetch_data("SELECT nombre, indice, status FROM cartas WHERE usuario = ? ORDER BY indice", (session['username'],))
             for info in obteninfo:
                 carta = {
                     "numero": num_cartas,

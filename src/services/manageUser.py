@@ -2,8 +2,17 @@ from flask import redirect, url_for, session
 from src.database.dbcontroller import DBController
 from src.mail.send_email import sendEmail
 import hashlib
-
 import random
+import json
+import requests
+
+####
+# Si retorna 0 ha funcionado correctamente
+# Si retorna 1 el usuario esta duplicado
+# Si retorna 2 el mail esta duplicado
+# Si retorna 3 el telefono esta duplicado
+#
+####
 def CreateUser(nombre, apellido, establecimiento, provincia, email, password, username, telefono):
     db = DBController()
     db.connect()
@@ -11,38 +20,39 @@ def CreateUser(nombre, apellido, establecimiento, provincia, email, password, us
     resultados = db.fetch_data("SELECT * FROM usuario WHERE usuario = ?", (username,))
     if resultados:
         db.disconnect()
-        return redirect(url_for('register'))
+        return 1
 
     resultados = db.fetch_data("SELECT * FROM usuario WHERE email = ?", (email,))
     if resultados:
         db.disconnect()
-        return redirect(url_for('register'))
+        return 2
             
-    resultados = db.fetch_data("SELECT * FROM usuario_sin_confirmar WHERE telefono = ?", (telefono,))
+    resultados = db.fetch_data("SELECT * FROM usuario WHERE telefono = ?", (telefono,))
     if resultados:
         db.disconnect()
-        return redirect(url_for('register'))
-    
+        return 3    
     resultados = db.fetch_data("SELECT * FROM usuario_sin_confirmar WHERE usuario = ?", (username,))
     if resultados:
         db.disconnect()
-        return redirect(url_for('register'))
+        return 1
 
     resultados = db.fetch_data("SELECT * FROM usuario_sin_confirmar WHERE email = ?", (email,))
     if resultados:
         db.disconnect()
-        return redirect(url_for('register'))
+        return 2
             
     resultados = db.fetch_data("SELECT * FROM usuario_sin_confirmar WHERE telefono = ?", (telefono,))
     if resultados:
         db.disconnect()
-        return redirect(url_for('register'))
+        return 3
 
     codigo = str(random.randint(100000, 999999))
     password = password.encode('utf-8')
     db.execute_query("INSERT INTO usuario_sin_confirmar (nombre, apellido, establecimiento, provincia, email, passwd, usuario, telefono, codigo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", (nombre, apellido, establecimiento, provincia, email, password, username, telefono, codigo))
     db.connection.commit()
     db.disconnect()
+
+    
     msg = f'''
     Hola {nombre}, 
 
@@ -53,7 +63,15 @@ def CreateUser(nombre, apellido, establecimiento, provincia, email, password, us
     Bienvenido a nuestro sistema.
     '''
 
-    sendEmail("Confirma tu cuenta " + nombre, msg,email)
+    data = {
+        'asunto': "Confirma tu cuenta " + nombre,
+        'msg': msg,
+        'destinatario': email
+    }
+    json_data = json.dumps(data)
+    mail_url = url_for('mail', _external=True)
+    requests.post(mail_url, json=data, cookies={'auth':'True'})
+    return 0
 
 
 def LoginUser(username, password):

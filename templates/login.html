@@ -34,7 +34,9 @@
         </div>
     </div>
     <div id="burbleadvice">
-        <img id="checkimg" src="../static/img/casilla-verificacion-3d-marca-verificacion-ilustracion-3d_115990-1862-removebg-preview.png" alt="">
+        <img id="checkimg"
+            src="../static/img/casilla-verificacion-3d-marca-verificacion-ilustracion-3d_115990-1862-removebg-preview.png"
+            alt="">
         <p id="descripmsg">Ahora puedes iniciar sesión</p>
         <p id="count">7</p>
     </div>
@@ -61,6 +63,12 @@
                 burbleAdvice.style.display = 'none';
             }, 7000);
         }
+
+        var msgerr = urlParams.get('err');
+        if (msgerr === '1') {
+            document.querySelector('#warning-error').innerHTML = 'Usuario o contraseña incorrectos';
+        }
+
         function validateForm() {
             var username = document.querySelector('#username').value.trim();
             var password = document.querySelector('#password').value.trim();
