@@ -8,12 +8,14 @@
 <body>
     <h1>Carta: {{nombre}}</h1>
     <div id="1">
-        Se han encontrado {{count_secciones}} secciones.
+        Se han encontrado {{count_platos}} platos.
         <div>
             <table>
                 <thead>
                     <tr>
-                        <th>Nombre de la sección</th>
+                        <th>Nombre del plato</th>
+                        <th>Descripción</th>
+                        <th>Precio</th>
                         <th>Índice</th>
                         <th>Estado</th>
                         <th>Editar</th>
@@ -24,6 +26,8 @@
                     <tr>
                         <form id="createSeccionForm">
                             <td><input type="text" name="nombre_seccion"></td>
+                            <td><input type="text" name="descripción" id=""></td>
+                            <td><input type="number" name="precio" step="any"></td>
                             <td><input type="number" name="indice"></td>
                             <td><input type="checkbox" name="estado"></td>
                             <td></td>
@@ -35,11 +39,15 @@
                     <tr></tr>
                     {% for seccion in secciones %}
                     <tr>
-                        <td><a href="/platos/{{ seccion[0] }}">{{ seccion[0] }}</a></td>
+                        <td>{{ seccion[0] }}</td>
                         <td>{{ seccion[1] }}</td>
                         <td>{{ seccion[2] }}</td>
+                        <td>{{ seccion[3] }}</td>
+                        <td>{{ seccion[4] }}</td>
+
+
                         <td><button
-                                onclick="editform('{{ seccion[0] }}','{{ seccion[1] }}','{{ seccion[2] }}')">Editar</button>
+                                onclick="editform('{{ seccion[0] }}','{{ seccion[1] }}','{{ seccion[2] }}','{{ seccion[3]}}','{{ seccion[4]}}')">Editar</button>
                         </td>
                         <td><button class="eliminar-btn" data-seccion-id="{{seccion[0]}}">Eliminar</button></td>
                     </tr>
@@ -50,6 +58,8 @@
         <div id="editform" style="display: none;">
             <form id="editSeccionForm">
                 <input type="text" name="nombre_seccion_editar" id="editNombreSeccion">
+                <input type="text" name="descripcion_editar" id="editSeccion">
+                <input type="number" name="precio_editar" id="editPrecio" step="any">
                 <input type="number" name="indice_editar" id="editIndice">
                 <input type="checkbox" name="estado_editar" id="editEstado">
                 <button type="button" onclick="enviarFormulario()">Guardar</button>
@@ -57,7 +67,6 @@
         </div>
 
         <a href="{{ base_domain }}/cierresesion">Cerrar sesión</a>
-        
     </div>
 
     <script>
@@ -73,7 +82,7 @@
                 console.log("Valor:", entry[1]);
             }
 
-            fetch("/createSeccion", {
+            fetch("/createPlato", {
                 method: "POST",
                 body: formData
             })
@@ -88,7 +97,7 @@
 
 
         var edita = ""
-        function editform(nombre, indice, estado) {
+        function editform(nombre, descripcion, precio, indice, estado) {
             edita = nombre;
             // Mostrar el formulario de edición
             var edtiform = document.getElementById("editform");
@@ -98,11 +107,15 @@
             var nombreInput = document.getElementById("editNombreSeccion");
             var indiceInput = document.getElementById("editIndice");
             var estadoInput = document.getElementById("editEstado");
+            var precioInput = document.getElementById("editPrecio");
+            var descripcionInput = document.getElementById("editSeccion");
 
             // Asignar valores actuales a los campos del formulario
             nombreInput.value = nombre;
             indiceInput.value = indice;
             estadoInput.checked = estado; // estado debe ser un valor booleano
+            precioInput.value = precio;
+            descripcionInput.value = descripcion;
         }
 
         function enviarFormulario() {
@@ -115,7 +128,7 @@
             console.log(formData.get("indice_editar"));
             console.log(formData.get("estado_editar"));
 
-            fetch("/editSeccion", {
+            fetch("/editPlato", {
                 method: "POST",
                 body: formData
             })
@@ -137,7 +150,7 @@
 
                 console.log("Data being sent:", data); // Add this line to console log the data being sent
 
-                fetch("/removeSeccion", {
+                fetch("/removePlato", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"

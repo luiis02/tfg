@@ -15,6 +15,7 @@ from src.services.seccionesAPI import secciones_routes
 from src.services.cartasAPI import cartas_routes
 from src.services.userAPI import user_routes
 from src.services.mailAPI import mail_routes
+from src.services.platosAPI import platos_routes
 
 
 app = Flask(__name__)
@@ -24,6 +25,7 @@ app.register_blueprint(secciones_routes)
 app.register_blueprint(cartas_routes)
 app.register_blueprint(user_routes)
 app.register_blueprint(mail_routes)
+app.register_blueprint(platos_routes)
 
 
 

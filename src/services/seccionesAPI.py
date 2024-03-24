@@ -23,7 +23,6 @@ def seccion(nombre):
     if 'username' not in session:
         return redirect(url_for('user_routes.login'))
     session['carta'] = nombre
-
     response = requests.get(url_for('secciones_routes.getSeccion', _external=True), cookies={'auth': session.get('username'), 'carta': session.get('carta')})
     if response.status_code == 200:  # Verificar si la solicitud fue exitosa
         data = response.json()  # Convertir la respuesta JSON en un diccionario
