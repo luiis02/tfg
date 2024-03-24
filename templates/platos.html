@@ -3,73 +3,146 @@
 
 <head>
     <title>Carta, {{nombre}}!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/carta.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <h1>Carta: {{nombre}}</h1>
-    <div id="1">
-        Se han encontrado {{count_platos}} platos.
-        <div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nombre del plato</th>
-                        <th>Descripción</th>
-                        <th>Precio</th>
-                        <th>Índice</th>
-                        <th>Estado</th>
-                        <th>Editar</th>
-                        <th>Eliminar</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <form id="createSeccionForm">
-                            <td><input type="text" name="nombre_seccion"></td>
-                            <td><input type="text" name="descripción" id=""></td>
-                            <td><input type="number" name="precio" step="any"></td>
-                            <td><input type="number" name="indice"></td>
-                            <td><input type="checkbox" name="estado"></td>
-                            <td></td>
-                            <td></td>
-                            <td><button type="submit">Enviar</button></td>
-                        </form>
-                    </tr>
-
-                    <tr></tr>
-                    {% for seccion in secciones %}
-                    <tr>
-                        <td>{{ seccion[0] }}</td>
-                        <td>{{ seccion[1] }}</td>
-                        <td>{{ seccion[2] }}</td>
-                        <td>{{ seccion[3] }}</td>
-                        <td>{{ seccion[4] }}</td>
-
-
-                        <td><button
-                                onclick="editform('{{ seccion[0] }}','{{ seccion[1] }}','{{ seccion[2] }}','{{ seccion[3]}}','{{ seccion[4]}}')">Editar</button>
-                        </td>
-                        <td><button class="eliminar-btn" data-seccion-id="{{seccion[0]}}">Eliminar</button></td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    <header>
+        <nav>
+            <div class="img-container">
+                <img id="logo" src="../static/img/_f5591b39-f277-446e-9794-a2dd2be557d4-removebg-preview.png" alt="">
+            </div>
+            <div class="empresaName">
+                <h1>ApuntaJefe</h1>
+            </div>
+            <div class="container-submenu">
+                <ul id="submenu">
+                    <li><a class="submenuenl" href="{{ base_domain }}/">Carta</a></li>
+                    <li><a class="submenuenl" href="{{ base_domain }}/">Platos</a></li>
+                    <li><a class="submenuenl" href="{{ base_domain }}/">Mesas</a></li>
+                    <li><a class="submenuenl" href="{{ base_domain }}/cierresesion">Cerrar sesión</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="breadcrums">
+            <a href="{{ base_domain }}/dashboard" class="e1">Home</a>
+            <p class="next"> ➤</p> <a href="{{ base_domain }}/carta/{{nombre}}" class="e2">Carta</a>
+            <p class="next"> ➤</p> <a href="" class="e3">Actual</a>
         </div>
-        <div id="editform" style="display: none;">
-            <form id="editSeccionForm">
-                <input type="text" name="nombre_seccion_editar" id="editNombreSeccion">
-                <input type="text" name="descripcion_editar" id="editSeccion">
-                <input type="number" name="precio_editar" id="editPrecio" step="any">
-                <input type="number" name="indice_editar" id="editIndice">
-                <input type="checkbox" name="estado_editar" id="editEstado">
-                <button type="button" onclick="enviarFormulario()">Guardar</button>
-            </form>
-        </div>
+        <div id="1">
+            <div class="tittlecontainer">
+                <h1 class="titulo">Platos de {{nombre}}:</h1>
+            </div>
+            <div class="recuadro-tabla">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre del plato</th>
+                            <th>Descripción</th>
+                            <th>Precio</th>
+                            <th>Índice</th>
+                            <th>Estado</th>
+                            <th>Editar</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="first-col">
+                            <form id="createSeccionForm">
+                                <td><input type="text" name="nombre_seccion"></td>
+                                <td>
+                                <textarea name="descripción" id="descrip-text" cols="30" rows="1"></textarea>
+                            </td>
+                                
+                                <td><input type="number" name="precio" step="any"></td>
+                                <td><input type="number" name="indice"></td>
+                                <td><input type="checkbox" name="estado"></td>
+                                <td><button type="submit">Enviar</button></td>
+                                <td></td>
+                                
+                            </form>
+                        </tr>
 
-        <a href="{{ base_domain }}/cierresesion">Cerrar sesión</a>
-    </div>
+                        <tr></tr>
+                        {% for seccion in secciones %}
+                        <tr>
+                            <td>{{ seccion[0] }}</td>
+                            <td>{{ seccion[1] }}</td>
+                            <td>{{ seccion[2] }}</td>
+                            <td>{{ seccion[3] }}</td>
+                            <td>{{ seccion[4] }}</td>
+
+
+                            <td><button
+                                    onclick="editform('{{ seccion[0] }}','{{ seccion[1] }}','{{ seccion[2] }}','{{ seccion[3]}}','{{ seccion[4]}}')">Editar</button>
+                            </td>
+                            <td><button class="eliminar-btn" data-seccion-id="{{seccion[0]}}">Eliminar</button></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div id="intrucciones">
+                <div id="container-instr">
+                    <span id="close-instructions" onclick="cerrarInstrucciones()">X</span>
+                    <h2 id="title-inst">Instrucciones de uso</h2>
+                    
+                    <br>
+                    <ul class="instruccioneslista">
+                        <li>Para añadir una seccion rellena el formulario de la primera fila de la tabla</li>
+                        <li>Recuerda, el nombre de cada sección es único, no lo podras repetir</li>
+                        <li>El índice indica que se muestra primero.En caso de que dos elementos tengan el mismo índice se
+                            ordena por orden alfabético</li>
+                        <li>El estado indica si la sección está activa o no (Si no la activas los clientes no la podran ver)</li>
+                    </ul>
+                </div>
+            </div>
+    
+            <script>
+                function cerrarInstrucciones() {
+                    var instructions = document.getElementById("intrucciones");
+                    instructions.style.display = "none";
+                }
+            </script>
+            <div id="editform">
+                <h1 class="edit-title">Editar la sección</h1>
+                <div id="edit-container">
+                    <form id="editSeccionForm">
+                        <p class="xpalin">Nombre</p>
+                        <input type="text" name="nombre_seccion_editar" id="editNombreSeccion">
+                        <p class="xpalin">Descripción</p>
+                        <textarea name="descripcion_editar" id="editSeccion" rows="5"></textarea>
+                        <p class="xpalin">Precio</p>
+                        <input type="number" name="precio_editar" id="editPrecio" step="any">
+                        <p class="xpalin">Índice</p>
+                        <input type="number" name="indice_editar" id="editIndice">
+                        <div id="staut-edi">
+                            <p class="xpalin">Estado</p>
+                            <input type="checkbox" name="estado_editar" id="editEstado">
+                        </div>
+
+                        <button type="button" onclick="enviarFormulario()">Guardar</button>
+                        <button type="button" onclick="cerrarFormulario()">Cerrar</button>
+                    </form>
+
+                </div>
+    </main>
+
+
+
+
 
     <script>
+        function cerrarFormulario() {
+            var edtiform = document.getElementById("editform");
+            edtiform.style.display = "none";
+        }
+
         document.getElementById("createSeccionForm").addEventListener("submit", function (event) {
             event.preventDefault();
 
@@ -101,7 +174,7 @@
             edita = nombre;
             // Mostrar el formulario de edición
             var edtiform = document.getElementById("editform");
-            edtiform.style.display = "block"; // Cambiado a "block" para que sea visible
+            edtiform.style.display = "flex"; // Cambiado a "block" para que sea visible
 
             // Obtener referencia a los campos del formulario de edición
             var nombreInput = document.getElementById("editNombreSeccion");
@@ -139,7 +212,7 @@
                 .catch(error => {
                     console.error(error);
                 });
-            }
+        }
 
 
         var eliminarButtons = document.getElementsByClassName("eliminar-btn");

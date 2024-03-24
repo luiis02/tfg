@@ -42,7 +42,7 @@ def platos(nombre):
             status_plato = "Inactivo" if plato['status'] == 'Inactivo' else "Activo"
             platos.append((nombre_plato, descripcion_plato, precio_plato, indice_plato, status_plato))
         
-        return render_template('platos.html', username=session.get('username'), count_platos=count_platos, secciones=platos)
+        return render_template('platos.html', username=session.get('username'), count_platos=count_platos, secciones=platos, nombre=session.get('carta'))
 
 @platos_routes.route('/getPlatos', methods=['GET'])
 def getPlatos():

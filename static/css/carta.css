@@ -1,0 +1,346 @@
+*{
+    
+    margin: 0px;
+    padding: 0px;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    
+}
+body {
+    background: #fff8ee;
+}
+header{
+    background-color: rgb(73 119 227);
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+td, th {
+    padding: 12px; /* Aumenta el espaciado interno */
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2; /* Fondo de las celdas del encabezado */
+}
+
+tr:nth-child(odd) {
+    background-color: #f2f2f2; /* Fondo de las filas pares */
+}
+
+#first-col{
+    background-color: #fff8ee; /* Fondo de las celdas del encabezado */
+}
+
+/* Efecto al pasar el mouse sobre las filas */
+tr:hover {
+    background-color: #e2e2e2;
+}
+
+/* Efecto al pasar el mouse sobre las celdas */
+td:hover {
+    background-color: #d9d9d9;
+    transition: background-color 0.3s; /* Transición suave */
+}
+
+.recuadro-tabla{
+    
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+input[type="number"], input[type="text"], textarea {
+    width: 100%;
+    padding: 10px;
+    resize: none;
+    background: #fff6e8;
+    border: 1px solid #ccc; /* Borde delgadp */
+    border-radius: 5px; /* Bordes redondeados */
+    outline: none; /* Quita el resplandor al enfocar */
+    box-sizing: border-box; /* Incluye el padding en el ancho total */
+}
+
+/* Estilos al enfocar */
+input[type="text"]:focus, input[type="number"]:focus {
+    border-color: #007bff; /* Color del borde al enfocar */
+    box-shadow: 0 0 0 2px #007bff; /* Resplandor al enfocar */
+}
+
+
+input[type="checkbox"] {
+    appearance: none; /* Quita el estilo predeterminado del navegador */
+    -webkit-appearance: none; /* Para navegadores basados en WebKit */
+    -moz-appearance: none; /* Para navegadores basados en Gecko */
+    width: 20px; /* Ancho deseado */
+    height: 20px; /* Altura deseada */
+    margin: 0; /* Margen cero */
+    border: 1px solid #ccc; /* Borde delgado */
+    border-radius: 5px; /* Bordes redondeados */
+    outline: none; /* Quita el resplandor al enfocar */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el elemento */
+}
+
+/* Estilos al pasar el mouse */
+input[type="checkbox"]:hover {
+    border-color: #007bff; /* Cambia el color del borde al pasar el mouse */
+}
+
+/* Estilos al estar seleccionado */
+input[type="checkbox"]:checked {
+    background-color: #007bff; /* Cambia el color de fondo cuando está seleccionado */
+}
+
+/* Estilos al estar seleccionado y pasar el mouse */
+input[type="checkbox"]:checked:hover {
+    background-color: #0056b3; /* Cambia el color de fondo cuando está seleccionado y se pasa el mouse */
+
+}
+
+button {
+
+    padding: 10px 20px; /* Espacio interno */
+    margin: 10px; /* Margen externo */
+    border: 1px solid #ccc; /* Borde delgado */
+    border-radius: 5px; /* Bordes redondeados */
+    background-color: #f0f0f0; /* Cambiar color de fondo al pasar el mouse */
+
+    color: #333; /* Color del texto */
+    font-size: 16px; /* Tamaño de fuente */
+    cursor: pointer; /* Cambiar cursor al pasar sobre el botón */
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* Transición suave */
+}
+
+/* Estilo al pasar el mouse */
+button:hover {
+    border-color: #2f7dd1;
+    background-color: #2f7dd1; /* Cambia el color de fondo cuando está seleccionado y se pasa el mouse */
+
+}
+
+
+/* Estilo al hacer clic */
+button:active {
+    background-color: #e0e0e0; /* Cambiar color de fondo al hacer clic */
+    border-color: #999; /* Cambiar color del borde al hacer clic */
+}
+
+img#logo {
+    margin: 2%;
+    max-width: 6vw;
+    background-color: #b5dde3;
+    border-radius: 50%;
+    border: 4px solid #6f5858;
+}
+
+nav{
+    display: grid;
+    grid-template-columns: 20% 45% 35%;
+}
+
+.img-container{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.empresaName{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-submenu{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+ul#submenu {
+    display: inline-flex;
+    text-decoration: none;
+}
+
+ul#submenu li {
+    list-style: none;
+    margin: 0 10px;
+}
+
+.e1{
+    text-decoration: none;
+    color: #0056b3;
+    font-weight: 900;
+}
+
+.e2{
+    text-decoration: none;
+    color: #007bff;
+    font-weight: 800;
+}
+
+.e3{
+    text-decoration: none;
+    color: #76b8ff;
+    font-weight: 800;
+}
+
+.next {
+    margin-left: 5px;
+    margin-right: 5px;
+    color: rgb(95 93 183);
+}
+
+.breadcrums {
+    display: flex;
+    margin: 10px;
+    padding: 10px;
+}
+
+div#intrucciones {
+    display: flex;
+    width: 100;
+    margin-bottom: 5%;
+    flex-wrap: nowrap;
+    justify-content: center;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+}
+
+ul.instruccioneslista {
+    max-width: 40%;
+    text-align: center;
+}
+
+ul.instruccioneslista li {
+    list-style: none;
+    margin-bottom: 10px;
+    color: #005bff;
+    font-weight: 500;
+}
+
+#container-instr {
+    background: bisque;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-top-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    background: #fff1a2f2;
+}
+
+#title-inst {
+    font-size: 1.5em;
+    font-weight: 900;
+    color: #007bff;
+    margin-top: 10px;
+}
+
+.tittlecontainer {
+    margin: 10px;
+    padding: 10px;
+    color: #365fff;
+}
+
+.enl-sec{
+    color: black;
+}
+
+.enl-sec:hover{
+    font-size: large;
+    color: rgb(57, 70, 255);
+    text-transform: uppercase;
+}
+
+
+a.submenuenl {
+    text-decoration: none;
+    color: unset;
+    font-weight: 800;
+}
+
+a.submenuenl:hover {
+    text-decoration: none;
+    color: #333;
+    font-weight: 800;
+}
+
+#editform {
+    background: linear-gradient(to right, #833ab4, #0026ff, #4094f5);
+    opacity: 0.9;
+
+
+    /* padding: 20%; */
+    width: 30%;
+    height: 70%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    display: none;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+}
+
+form#editSeccionForm {
+    width: 80%;
+}
+
+p.xpalin {
+    margin-top: 30px;
+    margin-left: 5px;
+    color: white;
+    font-weight: 700;
+    /* text-align: center; */
+}
+
+.edit-title{
+    color: white;
+}
+
+
+div#edit-container {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    flex-wrap: nowrap;
+}   
+  
+div#staut-edi {
+    display: flex;
+    align-content: center;
+    flex-direction: row;
+    align-items: center;
+}
+
+#editEstado{
+    margin-top: 30px;
+    margin-left: 10px;
+}
+
+#descrip-text{
+    resize: vertical    ;
+}
+
+#close-instructions {
+    margin-top: 10px;
+    margin-right: 10px;
+    align-self: end;
+}
+#close-instructions:hover {
+    color: red;
+    cursor: pointer;
+}

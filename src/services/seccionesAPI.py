@@ -41,7 +41,7 @@ def seccion(nombre):
             print(status_carta)
             secciones.append((nombre_carta, indice_carta, status_carta))
 
-        return render_template('carta.html', username=session.get("username"), count_secciones=count_secciones, secciones=secciones)
+        return render_template('carta.html', nombre=nombre, count_secciones=count_secciones, secciones=secciones)
     else:
         # Manejar el caso donde la solicitud no fue exitosa
         return "Error al obtener las cartas", 500  # Puedes personalizar el mensaje de error y el código de estado según sea necesario

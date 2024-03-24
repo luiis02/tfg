@@ -174,3 +174,22 @@ img#checkimg {
     margin-left: 10%;
     color: #7ed9ff;
 }
+
+.submenuenl{
+    text-decoration: none;
+}
+
+#editform {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(165, 189, 211, 0.329);
+    border-radius: 10%;
+    max-width: 75%;
+    padding: 4%;
+}
