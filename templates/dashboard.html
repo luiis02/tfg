@@ -2,119 +2,214 @@
 <html>
 
 <head>
-    <title>Hello, {{username}}!</title>
+    <title>ApuntaJefe: {{ establecimiento }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/carta.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <h1>Hello, {{username}}!</h1>
-    <div id="1">
-        Se han encontrado {{count_cartas}} cartas.
-        <table>
-            <thead>
-                <tr>
-                    <th>Nombre de la carta</th>
-                    <th>Índice</th>
-                    <th>Estado</th>
-                    <th>Editar</th>
-                    <th>Eliminar</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <form id="createCartaForm">
-                        <td><input type="text" name="nombre_carta"></td>
-                        <td><input type="number" name="indice"></td>
-                        <td><input type="checkbox" name="estado"></td>
-                        <td></td>
-                        <td></td>
-                        <td><button type="submit">Enviar</button></td>
-                    </form>
-                </tr>
+    <header>
+        <nav>
+            <div class="img-container">
+                <img id="logo" src="../static/img/_f5591b39-f277-446e-9794-a2dd2be557d4-removebg-preview.png" alt="">
+            </div>
+            <div class="empresaName">
+                <h1>{{ establecimiento }}</h1>
+                <h3 id="subtitulo"> by ApuntaJefe</h3>
+            </div>
+            <div class="container-submenu">
+                <ul id="submenu">
+                    <li><a class="submenuenl" href="{{ base_domain }}/">Carta</a></li>
+                    <li><a class="submenuenl" href="{{ base_domain }}/">Platos</a></li>
+                    <li><a class="submenuenl" href="{{ base_domain }}/">Mesas</a></li>
+                    <li><a class="submenuenl" href="{{ base_domain }}/cierresesion">Cerrar sesión</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="principalcontainer">
+            <div class="datosnegocio">
+                <p id="datostitle">Datos sobre el establecimiento</p>
+                <strong id="text-neg">⚠️​ Configura tu cuenta para obtener más información</strong>
+                <ul class="minimalista">
+                    <li>👨‍🍳​ Tienes creadas {{count_cartas}} cartas.</li>
+                    <li>👩‍🍳​ Tienes creadas {{count_menus}} secciones.</li>
+                    <li>👨🏾‍🍳​ Tienes creados {{count_platos}} platos.</li>
+                    <li>🛎️​ Tienes creadas {{count_mesas}} mesas.</li>
+                </ul>
+                
+            </div>
+            
+            <div class="datosnegocio">
+                <p id="datostitle">Gestiona tus pedidos</p>
+                <button id="pedidosactivos">Comienzar a atender</button>
 
-                <tr></tr>
-                {% for carta in cartas %}
-                <tr>
-                    <td><a href="/carta/{{ carta[0] }}">{{ carta[0] }}</a></td>
-                    <td>{{ carta[1] }}</td>
-                    <td>{{ carta[2] }}</td>
-                    <td><button onclick="editform('{{ carta[0] }}','{{ carta[1] }}','{{ carta[2] }}')">Editar</button>
-                    </td>
-                    <td><button class="eliminar-btn" data-carta-id="{{carta[0]}}">Eliminar</button></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                <ul class="minimalista">
+                    <li>🚨​ Visualiza las comandas activas.</li>
+                    <li>​🕵️‍♂️​​ Aplica filtros.</li>
+                    <li>🚴​ Reduce tiempos de espera.</li>
+                </ul>
+                
+            </div>
+        </div>
+        <div id="sediv">
+        <hr id="separadora1">
+        </div>
+        <div class="reducetam">
+        <div class="recuadro-tabla">
+            <p id="datostitle">Cartas existentes</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre de la carta</th>
+                        <th>Índice</th>
+                        <th>Estado</th>
+                        <th>Editar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="first-col" class="dashboard">
+                        <form id="createCartaForm">
+                            <td><input type="text" name="nombre_carta"></td>
+                            <td><input type="number" name="indice"></td>
+                            <td><input type="checkbox" name="estado"></td>
+                            <td><button type="submit">Crear</button></td>
+                            <td></td>       
+                        </form>
+                    </tr>
+
+                    <tr></tr>
+                    {% for carta in cartas %}
+                    <tr>
+                        <td><a href="/carta/{{ carta[0] }}">{{ carta[0] }}</a></td>
+                        <td>{{ carta[1] }}</td>
+                        <td><p class="changeunicjs">{{ carta[2] }}</p></td>
+                        <td><button
+                                onclick="editform('{{ carta[0] }}','{{ carta[1] }}','{{ carta[2] }}')">Editar</button>
+                        </td>
+                        <td><button class="eliminar-btn" data-carta-id="{{carta[0]}}">Eliminar</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
     </div>
-    <div id="editform" style="display: none;">
-        <form id="editCartaForm">
-            <input type="text" name="nombre_carta_editar" id="editNombreCarta">
-            <input type="number" name="indice_editar" id="editIndice">
-            <input type="checkbox" name="estado_editar" id="editEstado">
-            <button type="button" onclick="enviarFormulario()">Guardar</button>
-        </form>
-    </div>
-    <div>
-        <a href="{{ base_domain }}/cierresesion">Cerrar sesión</a>
-    </div>
 
-    <script>
-        var edita = ""
-        function editform(nombre, indice, estado) {
-            edita = nombre;
-            // Mostrar el formulario de edición
-            var edtiform = document.getElementById("editform");
-            edtiform.style.display = "block"; // Cambiado a "block" para que sea visible
 
-            // Obtener referencia a los campos del formulario de edición
-            var nombreInput = document.getElementById("editNombreCarta");
-            var indiceInput = document.getElementById("editIndice");
-            var estadoInput = document.getElementById("editEstado");
+        <div id="editform" style="display: none;">
+            <form id="editCartaForm">
+                <input type="text" name="nombre_carta_editar" id="editNombreCarta">
+                <input type="number" name="indice_editar" id="editIndice">
+                <input type="checkbox" name="estado_editar" id="editEstado">
+                <button type="button" onclick="enviarFormulario()">Guardar</button>
+            </form>
+        </div>
 
-            // Asignar valores actuales a los campos del formulario
-            nombreInput.value = nombre;
-            indiceInput.value = indice;
-            estadoInput.checked = estado; // estado debe ser un valor booleano
-        }
 
-        function enviarFormulario() {
-        var form = document.getElementById("editCartaForm");
-        var formData = new FormData(form);
-        formData.append("edita", edita); // Agregar la variable "edita" al formulario
+        <script>
+            // Obtener todos los elementos con la clase "changeunicjs"
+                    var elementos = document.querySelectorAll('.changeunicjs');
 
-        console.log("Formulario a enviar:", formData);
-        fetch("/editCarta", {
-            method: "POST",
-            body: formData
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Hubo un error al enviar el formulario.");
+                    // Iterar sobre cada elemento
+                    elementos.forEach(function (elemento) {
+                        // Verificar si el texto del elemento es "Activo"
+                        if (elemento.textContent.trim() === 'Activa') {
+                            // Cambiar el ID del elemento a "unic"
+                            elemento.setAttribute('id', 'acti');
+                        } else {
+                            // Cambiar el ID del elemento a "unic"
+                            elemento.setAttribute('id', 'inac');
+                        }
+                    });
+            var edita = ""
+            function editform(nombre, indice, estado) {
+                edita = nombre;
+                // Mostrar el formulario de edición
+                var edtiform = document.getElementById("editform");
+                edtiform.style.display = "block"; // Cambiado a "block" para que sea visible
+
+                // Obtener referencia a los campos del formulario de edición
+                var nombreInput = document.getElementById("editNombreCarta");
+                var indiceInput = document.getElementById("editIndice");
+                var estadoInput = document.getElementById("editEstado");
+
+                // Asignar valores actuales a los campos del formulario
+                nombreInput.value = nombre;
+                indiceInput.value = indice;
+                estadoInput.checked = estado; // estado debe ser un valor booleano
             }
-            window.location.reload();
-            return response.json();
-        })
-        .then(data => {
-            window.location.reload();
-        })
-        .catch(error => {
-            console.error("Error al enviar el formulario:", error);
-        });
-    }
 
-        var eliminarButtons = document.getElementsByClassName("eliminar-btn");
-        for (var i = 0; i < eliminarButtons.length; i++) {
-            eliminarButtons[i].addEventListener("click", function () {
-                var cartaId = this.getAttribute("data-carta-id");
-                var data = { cartaId: cartaId };
+            function enviarFormulario() {
+                var form = document.getElementById("editCartaForm");
+                var formData = new FormData(form);
+                formData.append("edita", edita); // Agregar la variable "edita" al formulario
 
-                console.log("Data being sent:", data); // Add this line to console log the data being sent
-
-                fetch("/removeCarta", {
+                console.log("Formulario a enviar:", formData);
+                fetch("/editCarta", {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(data)
+                    body: formData
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("Hubo un error al enviar el formulario.");
+                        }
+                        window.location.reload();
+                        return response.json();
+                    })
+                    .then(data => {
+                        window.location.reload();
+                    })
+                    .catch(error => {
+                        console.error("Error al enviar el formulario:", error);
+                    });
+            }
+
+            var eliminarButtons = document.getElementsByClassName("eliminar-btn");
+            for (var i = 0; i < eliminarButtons.length; i++) {
+                eliminarButtons[i].addEventListener("click", function () {
+                    var cartaId = this.getAttribute("data-carta-id");
+                    var data = { cartaId: cartaId };
+
+                    console.log("Data being sent:", data); // Add this line to console log the data being sent
+
+                    fetch("/removeCarta", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(data)
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            window.location.reload();
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                });
+            }
+
+
+            document.getElementById("createCartaForm").addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                var form = document.getElementById("createCartaForm");
+                var formData = new FormData(form);
+
+                // Iterar sobre los datos del formulario y mostrarlos por consola
+                for (var entry of formData.entries()) {
+                    console.log("Campo:", entry[0]);
+                    console.log("Valor:", entry[1]);
+                }
+
+                fetch("/createCarta", {
+                    method: "POST",
+                    body: formData
                 })
                     .then(response => response.json())
                     .then(data => {
@@ -124,39 +219,9 @@
                         console.error(error);
                     });
             });
-        }
+        </script>
+    </main>
 
-
-
-    </script>
-    <script>
-
-        document.getElementById("createCartaForm").addEventListener("submit", function (event) {
-            event.preventDefault();
-
-            var form = document.getElementById("createCartaForm");
-            var formData = new FormData(form);
-
-            // Iterar sobre los datos del formulario y mostrarlos por consola
-            for (var entry of formData.entries()) {
-                console.log("Campo:", entry[0]);
-                console.log("Valor:", entry[1]);
-            }
-
-            fetch("/createCarta", {
-                method: "POST",
-                body: formData
-            })
-                .then(response => response.json())
-                .then(data => {
-                    window.location.reload();
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        });
-
-    </script>
 </body>
 
 </html>

@@ -48,3 +48,39 @@ CREATE TABLE platos (
     status BOOLEAN,
     PRIMARY KEY(nombre, usuario, carta)
 );
+
+CREATE TABLE mesas (
+    id_establecimiento INTEGER REFERENCES usuario(id),
+    establecimiento TEXT REFERENCES usuario(establecimiento),
+    numero_mesa INTEGER,
+    img_qr BLOB
+);
+
+
+
+
+#############################################JSON API############################################################
+
+
+######### 1* API carta
+establecimiento
+num_cartas
+num_secciones
+num_platos
+cartas
+    nombre
+    indice
+    status
+secciones
+    nombre
+    carta
+    indice
+    status
+platos
+    nombre
+    descripcion
+    precio
+    status
+    seccion
+    carta
+    indice

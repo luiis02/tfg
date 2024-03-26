@@ -16,22 +16,23 @@ header{
     font-size: 20px;
 }
 
-table {
+.recuadro-tabla table {
+
     width: 100%;
     border-collapse: collapse;
     border-spacing: 0;
 }
 
-td, th {
+.recuadro-tabla td,.recuadro-tabla th {
     padding: 12px; /* Aumenta el espaciado interno */
     text-align: center;
 }
 
-th {
+.recuadro-tabla th {
     background-color: #f2f2f2; /* Fondo de las celdas del encabezado */
 }
 
-tr:nth-child(odd) {
+.recuadro-tabla tr:nth-child(odd) {
     background-color: #f2f2f2; /* Fondo de las filas pares */
 }
 
@@ -40,12 +41,12 @@ tr:nth-child(odd) {
 }
 
 /* Efecto al pasar el mouse sobre las filas */
-tr:hover {
+.recuadro-tabla tr:hover {
     background-color: #e2e2e2;
 }
 
 /* Efecto al pasar el mouse sobre las celdas */
-td:hover {
+.recuadro-tabla td:hover {
     background-color: #d9d9d9;
     transition: background-color 0.3s; /* Transición suave */
 }
@@ -95,7 +96,7 @@ input[type="checkbox"]:hover {
 
 /* Estilos al estar seleccionado */
 input[type="checkbox"]:checked {
-    background-color: #007bff; /* Cambia el color de fondo cuando está seleccionado */
+    background-color: #1aff00; /* Cambia el color de fondo cuando está seleccionado */
 }
 
 /* Estilos al estar seleccionado y pasar el mouse */
@@ -246,7 +247,7 @@ ul.instruccioneslista li {
 .tittlecontainer {
     margin: 10px;
     padding: 10px;
-    color: #365fff;
+    color: #202020;
 }
 
 .enl-sec{
@@ -273,7 +274,7 @@ a.submenuenl:hover {
 }
 
 #editform {
-    background: linear-gradient(to right, #833ab4, #0026ff, #4094f5);
+    background: linear-gradient(to right, #63c9d7, #0026ff, #4094f5);
     opacity: 0.9;
 
 
@@ -329,6 +330,7 @@ div#staut-edi {
 #editEstado{
     margin-top: 30px;
     margin-left: 10px;
+        
 }
 
 #descrip-text{
@@ -343,4 +345,128 @@ div#staut-edi {
 #close-instructions:hover {
     color: red;
     cursor: pointer;
+}
+p#inac {
+    padding: 5px;
+    background-color: #ff00001a;
+    color: red;
+    border-radius: 30px;
+}
+
+p#acti {
+    padding: 5px;
+    background-color: #00ff571a;
+    color: #006b13;
+    border-radius: 30px;
+}
+
+#subtitulo {
+    margin-left: 10px;
+    margin-top: 40px;
+    font-size: small;
+}
+
+.gestionacartas{
+    all: unset;
+}
+
+.principalcontainer {
+    display: grid;
+    grid-template-columns: 49% 49%;
+    grid-column-gap: 2%;
+}
+
+.datosnegocio {
+    margin: 5%;
+    justify-self: center;
+    /* width: 90%; */
+    /* height: 90%; */
+    background: #f3ede4;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+}
+#datostitle{
+    margin: 10px;
+    padding: 10px;
+    color: #007bff;
+    font-weight: 900;
+    font-size: 2vw;
+}
+
+.minimalista {
+    list-style: none; /* Elimina los puntos de la lista */
+    padding: 0; /* Elimina el espacio interior de la lista */
+}
+
+.minimalista li {
+    margin-bottom: 10px; /* Espacio entre elementos de la lista */
+    font-size: 16px; /* Tamaño de fuente */
+    line-height: 1.5; /* Espaciado entre líneas */
+}
+
+/* Opcional: Estilo para los iconos */
+.minimalista li::before {
+    content: ""; /* Necesario para mostrar el icono */
+    display: inline-block; /* Permite el ajuste del ancho y la altura */
+    width: 1.5em; /* Ancho del icono */
+    height: 1.5em; /* Altura del icono */
+    margin-right: 5px; /* Espacio entre el icono y el texto */
+}
+
+
+#pedidosactivos{
+    padding: 10px 20px; /* Espacio interno */
+    margin: 10px; /* Margen externo */
+    border-color: #2f7dd1;
+    border-radius: 5px; /* Bordes redondeados */
+    background-color: #2f7dd1; /* Cambia el color de fondo cuando está seleccionado y se pasa el mouse */
+    color: #f3f3f3; /* Color del texto */
+
+    font-size: 16px; /* Tamaño de fuente */
+    cursor: pointer; /* Cambiar cursor al pasar sobre el botón */
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* Transición suave */
+}
+
+#pedidosactivos:hover {
+    border: 1px solid #ccc; /* Borde delgado */
+    background-color: #f0f0f0; /* Cambiar color de fondo al pasar el mouse */
+    color: #333; /* Color del texto */
+}
+#text-neg{
+margin: 10px;
+padding: 10px;
+}
+
+#separadora1 {
+    width: 100%;
+    border: none;
+    height: 1px;
+    background: linear-gradient(to right, #fff8ee00, #b9b9b9, #fff8ee00);
+    margin: 20px 0;
+}
+
+#sediv{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.reducetam {
+    border-radius: 68px;
+    /* background: #f3ede4; */
+    background: #f3ede49e;
+    /* margin-left: 10%; */
+    /* margin-right: 40%; */
+    margin: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 0%;
+}
+
+.dashboard{
+
+background-color: #f8f1e8 !important;
 }

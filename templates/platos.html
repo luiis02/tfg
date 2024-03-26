@@ -16,7 +16,8 @@
                 <img id="logo" src="../static/img/_f5591b39-f277-446e-9794-a2dd2be557d4-removebg-preview.png" alt="">
             </div>
             <div class="empresaName">
-                <h1>ApuntaJefe</h1>
+                <h1>{{ establecimiento }}</h1>
+                <h3 id="subtitulo"> by ApuntaJefe</h3>
             </div>
             <div class="container-submenu">
                 <ul id="submenu">
@@ -75,7 +76,7 @@
                             <td>{{ seccion[1] }}</td>
                             <td>{{ seccion[2] }}</td>
                             <td>{{ seccion[3] }}</td>
-                            <td>{{ seccion[4] }}</td>
+                            <td><p class="changeunicjs">{{ seccion[4] }}</p></td>
 
 
                             <td><button

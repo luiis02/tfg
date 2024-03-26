@@ -42,7 +42,7 @@ def dashboard():
         
         count_cartas = data.get('num_cartas', 0)  # Obtener el número de cartas, si está disponible
         cartas = data.get('cartas', [])  # Obtener la lista de cartas, si está disponible
-        
+        session['establecimiento'] = data.get('establecimiento', '')  # Obtener el nombre del establecimiento, si está disponible
         cartas_vector = []
         for carta in cartas:
             nombre_carta = carta['nombre']
@@ -50,7 +50,7 @@ def dashboard():
             status_carta = "Inactiva" if carta['status'] == 0 else "Activa"
             cartas_vector.append((nombre_carta, indice_carta, status_carta))
 
-        return render_template('dashboard.html', username=session.get("username"), count_cartas=count_cartas, cartas=cartas_vector)
+        return render_template('dashboard.html',establecimiento= data.get('establecimiento',0),count_menus= data.get('num_secciones',0),count_platos= data.get('num_platos',0), username=session.get("username"), count_cartas=count_cartas, cartas=cartas_vector)
     else:
         # Manejar el caso donde la solicitud no fue exitosa
         return "Error al obtener las cartas", 500  # Puedes personalizar el mensaje de error y el código de estado según sea necesario

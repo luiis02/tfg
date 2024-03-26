@@ -32,17 +32,16 @@ def platos(nombre):
         count_platos = data.get('num_platos', 0)
         platos_data = data.get('platos', [])
         platos = []
-        print(platos_data)
         for plato in platos_data:
             nombre_plato = plato['nombre']
             descripcion_plato = plato['descripcion']
 
             precio_plato = plato['precio']
             indice_plato = plato['indice']
-            status_plato = "Inactivo" if plato['status'] == 'Inactivo' else "Activo"
+            status_plato = "Inactivo" if plato['status'] == 0 else "Activo"
             platos.append((nombre_plato, descripcion_plato, precio_plato, indice_plato, status_plato))
         
-        return render_template('platos.html', username=session.get('username'), count_platos=count_platos, secciones=platos, nombre=session.get('carta'))
+        return render_template('platos.html', username=session.get('username'), count_platos=count_platos, secciones=platos, nombre=session.get('carta'), establecimiento=session.get('establecimiento'), seccion=nombre)
 
 @platos_routes.route('/getPlatos', methods=['GET'])
 def getPlatos():
@@ -55,10 +54,13 @@ def getPlatos():
     
     bd = DBController()
     bd.connect()
+
+    # Verificar si la existen platos en la carta
     existe = bd.fetch_data("SELECT COUNT(*) FROM platos WHERE carta = ? AND usuario = ? AND seccion = ?", (cookie_carta, cookie_username, cookie_seccion))
-    
     if existe[0][0] == 0: 
         plato ={"numero": "0", "nombre": "No hay cartas", "indice": "0", "status": "0"}
+
+    data = {"carta": cookie_carta, "seccion": cookie_seccion, "num_platos": existe[0][0], "platos": []}
 
     data = {"num_platos": existe[0][0], "platos": []}
     if existe[0][0] > 0:
@@ -80,6 +82,8 @@ def create_plato():
         precio = request.form.get('precio')
         indice_seccion = request.form.get('indice')
         status_seccion = request.form.get('estado')
+        print("ENTRO AQUI")
+        print(status_seccion)
         if status_seccion == 'on':
             status_seccion = True
         else:
@@ -98,8 +102,6 @@ def create_plato():
 def remove_Plato():
     try:
         if 'username' not in session:
-            print("entra")
-
             return redirect(url_for('user_routes.login'))
             
         data = request.get_json()  

@@ -21,7 +21,6 @@ cartas_routes = Blueprint("cartas_routes", __name__)
 def getCartas():
     cookie_value = request.cookies.get('auth')
     session['username'] = cookie_value
-    print(session['username'])
     try:
         if 'username' not in session:
             return redirect(url_for('user_routes.login'))
@@ -34,21 +33,54 @@ def getCartas():
         resultado = db.fetch_data("SELECT COUNT(*) FROM cartas WHERE usuario = ?", (session['username'],))
         num_cartas = resultado[0][0] if resultado else 0
 
-        data = {"num_cartas": num_cartas, "cartas": []}
+        # Contar el número de secciones del usuario
+        resultado = db.fetch_data("SELECT COUNT(*) FROM seccion WHERE usuario = ?", (session['username'],))
+        num_secciones = resultado[0][0] if resultado else 0
+
+        # Contar el número de platos del usuario
+        resultado = db.fetch_data("SELECT COUNT(*) FROM platos WHERE usuario = ?", (session['username'],))
+        num_platos = resultado[0][0] if resultado else 0
+
+        # Obtengo el nombre del establecimiento
+        resultado = db.fetch_data("SELECT establecimiento FROM usuario WHERE usuario = ?", (session['username'],))
+        establecimiento = resultado[0][0] if resultado else "No establecido"
+
+        data = {"establecimiento": establecimiento, "num_cartas": num_cartas, "num_secciones": num_secciones, "num_platos": num_platos, "cartas": [], "secciones": [], "platos": []}
         
         if num_cartas > 0:
             obteninfo = db.fetch_data("SELECT nombre, indice, status FROM cartas WHERE usuario = ? ORDER BY indice", (session['username'],))
             for info in obteninfo:
                 carta = {
-                    "numero": num_cartas,
                     "nombre": info[0],
                     "indice": info[1],
                     "status": info[2]
                 }
                 data["cartas"].append(carta)
-        else:
-            carta ={"numero": "0", "nombre": "No hay cartas", "indice": "0", "status": "0"}
         
+        if num_secciones > 0:
+            obteninfo = db.fetch_data("SELECT nombre, carta, indice, status FROM seccion WHERE usuario = ? ORDER BY indice", (session['username'],))
+            for info in obteninfo:
+                seccion = {
+                    "nombre": info[0],
+                    "carta": info[1],
+                    "indice": info[2],
+                    "status": info[3]
+                }
+                data["secciones"].append(seccion)
+        
+        if num_platos > 0:
+            obteninfo = db.fetch_data("SELECT nombre, descripcion, precio, status, seccion, carta, indice FROM platos WHERE usuario = ? ORDER BY indice", (session['username'],))
+            for info in obteninfo:
+                plato = {
+                    "nombre": info[0],
+                    "descripcion": info[1],
+                    "precio": info[2],
+                    "status": info[3],
+                    "seccion": info[4],
+                    "carta": info[5],
+                    "indice": info[6]
+                }
+                data["platos"].append(plato)
         db.disconnect()
         json_data = json.dumps(data)
         return json_data
@@ -102,7 +134,6 @@ def edit_carta():
         nombre_carta = request.form.get('nombre_carta_editar')
         indice_carta = request.form.get('indice_editar')
         status_carta = request.form.get('estado_editar')
-        print(nombre_anterior, nombre_carta, indice_carta, status_carta)
         if status_carta == 'on':
             status_carta = True
         else:

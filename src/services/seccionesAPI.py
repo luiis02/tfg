@@ -29,19 +29,15 @@ def seccion(nombre):
         
         count_secciones = data.get('num_secciones', 0)  # Obtener el número de cartas, si está disponible
         secciones_data = data.get('secciones', [])  # Obtener la lista de secciones, si está disponible
-        print(count_secciones)
         
         secciones = []
         for seccion in secciones_data:
             nombre_carta = seccion[0]  # El nombre de la carta está en la primera posición
-            print(nombre_carta)
             indice_carta = seccion[1]  # El índice de la carta está en la segunda posición
-            print(indice_carta)
             status_carta = "Inactiva" if seccion[2] == 'Inactiva' else "Activa"  # El estado de la carta está en la tercera posición
-            print(status_carta)
             secciones.append((nombre_carta, indice_carta, status_carta))
 
-        return render_template('carta.html', nombre=nombre, count_secciones=count_secciones, secciones=secciones)
+        return render_template('carta.html',establecimiento=session.get('establecimiento'), nombre=nombre, count_secciones=count_secciones, secciones=secciones)
     else:
         # Manejar el caso donde la solicitud no fue exitosa
         return "Error al obtener las cartas", 500  # Puedes personalizar el mensaje de error y el código de estado según sea necesario
@@ -69,8 +65,6 @@ def create_seccion():
 
 @secciones_routes.route('/removeSeccion', methods=['POST'])
 def remove_Seccion():
-    
-    print("entra")
     try:
         if 'username' not in session:
             return redirect(url_for('user_routes.login'))
@@ -79,7 +73,6 @@ def remove_Seccion():
         carta = data.get('cartaId') 
         bd = DBController()
         bd.connect()
-        print(carta, session["username"], session["carta"])
         bd.execute_query("DELETE FROM seccion WHERE nombre = ? AND usuario = ? AND carta = ?", (carta, session["username"], session["carta"]))
         bd.connection.commit()
         bd.disconnect()
@@ -96,7 +89,6 @@ def edit_Seccion():
         nombre_carta = request.form.get('nombre_seccion_editar')
         indice_carta = request.form.get('indice_editar')
         status_carta = request.form.get('estado_editar')
-        print(nombre_anterior, nombre_carta, indice_carta, status_carta)
         if status_carta == 'on':
             status_carta = True
         else:
@@ -125,21 +117,41 @@ def getSeccion():
     bd = DBController()
     bd.connect()
 
-    existe = bd.fetch_data("SELECT COUNT(*) FROM seccion WHERE carta = ? AND usuario = ?", (nombre, session['username']))
-    if existe[0][0] == 0:
-        seccion ={"numero": "0", "nombre": "No hay cartas", "indice": "0", "status": "0"}
+    # Verificar si la carta existe
+    existe = bd.fetch_data("SELECT COUNT(*) FROM cartas WHERE nombre = ? AND usuario = ?", (nombre, session['username']))
+    if existe[0][0] == 0: return jsonify({"error": "La carta no existe"})
 
-    data = {"num_secciones": existe[0][0], "secciones": []}
-    if existe[0][0] > 0:
+    # Verificar si existen secciones en esa carta
+    existe = bd.fetch_data("SELECT COUNT(*) FROM seccion WHERE carta = ? AND usuario = ?", (nombre, session['username']))
+    num_secciones = existe[0][0]
+    
+    # Verificar si existen platos para esa seccion
+    existe = bd.fetch_data("SELECT COUNT(*) FROM seccion WHERE carta = ? AND usuario = ?", (nombre, session['username']))
+    num_platos = existe[0][0]
+    
+    data = {"carta": nombre, "num_secciones": num_secciones, "num_platos": num_platos,"secciones": [], "platos":[]}
+
+    if num_secciones > 0:
         secciones = bd.fetch_data("SELECT nombre, indice, status FROM seccion WHERE carta = ? AND usuario = ? ORDER BY indice", (nombre, session['username']))
         for seccion in secciones:
             nombre_seccion = seccion[0]
             indice_seccion = seccion[1]
             status_seccion = "Inactiva" if seccion[2] == 0 else "Activa"
             data['secciones'].append((nombre_seccion, indice_seccion, status_seccion))
-        
+
+    if num_platos > 0:
+        platos = bd.fetch_data("SELECT nombre, descripcion, precio, status, seccion, carta, indice FROM platos WHERE carta = ? AND usuario = ? ORDER BY indice", (nombre, session['username']))
+        for plato in platos:
+            nombre_plato = plato[0]
+            descripcion_plato = plato[1]
+            precio_plato = plato[2]
+            status_plato = "Inactivo" if plato[3] == 0 else "Activo"
+            seccion_plato = plato[4]
+            carta_plato = plato[5]
+            indice_plato = plato[6]
+            data['platos'].append((nombre_plato, descripcion_plato, precio_plato, status_plato, seccion_plato, carta_plato, indice_plato))
+
     bd.disconnect()
     json_data = json.dumps(data)
-
     return json_data
 

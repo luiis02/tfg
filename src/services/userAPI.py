@@ -180,15 +180,6 @@ def ConfirmUser(username, codigo):
         datos = resultados[0]
         bd.disconnect()
         if datos[6] == username:
-            nombre = datos[0]
-            apellido = datos[1]
-            establecimiento = datos[2]
-            provincia = datos[3]
-            email = datos[4]
-            password = datos[5]
-            usuario = datos[6]
-            telefono = datos[7]
-            print(nombre, apellido, establecimiento, provincia, email, password, usuario, telefono)
             bd.connect()
             bd.execute_query("INSERT INTO usuario (nombre, apellido, establecimiento, provincia, email, passwd, usuario, telefono) VALUES (?,?,?,?,?,?,?,?)", datos[0:8])
             bd.execute_query("DELETE FROM usuario_sin_confirmar WHERE usuario = ?", (username,))

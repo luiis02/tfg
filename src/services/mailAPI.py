@@ -17,7 +17,6 @@ mail_routes = Blueprint("mail_routes", __name__)
 @mail_routes.route('/mail', methods=['POST'])
 def mail():
     cookies = request.cookies
-    print(cookies)
     if cookies.get('auth') != 'True':
         return jsonify({"error": "No autorizado"})
     else:
