@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}
+    Gestionar Mesas
+{% endblock %}
+
+{% block content %}
+    <main>
+        <p id="datostitle">Mesas en el establecimiento</p>
+        <table>
+            <thead>
+                <th>Número</th>
+                <th>QR</th>
+            </thead>
+            <tbody>
+                <form action="">
+                    <tr>
+                        <td>Número de mesas a crear: <input type="number" name="numero" min="0"></td>
+                        <td><input type="submit" value="Crear"></td>
+                    </tr>
+                </form>
+                {% for mesa in mesas %}
+                <tr>
+                    <td> Mesa {{ mesa.numero }}</td>
+                    <td><img src="data:image/png;base64,{{ mesa.qr }}" alt="QR Mesa {{ mesa.numero }}"></td>
+                </tr>
+                <div class="mesas_rest">
+                </div>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+
+    </main>
+
+{% endblock %}

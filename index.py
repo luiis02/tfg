@@ -16,7 +16,7 @@ from src.services.cartasAPI import cartas_routes
 from src.services.userAPI import user_routes
 from src.services.mailAPI import mail_routes
 from src.services.platosAPI import platos_routes
-
+from src.services.qrAPI import qr_routes
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tu_clave_secreta_aqui'
@@ -26,6 +26,7 @@ app.register_blueprint(cartas_routes)
 app.register_blueprint(user_routes)
 app.register_blueprint(mail_routes)
 app.register_blueprint(platos_routes)
+app.register_blueprint(qr_routes)
 
 
 

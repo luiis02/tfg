@@ -21,6 +21,6 @@ bd = DBController()
 bd.connect()
 #a = bd.fetch_data("SELECT COUNT(*) FROM platos WHERE carta = ? AND usuario = ? AND seccion = ?;", ('prueba', 'root', 'estas'))
 #print(a[0][0])
-bd.execute_query("INSERT INTO platos (nombre, descripcion, indice, status, usuario, carta, seccion, precio) VALUES (?,?,?,?,?,?,?,?)", ('pruebaa', 'prueba', 1, True, 'root', 'prueba', 'estas',"1.3"))
+bd.execute_query(" CREATE TABLE mesas (id INTEGER primary key autoincrement ,id_establecimiento INTEGER,numero_mesa INTEGER,img_qr BLOB);")
 bd.disconnect()
 
