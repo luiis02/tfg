@@ -393,7 +393,14 @@ p#acti {
     font-weight: 900;
     font-size: 2vw;
 }
-
+#datostitle2{
+    margin: 10px;
+    padding: 10px;
+    color: #007bff;
+    font-weight: 900;
+    font-size: 2vw;
+    text-align: center;
+}
 .minimalista {
     list-style: none; /* Elimina los puntos de la lista */
     padding: 0; /* Elimina el espacio interior de la lista */

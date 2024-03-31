@@ -1,34 +1,9 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
+{% block title %}
+    Gestionar Platos
+{% endblock %}
 
-<head>
-    <title>Carta, {{nombre}}!</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/carta.css') }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
-</head>
-
-<body>
-    <header>
-        <nav>
-            <div class="img-container">
-                <img id="logo" src="../static/img/_f5591b39-f277-446e-9794-a2dd2be557d4-removebg-preview.png" alt="">
-            </div>
-            <div class="empresaName">
-                <h1>{{ establecimiento }}</h1>
-                <h3 id="subtitulo"> by ApuntaJefe</h3>
-            </div>
-            <div class="container-submenu">
-                <ul id="submenu">
-                    <li><a class="submenuenl" href="{{ base_domain }}/">Carta</a></li>
-                    <li><a class="submenuenl" href="{{ base_domain }}/">Platos</a></li>
-                    <li><a class="submenuenl" href="{{ base_domain }}/">Mesas</a></li>
-                    <li><a class="submenuenl" href="{{ base_domain }}/cierresesion">Cerrar sesión</a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+{% block content %}
     <main>
         <div class="breadcrums">
             <a href="{{ base_domain }}/dashboard" class="e1">Home</a>
@@ -130,10 +105,8 @@
     </main>
 
 
+{% endblock %}
 
-
-
+{% block scriptjs %}
     <script src="{{ url_for('static', filename='js/platos.js') }}"></script>
-</body>
-
-</html>
+{% endblock %}
