@@ -61,12 +61,13 @@ def editarSeccion(nombre, usuario, nombre_anterior, indice, status, carta):
     try:
         bd = DBController()
         bd.connect()
-        bd.execute_query("UPDATE seccion SET nombre = ?, indice = ?, status = ? WHERE nombre = ? AND usuario = ? AND carta = ?", (nombre, indice, status, nombre_anterior, usuario, carta))
+        result = bd.execute_query("UPDATE seccion SET nombre = ?, indice = ?, status = ? WHERE nombre = ? AND usuario = ? AND carta = ?", (nombre, indice, status, nombre_anterior, usuario, carta))
+        if result == 0: return "Error, clave duplicada"
         bd.connection.commit()
         bd.disconnect()
         return "OK"
     except Exception as e:
-        return e
+        return str(e)
     
 def borrarSeccion(nombre, carta, usuario):
     try:
@@ -83,9 +84,11 @@ def crearSeccion(nombre_seccion, indice_seccion, status_seccion, usuario, carta)
     try:
         bd = DBController()
         bd.connect()
+        existe = bd.fetch_data("SELECT COUNT(*) FROM seccion WHERE nombre = ? AND usuario = ? AND carta = ?", (nombre_seccion, usuario, carta))
+        if existe[0][0] > 0: return "Error, clave duplicada"
         bd.execute_query("INSERT INTO seccion (nombre, indice, status, usuario, carta) VALUES (?,?,?,?,?)", (nombre_seccion, indice_seccion, status_seccion, usuario, carta))
         bd.connection.commit()
         bd.disconnect()
         return "OK"
     except Exception as e: 
-        return e
+        return str(e)

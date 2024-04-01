@@ -42,6 +42,8 @@ def crearPlato(nombre, descripcion, precio, indice, status, usuario, carta, secc
             status = False
         bd = DBController()
         bd.connect()
+        existe = bd.fetch_data("SELECT COUNT(*) FROM platos WHERE nombre = ? AND usuario = ? AND carta = ? AND seccion = ?", (nombre, usuario, carta, seccion))
+        if existe[0][0] > 0: return "Error, clave duplicada"
         bd.execute_query("INSERT INTO platos (nombre, descripcion, indice, status, usuario, carta, seccion, precio) VALUES (?,?,?,?,?,?,?,?)", (nombre, descripcion, indice, status, usuario, carta, seccion,precio))
         bd.connection.commit()
         bd.disconnect()
@@ -66,7 +68,8 @@ def editaPlato(nombre, descripcion, precio, indice, status, usuario, carta, secc
             status = False
         bd = DBController()
         bd.connect()
-        bd.execute_query("UPDATE platos SET nombre = ?, descripcion = ?, precio = ?, indice = ?, status = ? WHERE nombre = ? AND usuario = ? AND carta = ? AND seccion = ?", (nombre, descripcion, precio, indice, status, nombre_anterior, usuario, carta, seccion))
+        result = bd.execute_query("UPDATE platos SET nombre = ?, descripcion = ?, precio = ?, indice = ?, status = ? WHERE nombre = ? AND usuario = ? AND carta = ? AND seccion = ?", (nombre, descripcion, precio, indice, status, nombre_anterior, usuario, carta, seccion))
+        if result == 0: return "Error, clave duplicada"
         bd.connection.commit()
         bd.disconnect()
         return "OK"

@@ -284,7 +284,7 @@ a.submenuenl:hover {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 9999;
+    z-index: 9998;
     display: none;
     flex-direction: column;
     align-content: center;
@@ -544,3 +544,40 @@ div#submitbuttondiv {
     padding: 10px;
     /* background-color: #c8bdd200; */
 }   
+
+#burbleadvice {
+    display: none;
+    flex-direction: row;
+    background-color: rgba(34, 34, 34, 0.979);
+    min-width: 25vw;
+    min-height: 10vh;
+    font-family: "RocknRoll One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: rgb(255, 255, 255);
+    font-size: small;
+    margin-bottom: 1vw;
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    align-content: center;
+    flex-wrap: nowrap;
+    align-items: center;
+    border-radius: 20px;
+    z-index: 9999;
+}
+
+img#checkimg {
+    max-width: 15%;
+    margin-left: 10%;
+}
+
+#descripmsg{
+    margin-left: 10%;
+}
+
+#count{
+    margin-left: 10%;
+    color: #7ed9ff;
+}

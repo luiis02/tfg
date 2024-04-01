@@ -69,7 +69,11 @@ def create_plato():
     # Llama a models
     status = crearPlato(nombre_plato, descripcion_plato, precio, indice_seccion, status_seccion, session.get('username'), session.get('carta'), session.get('seccion'))
     if status=="OK": return jsonify({"message": "Plato creado correctamente"})
-    else: return "Error creando platos"
+    else:
+        if status == "Error, clave duplicada":
+            return jsonify({'error': 'Nombre de carta duplicado'}), 452
+        else:
+            return jsonify({"error": "Error creando carta"}), 453
 
 
 @platos_routes.route('/removePlato', methods=['POST'])
@@ -101,4 +105,8 @@ def edit_Plato():
     #----------------------------------------------Dentro de models
     status = editaPlato(nombre_carta, descripcion_carta, precio_carta, indice_carta, status_carta, session["username"], session["carta"], session["seccion"], nombre_anterior)
     if status=="OK": return jsonify({"message": "Carta editada correctamente"})
-    else: return "Error editando carta" 
+    else:
+        if status == "Error, clave duplicada":
+            return jsonify({'error': 'Nombre de carta duplicado'}), 452
+        else:
+            return jsonify({"error": "Error creando carta"}), 453

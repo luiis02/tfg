@@ -28,8 +28,11 @@ class DBController:
                 self.cursor.execute(query)
             self.connection.commit()
             print("Consulta ejecutada exitosamente")
+            return 1
         except sqlite3.DatabaseError as error:
             print("Error al ejecutar la consulta:", error)
+            return 0
+
 
     def fetch_data(self, query, params=None):
         try:

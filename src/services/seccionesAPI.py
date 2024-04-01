@@ -55,7 +55,11 @@ def create_seccion():
         status_seccion = False
     status = crearSeccion(nombre_seccion,indice_seccion,status_seccion,session['username'],session['carta'])
     if status == "OK": return jsonify({"message": "Sección creada correctamente"})
-    else: return jsonify({"error": "Error creando sección"})
+    else:
+        if status == "Error, clave duplicada":
+            return jsonify({'error': 'Nombre de sección duplicado'}), 452
+        else:
+            return jsonify({"error": "Error creando sección"}), 453
 
 @secciones_routes.route('/removeSeccion', methods=['POST'])
 def remove_Seccion():
@@ -90,7 +94,10 @@ def edit_Seccion():
     if status == "OK":
         return jsonify({"message": "Carta editada correctamente"})
     else:
-        return jsonify({"error": "Error editando carta"})
+        if status == "Error, clave duplicada":
+            return jsonify({'error': 'Nombre de sección duplicado'}), 452
+        else:
+            return jsonify({"error": "Error creando sección"}), 453
 
 
 @secciones_routes.route('/getSeccion', methods=['GET'])

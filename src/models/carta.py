@@ -77,7 +77,7 @@ def obtenCartas(usuario):
         return "OK", json_data
     
     except Exception as e:
-        return e
+        return "NO"
     
 def eliminarCarta(carta, usuario):        
     try:
@@ -87,7 +87,7 @@ def eliminarCarta(carta, usuario):
         bd.connection.commit()
         bd.disconnect()
         return "OK"
-    except Exception as e: return e
+    except Exception as e: return "NO"
 
 def crearCarta(nombre_carta, indice_carta, status_carta, usuario):
     try:
@@ -97,11 +97,13 @@ def crearCarta(nombre_carta, indice_carta, status_carta, usuario):
             status_carta = False
         bd = DBController()
         bd.connect()
+        existe = bd.fetch_data("SELECT COUNT(*) FROM cartas WHERE nombre = ? AND usuario = ?", (nombre_carta, usuario))
+        if existe[0][0] > 0: return "Error, clave duplicada"
         bd.execute_query("INSERT INTO cartas (nombre, indice, status, usuario) VALUES (?,?,?,?)", (nombre_carta, indice_carta, status_carta, usuario))
         bd.connection.commit()
         bd.disconnect()
         return "OK"
-    except Exception as e: return e
+    except Exception as e: return str(e)
 
 def editaCarta(nombre_anterior, nombre_carta, indice_carta, status_carta, usuario):
     try:
@@ -111,9 +113,12 @@ def editaCarta(nombre_anterior, nombre_carta, indice_carta, status_carta, usuari
             status_carta = False
         bd = DBController()
         bd.connect()
-        bd.execute_query("UPDATE cartas SET nombre = ?, indice = ?, status = ? WHERE nombre = ? AND usuario = ?", (nombre_carta, indice_carta, status_carta, nombre_anterior, usuario))
-        bd.execute_query("UPDATE seccion SET carta = ? WHERE carta = ?", (nombre_carta, nombre_anterior))
+        result= bd.execute_query("UPDATE cartas SET nombre = ?, indice = ?, status = ? WHERE nombre = ? AND usuario = ?", (nombre_carta, indice_carta, status_carta, nombre_anterior, usuario))
+        if result == 0: return "Error, clave duplicada"
+        result = bd.execute_query("UPDATE seccion SET carta = ? WHERE carta = ?", (nombre_carta, nombre_anterior))
+        if result == 0: return "Error, clave duplicada"
+        
         bd.connection.commit()
         bd.disconnect()
         return "OK"
-    except Exception as e: return e
+    except Exception as e: return "NO"

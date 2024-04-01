@@ -19,17 +19,29 @@ document.getElementById("createSeccionForm").addEventListener("submit", function
         console.log("Valor:", entry[1]);
     }
 
+    if (formData.get("nombre_seccion") === "" || formData.get("nombre_seccion") === null) {
+        mostrarMensajeTemporal("No se puede crear un plato sin nombre", 7);
+        return;
+    }
+    if (formData.get("precio") === "") formData.set("precio", 0);
     fetch("/createPlato", {
         method: "POST",
         body: formData
     })
-        .then(response => response.json())
-        .then(data => {
-            window.location.reload();
-        })
-        .catch(error => {
-            console.error(error);
-        });
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Error " + response.status + ": " + response.statusText);
+        }
+        window.location.reload();
+    })
+    .catch(error => {
+        if (error.message.startsWith("Error 452")) {
+            mostrarMensajeTemporal("No se puede crear un plato con el nombre repetido", 7); 
+        } else {
+            mostrarMensajeTemporal("No se puede añadir en este momento", 7); 
+
+        }
+    });
 });
 
 var edita = ""
@@ -70,18 +82,31 @@ function enviarFormulario() {
     console.log(formData.get("nombre_seccion_editar"));
     console.log(formData.get("indice_editar"));
     console.log(formData.get("estado_editar"));
+    if (formData.get("nombre_seccion_editar") === "" || formData.get("nombre_seccion_editar") === null) {
+        mostrarMensajeTemporal("No se puede crear una sección sin nombre", 7);
+        return;
+    }
+    if (formData.get("precio_editar") === "") formData.set("precio_editar", 0);
 
     fetch("/editPlato", {
         method: "POST",
         body: formData
     })
-        .then(response => response.json())
-        .then(data => {
-            window.location.reload();
-        })
-        .catch(error => {
-            console.error(error);
-        });
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Error " + response.status + ": " + response.statusText);
+        }
+        window.location.reload();
+    })
+    .catch(error => {
+        if (error.message.startsWith("Error 452")) {
+            mostrarMensajeTemporal("No se puede crear una sección con el nombre repetido", 7); 
+        } else {
+            mostrarMensajeTemporal("No se puede añadir en este momento", 7); 
+
+        }
+    });
+    
 }
 
 
@@ -125,3 +150,32 @@ elementos.forEach(function (elemento) {
         elemento.setAttribute('id', 'inac');
     }
 });
+
+
+
+
+
+
+function mostrarMensajeTemporal(mensaje, segundos) {
+    var burbleadvice = document.getElementById("burbleadvice");
+    var descripmsg = document.getElementById("descripmsg");
+    var count = document.getElementById("count");
+
+    descripmsg.textContent = mensaje; 
+
+    // Muestra el elemento burbleadvice
+    burbleadvice.style.display = "flex";
+
+    // Actualiza el contador
+    count.textContent = segundos;
+
+    var intervalo = setInterval(function() {
+        segundos--;
+        count.textContent = segundos;
+
+        if (segundos <= 0) {
+            clearInterval(intervalo); // Detiene el intervalo cuando el contador llega a cero
+            burbleadvice.style.display = "none"; // Oculta el elemento burbleadvice
+        }
+    }, 1000); // Actualiza el contador cada segundo
+}

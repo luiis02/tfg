@@ -58,7 +58,14 @@ def create_carta():
     if status == "OK":
         return jsonify({"message": "Carta creada correctamente"})
     else:
-        return jsonify({"error": "Error creando carta"})
+        if status == "Error, clave duplicada":
+            return jsonify({'error': 'Nombre de carta duplicado'}), 452
+        else:
+            return jsonify({"error": "Error creando carta"}), 453
+        
+
+        
+    
 
 @cartas_routes.route('/editCarta', methods=['POST'])
 def edit_carta():
@@ -74,4 +81,7 @@ def edit_carta():
     if status == "OK":
         return jsonify({"message": "Carta editada correctamente"})
     else:
-        return jsonify({"error": "Error editando carta"})
+        if status == "Error, clave duplicada":
+            return jsonify({'error': 'Nombre de carta duplicado'}), 452
+        else:
+            return jsonify({"error": "Error creando carta"}), 453
