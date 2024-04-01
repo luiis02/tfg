@@ -2,6 +2,7 @@ from flask import jsonify, redirect, render_template, request, session, url_for
 from flask import redirect, url_for
 from src.database.dbcontroller import DBController
 from flask import request
+from src.models.secciones import obtenSecciones,editarSeccion,borrarSeccion,crearSeccion
 ##############################################################################################
 ##############################################################################################
 ##############################################################################################
@@ -45,113 +46,66 @@ def seccion(nombre):
 
 @secciones_routes.route('/createSeccion', methods=['POST'])
 def create_seccion():
-    try:
-        nombre_seccion = request.form.get('nombre_seccion')
-        indice_seccion = request.form.get('indice')
-        status_seccion = request.form.get('estado')
-        if status_seccion == 'on':
-            status_seccion = True
-        else:
-            status_seccion = False
-        bd = DBController()
-        bd.connect()
-        bd.execute_query("INSERT INTO seccion (nombre, indice, status, usuario, carta) VALUES (?,?,?,?,?)", (nombre_seccion, indice_seccion, status_seccion, session["username"], session["carta"]))
-        bd.connection.commit()
-        bd.disconnect()
-
-        return jsonify({"message": "Datos recibidos correctamente"})
-    except Exception as e:
-        return jsonify({"error": str(e)})
+    nombre_seccion = request.form.get('nombre_seccion')
+    indice_seccion = request.form.get('indice')
+    status_seccion = request.form.get('estado')
+    if status_seccion == 'on':
+        status_seccion = True
+    else:
+        status_seccion = False
+    status = crearSeccion(nombre_seccion,indice_seccion,status_seccion,session['username'],session['carta'])
+    if status == "OK": return jsonify({"message": "Sección creada correctamente"})
+    else: return jsonify({"error": "Error creando sección"})
 
 @secciones_routes.route('/removeSeccion', methods=['POST'])
 def remove_Seccion():
-    try:
-        if 'username' not in session:
-            return redirect(url_for('user_routes.login'))
+    if 'username' not in session:
+        return redirect(url_for('user_routes.login'))
             
-        data = request.get_json()  
-        carta = data.get('cartaId') 
-        bd = DBController()
-        bd.connect()
-        bd.execute_query("DELETE FROM seccion WHERE nombre = ? AND usuario = ? AND carta = ?", (carta, session["username"], session["carta"]))
-        bd.connection.commit()
-        bd.disconnect()
+    data = request.get_json()  
+    carta = data.get('cartaId') 
+    
+    # Llama a models
+    status = borrarSeccion(carta,session['carta'], session['username'])
+    if status == "OK":
         return jsonify({"message": "Carta eliminada correctamente"})
-    except Exception as e:
-        return jsonify({"error": str(e)})
+    else:
+        return jsonify({"error": "Error eliminando carta"})
     
 @secciones_routes.route('/editSeccion', methods=['POST'])
 def edit_Seccion():
-    try:
-        if 'username' not in session:
-            return redirect(url_for('user_routes.login'))
-        nombre_anterior = request.form.get('edita')
-        nombre_carta = request.form.get('nombre_seccion_editar')
-        indice_carta = request.form.get('indice_editar')
-        status_carta = request.form.get('estado_editar')
-        if status_carta == 'on':
-            status_carta = True
-        else:
-            status_carta = False
-        bd = DBController()
-        bd.connect()
-        bd.execute_query("UPDATE seccion SET nombre = ?, indice = ?, status = ? WHERE nombre = ? AND usuario = ? AND carta = ?", (nombre_carta, indice_carta, status_carta, nombre_anterior, session["username"], session["carta"]))
-        bd.connection.commit()
-        bd.disconnect()
+    if 'username' not in session:
+        return redirect(url_for('user_routes.login'))
+    nombre_anterior = request.form.get('edita')
+    nombre_carta = request.form.get('nombre_seccion_editar')
+    indice_carta = request.form.get('indice_editar')
+    status_carta = request.form.get('estado_editar')
+    if status_carta == 'on':
+        status_carta = True
+    else:
+        status_carta = False
+    
+    # Llama a models
+    status = editarSeccion(nombre_carta, session['username'], nombre_anterior, indice_carta, status_carta, session['carta'])
+    if status == "OK":
         return jsonify({"message": "Carta editada correctamente"})
-    except Exception as e:
-        return jsonify({"error": str(e)})
+    else:
+        return jsonify({"error": "Error editando carta"})
+
 
 @secciones_routes.route('/getSeccion', methods=['GET'])
 def getSeccion():
-    
     cookie_value = request.cookies.get('auth')
     cookie_value2 = request.cookies.get('carta')
     session['username'] = cookie_value
     session['carta'] = cookie_value2
     if 'username' not in session:
         return redirect(url_for('user_routes.login'))
-    
     nombre = session['carta']
+    # Llama a models
+    status, data = obtenSecciones(nombre, session['username'])
+    if status == "OK":
+        return data
+    else: return "Error obteniendo secciones"
 
-    bd = DBController()
-    bd.connect()
-
-    # Verificar si la carta existe
-    existe = bd.fetch_data("SELECT COUNT(*) FROM cartas WHERE nombre = ? AND usuario = ?", (nombre, session['username']))
-    if existe[0][0] == 0: return jsonify({"error": "La carta no existe"})
-
-    # Verificar si existen secciones en esa carta
-    existe = bd.fetch_data("SELECT COUNT(*) FROM seccion WHERE carta = ? AND usuario = ?", (nombre, session['username']))
-    num_secciones = existe[0][0]
-    
-    # Verificar si existen platos para esa seccion
-    existe = bd.fetch_data("SELECT COUNT(*) FROM seccion WHERE carta = ? AND usuario = ?", (nombre, session['username']))
-    num_platos = existe[0][0]
-    
-    data = {"carta": nombre, "num_secciones": num_secciones, "num_platos": num_platos,"secciones": [], "platos":[]}
-
-    if num_secciones > 0:
-        secciones = bd.fetch_data("SELECT nombre, indice, status FROM seccion WHERE carta = ? AND usuario = ? ORDER BY indice", (nombre, session['username']))
-        for seccion in secciones:
-            nombre_seccion = seccion[0]
-            indice_seccion = seccion[1]
-            status_seccion = "Inactiva" if seccion[2] == 0 else "Activa"
-            data['secciones'].append((nombre_seccion, indice_seccion, status_seccion))
-
-    if num_platos > 0:
-        platos = bd.fetch_data("SELECT nombre, descripcion, precio, status, seccion, carta, indice FROM platos WHERE carta = ? AND usuario = ? ORDER BY indice", (nombre, session['username']))
-        for plato in platos:
-            nombre_plato = plato[0]
-            descripcion_plato = plato[1]
-            precio_plato = plato[2]
-            status_plato = "Inactivo" if plato[3] == 0 else "Activo"
-            seccion_plato = plato[4]
-            carta_plato = plato[5]
-            indice_plato = plato[6]
-            data['platos'].append((nombre_plato, descripcion_plato, precio_plato, status_plato, seccion_plato, carta_plato, indice_plato))
-
-    bd.disconnect()
-    json_data = json.dumps(data)
-    return json_data
 

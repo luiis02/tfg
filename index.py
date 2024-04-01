@@ -1,16 +1,9 @@
-from glob import escape
-from flask import Flask, jsonify, redirect, render_template, request, session, url_for
+from flask import Flask, redirect, render_template, session, url_for
 from flask import redirect, url_for
-import json
-
+import requests
 ##########################################################################
 ##################################### SRC ################################
 ##########################################################################
-from src.mail.send_email import sendEmail
-import requests
-from flask import request
-
-
 from src.services.seccionesAPI import secciones_routes
 from src.services.cartasAPI import cartas_routes
 from src.services.userAPI import user_routes

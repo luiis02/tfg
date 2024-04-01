@@ -105,7 +105,7 @@ input[type="checkbox"]:checked:hover {
 
 }
 
-button {
+button, input[type="button"] {
 
     padding: 10px 20px; /* Espacio interno */
     margin: 10px; /* Margen externo */
@@ -120,15 +120,16 @@ button {
 }
 
 /* Estilo al pasar el mouse */
-button:hover {
+button:hover, input[type="button"]:hover {
     border-color: #2f7dd1;
     background-color: #2f7dd1; /* Cambia el color de fondo cuando está seleccionado y se pasa el mouse */
+    color: white;
 
 }
 
 
 /* Estilo al hacer clic */
-button:active {
+button:active, input[type="button"]:active {
     background-color: #e0e0e0; /* Cambiar color de fondo al hacer clic */
     border-color: #999; /* Cambiar color del borde al hacer clic */
 }
@@ -136,9 +137,7 @@ button:active {
 img#logo {
     margin: 2%;
     max-width: 6vw;
-    background-color: #b5dde3;
-    border-radius: 50%;
-    border: 4px solid #6f5858;
+
 }
 
 nav{
@@ -477,3 +476,71 @@ padding: 10px;
 
 background-color: #f8f1e8 !important;
 }
+
+#descargar:hover{
+    border-color: #006b13;
+    background-color: #0f7903;
+    color: white;
+}
+
+
+.qrimg {
+    max-width: 10vw;
+    border-radius: 15px;
+    padding: 5px;
+    background-color: #f5f6f9;
+}
+
+.numbermesa {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-right: 5vw;
+}
+
+p#mesa1 {
+    font-family: fantasy;
+    font-size: large;
+}
+
+p#mesa2 {
+    margin-left: 10px;
+    font-size: -webkit-xxx-large;
+}
+
+input#nummesas {
+    max-width: 30%;
+    height: 5vh;
+    font-family: fantasy;
+    font-size: larger;
+}
+
+div#formmesas {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+}
+
+p#textformpar {
+    margin-left: 10px;
+    font-family: fantasy;
+}   
+
+div#submitbuttondiv {
+    align-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.recuadro-mesas {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    padding: 10px;
+    /* background-color: #c8bdd200; */
+}   

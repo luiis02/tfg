@@ -1,5 +1,5 @@
 from flask import jsonify,request
-from src.mail.send_email import sendEmail
+from src.models.send_email import sendEmail
 from flask import request
 
 ##############################################################################################

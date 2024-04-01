@@ -5,7 +5,9 @@
 
 {% block content %}
     <main>
+        <div class="recuadro-mesas">
         <p id="datostitle">Mesas en el establecimiento</p>
+        <div id="tablamesas">
         <table>
             <thead>
                 <th>Número</th>
@@ -14,23 +16,82 @@
             <tbody>
                 <form action="">
                     <tr>
-                        <td>Número de mesas a crear: <input type="number" name="numero" min="0"></td>
-                        <td><input type="submit" value="Crear"></td>
+                        <td><div id="formmesas"> <input id="nummesas" type="number" name="numero" min="0"> <p id="textformpar">mesas</p></div></td>
+                        <td><div id="submitbuttondiv"><input id="bttndivsubmit" type="button" value="Crear"></div></td>
                     </tr>
                 </form>
                 {% for mesa in mesas %}
                 <tr>
-                    <td> Mesa {{ mesa.numero }}</td>
-                    <td><img src="data:image/png;base64,{{ mesa.qr }}" alt="QR Mesa {{ mesa.numero }}"></td>
+                    <td> 
+                        <div class="numbermesa">
+                            <p id="mesa1">Mesa</p> <p id="mesa2">{{ mesa.numero }}</p>
+                        </div></td>
+                    <td><img class="qrimg" src="data:image/png;base64,{{ mesa.qr }}" alt="QR Mesa {{ mesa.numero }}"></td>
+                    <td><button id="descargar">Descargar</button></td>
+                    <td><button id="eliminar">Eliminar</button></td>
                 </tr>
-                <div class="mesas_rest">
-                </div>
+
                 {% endfor %}
             </tbody>
         </table>
+        </div>
+    </div>
 
 
 
     </main>
 
+{% endblock %}
+
+{% block scriptjs %}
+<script>
+    document.getElementById("bttndivsubmit").addEventListener("click", function(){
+        var nummesas = document.getElementById("nummesas").value;
+        console.log(nummesas);
+        fetch("/createMesa", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "numero": nummesas
+            })
+        }).then(response => {
+            if (response.ok) {
+                location.reload();
+            }
+        });        
+    });
+
+    document.querySelectorAll("#eliminar").forEach(function(el){
+        el.addEventListener("click", function(){
+            var mesa = this.parentElement.parentElement.querySelector(".numbermesa").querySelector("#mesa2").innerText;
+            fetch("/deleteMesa", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    "numero": mesa
+                })
+            }).then(response => {
+                if (response.ok) {
+                    location.reload();
+                }
+            });
+        });
+    });
+
+    document.querySelectorAll("#descargar").forEach(function(el){
+        el.addEventListener("click", function(){
+            var qrImg = this.parentElement.parentElement.querySelector(".qrimg");
+            var qrSrc = qrImg.getAttribute("src");
+            var qrFileName = "apuntaJefe_QR.png"; 
+            var link = document.createElement("a");
+            link.href = qrSrc;
+            link.download = qrFileName;
+            link.click();
+        });
+    });
+</script>
 {% endblock %}

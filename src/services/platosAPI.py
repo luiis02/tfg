@@ -4,6 +4,7 @@ from src.models.forms.registerForm import RegistrationForm
 from src.database.dbcontroller import DBController
 from src.models.forms.loginForm import LoginForm
 from src.models.forms.confirmForm import ConfirmForm
+from src.models.plato import obtenPlatos,crearPlato,eliminarPlato,editaPlato
 ##############################################################################################
 ##############################################################################################
 ##############################################################################################
@@ -52,91 +53,52 @@ def getPlatos():
     if not cookie_username or not cookie_carta or not cookie_seccion:
         return redirect(url_for('user_routes.login'))
     
-    bd = DBController()
-    bd.connect()
-
-    # Verificar si la existen platos en la carta
-    existe = bd.fetch_data("SELECT COUNT(*) FROM platos WHERE carta = ? AND usuario = ? AND seccion = ?", (cookie_carta, cookie_username, cookie_seccion))
-    if existe[0][0] == 0: 
-        plato ={"numero": "0", "nombre": "No hay cartas", "indice": "0", "status": "0"}
-
-    data = {"carta": cookie_carta, "seccion": cookie_seccion, "num_platos": existe[0][0], "platos": []}
-
-    data = {"num_platos": existe[0][0], "platos": []}
-    if existe[0][0] > 0:
-        platos = bd.fetch_data("SELECT * FROM platos WHERE carta = ? AND usuario = ? AND seccion = ?", (cookie_carta, cookie_username, cookie_seccion))
-        for plato in platos:
-            data["platos"].append({"nombre": plato[0], "precio": plato[7], "descripcion": plato[1], "status": plato[6], "indice": plato[5]})
-    
-    bd.disconnect()
-    json_data = json.dumps(data)
-    
-    return json_data    
+    # Llama a models
+    status, json_data= obtenPlatos(cookie_username,cookie_carta,cookie_seccion)
+    if status=="OK": return json_data    
+    else: return "Error obteniendo platos"
 
 @platos_routes.route('/createPlato', methods=['POST'])
 def create_plato():
-    try:
+    nombre_plato = request.form.get('nombre_seccion')
+    descripcion_plato = request.form.get('descripción')
+    precio = request.form.get('precio')
+    indice_seccion = request.form.get('indice')
+    status_seccion = request.form.get('estado')
 
-        nombre_plato = request.form.get('nombre_seccion')
-        descripcion_plato = request.form.get('descripción')
-        precio = request.form.get('precio')
-        indice_seccion = request.form.get('indice')
-        status_seccion = request.form.get('estado')
-        print("ENTRO AQUI")
-        print(status_seccion)
-        if status_seccion == 'on':
-            status_seccion = True
-        else:
-            status_seccion = False
-        bd = DBController()
-        bd.connect()
-        bd.execute_query("INSERT INTO platos (nombre, descripcion, indice, status, usuario, carta, seccion, precio) VALUES (?,?,?,?,?,?,?,?)", (nombre_plato, descripcion_plato, indice_seccion, status_seccion, session["username"], session["carta"], session["seccion"],precio))
-        bd.connection.commit()
-        bd.disconnect()
+    # Llama a models
+    status = crearPlato(nombre_plato, descripcion_plato, precio, indice_seccion, status_seccion, session.get('username'), session.get('carta'), session.get('seccion'))
+    if status=="OK": return jsonify({"message": "Plato creado correctamente"})
+    else: return "Error creando platos"
 
-        return jsonify({"message": "Datos recibidos correctamente"})
-    except Exception as e:
-        return jsonify({"error": str(e)})
 
 @platos_routes.route('/removePlato', methods=['POST'])
 def remove_Plato():
-    try:
-        if 'username' not in session:
-            return redirect(url_for('user_routes.login'))
+    if 'username' not in session:
+        return redirect(url_for('user_routes.login'))
             
-        data = request.get_json()  
-        carta = data.get('cartaId') 
-        bd = DBController()
-        bd.connect()
-        bd.execute_query("DELETE FROM platos WHERE nombre = ? AND usuario = ? AND seccion = ? AND carta = ?", (carta, session["username"], session["seccion"], session["carta"]))
-        bd.connection.commit()
-        bd.disconnect()
-        return jsonify({"message": "Carta eliminada correctamente"})
-    except Exception as e:
-        return jsonify({"error": str(e)})
+    data = request.get_json()  
+    nombre = data.get('cartaId') 
+
+    #----------------------------------------------Dentro de models
+    status=eliminarPlato(nombre, session["carta"], session["username"], session["seccion"])
+    if status=="OK": return jsonify({"message": "Carta eliminada correctamente"})
+    else: return "Error eliminando carta"
     
 
   
 @platos_routes.route('/editPlato', methods=['POST'])
 def edit_Plato():
-    try:
-        if 'username' not in session:
-            return redirect(url_for('user_routes.login'))
-        nombre_anterior = request.form.get('edita')
-        nombre_carta = request.form.get('nombre_seccion_editar')
-        descripcion_carta = request.form.get('descripcion_editar')
-        precio_carta = request.form.get('precio_editar')
-        indice_carta = request.form.get('indice_editar')
-        status_carta = request.form.get('estado_editar')
-        if status_carta == 'on':
-            status_carta = True
-        else:
-            status_carta = False
-        bd = DBController()
-        bd.connect()
-        bd.execute_query("UPDATE platos SET nombre = ?, descripcion = ?, precio = ?, indice = ?, status = ? WHERE nombre = ? AND usuario = ? AND carta = ? AND seccion = ?", (nombre_carta, descripcion_carta, precio_carta, indice_carta, status_carta, nombre_anterior, session["username"], session["carta"], session["seccion"]))
-        bd.connection.commit()
-        bd.disconnect()
-        return jsonify({"message": "Carta editada correctamente"})
-    except Exception as e:
-        return jsonify({"error": str(e)})
+    if 'username' not in session:
+        return redirect(url_for('user_routes.login'))
+    nombre_anterior = request.form.get('edita')
+    nombre_carta = request.form.get('nombre_seccion_editar')
+    descripcion_carta = request.form.get('descripcion_editar')
+    precio_carta = request.form.get('precio_editar')
+    indice_carta = request.form.get('indice_editar')
+    status_carta = request.form.get('estado_editar')
+    
+    #----------------------------------------------Dentro de models
+    status = editaPlato(nombre_carta, descripcion_carta, precio_carta, indice_carta, status_carta, session["username"], session["carta"], session["seccion"], nombre_anterior)
+    if status=="OK": return jsonify({"message": "Carta editada correctamente"})
+    else: return "Error editando carta" 
