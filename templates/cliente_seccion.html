@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carta del Bar</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="menu">
+        <h1>Secciones de {{ nombre }}</h1>
+        {% for seccion in secciones %}
+        <div class="item">
+            <a href="/plato/{{ seccion }}"> {{ seccion }}</a>
+        </div>
+        {% endfor %}
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carta del Bar</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="breadCrums" >
+        <h1>Volver a...</h1>
+        <a href="/carta">Cartas</a>
+        <p>⏪</p>
+        <a href="/secciones">Secciones</a>
+        <p>⏪</p>
+        
+        <a href="#">Actual</a>
+    </div>
+    <div class="menu">
+        <h1>Platos de {{ nombre }}</h1>
+        {% for plato in platos %}
+        <div class="item" id="{{plato}}">
+            <p id="{{plato.nombre}}">{{ plato.nombre }}</p>
+            <p id="{{plato.nombre }}">{{ plato.descripcion }}</p>
+            <p id="{{plato.nombre }}">{{ plato.precio }}€</p>
+            <button class="aniade" id="{{plato.nombre }}">Eliminar</button>
+            <button class="elimina" id="{{plato.nombre }}">Agregar</button>
+        </div>
+        {% endfor %}
+</body>
+</html>
