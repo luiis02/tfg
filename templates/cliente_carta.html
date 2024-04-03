@@ -1,14 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carta del Bar</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+{% extends "cliente_base.html" %}
+{% block content %}
     <div class="menu">
-        <h1>Bienvenido a {{ establecimiento }}</h1>
+        <h1 class="tit1">Bienvenido a {{ establecimiento }}</h1>
         {% for carta in cartas %}
         <div class="item">
             <a href="/secciones/{{carta}}"> {{ carta }}</a>
@@ -16,5 +9,4 @@
             
         </div>
         {% endfor %}
-</body>
-</html>
+{% endblock %}

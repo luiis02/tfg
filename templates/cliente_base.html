@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carta del {{ establecimiento }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cliente.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    {% block breadCrums %}
+
+    {% endblock %}
+    {% block content %}{% endblock %}
+    {% block scriptjs %}{% endblock %}
+    <footer>
+        <div class="footer">
+        <img src="../static/img/comer.png" id="imgcarrito" alt="">
+        <p>Pedido</p> <p id="preciotot"> (00.00€)</p>
+        </div>
+
+    </footer>
+</body>
+
+</html>

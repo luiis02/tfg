@@ -1,31 +1,81 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carta del Bar</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="breadCrums" >
-        <h1>Volver a...</h1>
+{% extends "cliente_base.html" %}
+{% block breadCrums %}
+<div class="breadCrums">
+    <h1 class="back">Volver a...</h1>
+    <div class="bc">
         <a href="/carta">Cartas</a>
-        <p>⏪</p>
+        <p class="change">⏪</p>
         <a href="/secciones">Secciones</a>
-        <p>⏪</p>
-        
+        <p class="change">⏪</p>
         <a href="#">Actual</a>
     </div>
-    <div class="menu">
-        <h1>Platos de {{ nombre }}</h1>
+</div>
+<hr>
+{% endblock %}
+
+{% block content %}
+<div class="menu">
+    <h1 class="tit1">En {{ nombre }} tenemos...</h1>
+    <div class="submenu">
         {% for plato in platos %}
-        <div class="item" id="{{plato}}">
-            <p id="{{plato.nombre}}">{{ plato.nombre }}</p>
-            <p id="{{plato.nombre }}">{{ plato.descripcion }}</p>
-            <p id="{{plato.nombre }}">{{ plato.precio }}€</p>
-            <button class="aniade" id="{{plato.nombre }}">Eliminar</button>
-            <button class="elimina" id="{{plato.nombre }}">Agregar</button>
+        <div class="platos" id="plato.nombre">
+            <div class="subseccion1">
+                <div id="namepla">
+                   <b> {{ plato.nombre }} </b>
+                </div>
+                <div id="namepre">
+                    {{ plato.precio }}€
+                </div>
+
+                <div class="contadortotal">
+                    <button class="elimina" id="elimina{{ plato.nombre }}" onclick="decrementCounter('cant{{ plato.nombre }}')">-</button>
+                    <b id="cant{{ plato.nombre }}">0</b>
+                    <button class="aniade" id="aniade{{ plato.nombre }}" onclick="incrementCounter('cant{{ plato.nombre }}')">+</button>                    
+                </div>
+            </div>
+            <div class="subseccion2">
+                {{ plato.descripcion }}
+            </div>
+
+
+
         </div>
+
         {% endfor %}
-</body>
-</html>
+
+
+    </div>
+    {% endblock %}
+
+
+    {% block scriptjs %}
+    <script>
+// Función para incrementar el contador
+function incrementCounter(idd) {
+    // Obtener el elemento del contador
+    var contador = document.getElementById(idd);
+    // Obtener el valor actual del contador y convertirlo a un número
+    var valorActual = parseInt(contador.innerText);
+    // Incrementar el valor del contador
+    valorActual++;
+    // Actualizar el valor mostrado en el contador
+    contador.innerText = valorActual;
+}
+
+// Función para decrementar el contador
+function decrementCounter(idd) {
+    // Obtener el elemento del contador
+    var contador = document.getElementById(idd);
+    // Obtener el valor actual del contador y convertirlo a un número
+    var valorActual = parseInt(contador.innerText);
+    // Verificar si el valor actual es mayor que cero para evitar números negativos
+    if (valorActual > 0) {
+        // Decrementar el valor del contador
+        valorActual--;
+        // Actualizar el valor mostrado en el contador
+        contador.innerText = valorActual;
+    }
+}
+
+    </script>
+    {% endblock %}

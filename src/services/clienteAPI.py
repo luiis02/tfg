@@ -42,7 +42,8 @@ def Carta():
                 data.append(carta["nombre"])
     
     if len(data) == 1:
-        print ( "PAYASO CAMBIA ESTO" )
+        return redirect(url_for('clientes_routes.acorta_seccion_url', nombre=data[0]))
+        
     return render_template('cliente_carta.html', cartas=data, establecimiento=session.get('establecimiento'))
 
 @clientes_routes.route('/secciones/<nombre>', methods=['GET'])
@@ -67,10 +68,10 @@ def Secciones():
             if seccion[2] == 'Activa':
                 data.append(seccion[0])
     if len(data) == 1:
-        return redirect(url_for('clientes_routes.Seccion', nombre=data[0]))
-        print ( "PAYASO CAMBIA ESTO" )
+        return redirect(url_for('clientes_routes.acorta_plato_url', nombre=data[0]))
+        
 
-    return render_template('cliente_seccion.html', secciones=data, nombre=session.get('carta'))
+    return render_template('cliente_seccion.html', secciones=data, nombre=session.get('carta'), establecimiento=session.get('establecimiento'))
 
 @clientes_routes.route('/plato/<nombre>', methods=['GET'])
 def acorta_plato_url(nombre):
@@ -92,4 +93,4 @@ def Plato():
         for plato in platos:
             if plato['status'] == 1:
                 data.append({'nombre': plato['nombre'], 'descripcion': plato['descripcion'], 'precio': plato['precio']})
-    return render_template('cliente_plato.html', platos=data, nombre=session.get('seccion'))
+    return render_template('cliente_plato.html', platos=data, nombre=session.get('seccion'), establecimiento=session.get('establecimiento'))
