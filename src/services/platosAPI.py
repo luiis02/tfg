@@ -61,6 +61,7 @@ def getPlatos():
 @platos_routes.route('/createPlato', methods=['POST'])
 def create_plato():
     nombre_plato = request.form.get('nombre_seccion')
+    nombre_plato = nombre_plato.strip()
     descripcion_plato = request.form.get('descripción')
     precio = request.form.get('precio')
     indice_seccion = request.form.get('indice')

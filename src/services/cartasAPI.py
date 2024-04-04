@@ -50,8 +50,10 @@ def remove_carta():
 @cartas_routes.route('/createCarta', methods=['POST'])
 def create_carta():
     nombre_carta = request.form.get('nombre_carta')
+    nombre_carta = request.form.get('nombre_carta').strip()
     indice_carta = request.form.get('indice')
     status_carta = request.form.get('estado')
+
 
     # Llama a models
     status = crearCarta(nombre_carta, indice_carta, status_carta, session['username'])

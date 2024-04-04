@@ -46,7 +46,7 @@ def seccion(nombre):
 
 @secciones_routes.route('/createSeccion', methods=['POST'])
 def create_seccion():
-    nombre_seccion = request.form.get('nombre_seccion')
+    nombre_seccion = request.form.get('nombre_seccion').strip()
     indice_seccion = request.form.get('indice')
     status_seccion = request.form.get('estado')
     if status_seccion == 'on':
