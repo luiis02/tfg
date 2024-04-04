@@ -1,12 +1,12 @@
 {% extends "cliente_base.html" %}
 {% block content %}
     <div class="menu">
-        <h1 class="tit1">Bienvenido a {{ establecimiento }}</h1>
+        
+        <hr class="separador">
         {% for carta in cartas %}
-        <div class="item">
-            <a href="/secciones/{{carta}}"> {{ carta }}</a>
-           
-            
+        <div class="item" id="namepla">
+            <a href="/secciones/{{carta}}"  class="platosec"> {{ carta }}</a>
         </div>
+        <hr class="separapla">
         {% endfor %}
 {% endblock %}

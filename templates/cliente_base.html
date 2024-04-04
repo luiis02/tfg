@@ -9,20 +9,61 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
 </head>
 
 <body>
+    <header>
+        <div class="header">
+            <h1 class="tit2">👋​ Reunamonos en {{ establecimiento }}</h1>
+        </div>
     {% block breadCrums %}
 
     {% endblock %}
     {% block content %}{% endblock %}
-    {% block scriptjs %}{% endblock %}
-    <footer>
-        <div class="footer">
-        <img src="../static/img/comer.png" id="imgcarrito" alt="">
-        <p>Pedido</p> <p id="preciotot"> (00.00€)</p>
-        </div>
+    {% block scriptjs %}
+    <script>
+        // Función para agregar la clase "shaking" a la imagen del carrito
+        function shakeCartImage() {
+            var imgCarrito = document.getElementById('imgcarrito');
+            imgCarrito.classList.add('shaking');
 
+            // Después de 0.5 segundos, remover la clase "shaking"
+            setTimeout(function() {
+                imgCarrito.classList.remove('shaking');
+            }, 500);
+        }
+
+        // Variable para rastrear la actividad del usuario
+        var timer;
+
+        // Función para reiniciar el temporizador cuando hay actividad del usuario
+        function resetTimer() {
+            clearTimeout(timer);
+            timer = setTimeout(shakeCartImage, 5000); // Agita la imagen después de 5 segundos sin actividad
+        }
+
+        // Agregar escuchadores de eventos para rastrear la actividad del usuario
+        document.addEventListener('mousemove', resetTimer);
+        document.addEventListener('keypress', resetTimer);
+
+        
+        resetTimer();
+    </script>
+    
+    {% endblock %}
+    <footer>
+        <a href="#" id="enl-carrito">
+        <div class="footer">
+
+        <img src="../static/img/comer.png" id="imgcarrito" alt="">
+        <p class="pedidotext">Pedido</p> <p class="pedidotext" id="preciotot"> (00.00€)</p>
+    </div>
+
+        </a>
+        <address>Powered by ApuntaJefe</address>
     </footer>
 </body>
 

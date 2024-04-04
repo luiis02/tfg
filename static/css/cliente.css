@@ -1,10 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Lilita+One&display=swap');
+
 *{
     margin: 0px;
     padding: 0px;
     user-select: none;
 }
 body{
-    background-color: #dfeaff;
+    background-color: #f5f8fd;
     font-family: Arial, sans-serif;
 }
 #imgcarrito{
@@ -39,15 +41,21 @@ p.change {
     margin-bottom: 1vh;
 }
 
-
-
+.tit2 {
+    text-align: center;
+    font-family: system-ui;
+    /* font-size: larger; */
+    margin-top: 2vh;
+    margin-bottom: 5vh;
+    font-family: "Lilita One";
+    color: #3e93ff;
+}
 .tit1 {
     text-align: center;
     font-family: system-ui;
     font-size: larger;
     margin-top: 2vh;
-    
-    margin-bottom: 1vh;
+    margin-bottom: 5vh;
 }
 div#namepla {
     align-items: flex-end;
@@ -82,10 +90,12 @@ div#namepre {
     text-align: center;
     text-decoration: none;
     border-radius: 20px;
+    box-shadow: 0px 0px 10px 0px #a5ffbc;
 }
 
 .elimina {
     background-color: #f44336;
+
     border: none;
     color: white;
     cursor: pointer;
@@ -94,6 +104,7 @@ div#namepre {
     text-align: center;
     text-decoration: none;
     border-radius: 20px;
+    box-shadow: 0px 0px 10px 0px #ff9c9c;
 }
 
 .aniade:hover {
@@ -110,4 +121,102 @@ div#namepre {
 }
 #preciotot{
     margin-left: 2vw;
+}
+
+#enl-carrito{
+    all: unset;
+}
+
+.pedidotext{
+    font-family: serif;
+    font-weight: 900;
+    font-size: larger;
+    color: #2d292d;
+}
+
+footer {
+    background-color: #8cbfff;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+}
+
+.footer {
+    padding-bottom: 1vh;
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    50% { transform: translateX(10px); }
+    75% { transform: translateX(-10px); }
+    100% { transform: translateX(0); }
+}
+
+/* Aplicar la animación a la imagen del carrito */
+#imgcarrito.shaking {
+    animation: shake 0.5s ease-in-out infinite; /* La animación se ejecuta en bucle */
+}
+
+.item {
+    margin-top: 2vh;
+    margin-bottom: 1vh;
+    margin-left: 4vw;
+    font-family: serif;
+    font-size: 5vw;
+}
+
+#enl-submenu{
+    text-decoration: unset;
+    color: black;
+    font-weight: 500;
+}
+
+.separapla{
+    border: none;
+    height: 2px;
+    background: linear-gradient(to right, #8cbfff00, #8cbfff, #8cbfff00);
+    margin: 20px 0;
+    margin-left: 2vw;
+}
+
+address {
+    margin: 0px;
+    padding: 0px;
+    margin-bottom: 1px;
+    background-color: #8cbfff;
+    font-family: none;
+}
+
+.separador {
+    border: none;
+    height: 2px;
+    background: linear-gradient(to right, #78d7d3, #0071ff, #78d7d3);
+    margin: 20px 0;
+    /* margin-left: 2vw; */
+}
+
+.breadcrcla {
+    text-decoration: unset;
+    font-family: sans-serif;
+    font-weight: 600;
+    padding: 10px;
+    background-color: #8cbfff;
+    color: #2d292d;
+    border-radius: 55px;
+    box-shadow: 0px 0px 10px 0px #8cbfff;
+}
+
+p.change {
+    margin-left: 2vw;
+    margin-right: 2vw;
+    align-content: center;
+}
+
+a.platosec {
+    text-decoration: unset;
+    color: #2d292d;
+    font-weight: 700;
 }

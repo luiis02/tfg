@@ -20,11 +20,9 @@ clientes_routes = Blueprint("clientes_routes", __name__)
 
 @clientes_routes.route('/carta/<nombre>/<mesa>', methods=['GET'])
 def acorta_cartas_Url(nombre, mesa):
-    if 'username' not in session:
-        return redirect(url_for('user_routes.login'))
     session['username'] = nombre
     session['mesa'] = mesa
-    return redirect(url_for('clientes_routes.getCarta'))
+    return redirect(url_for('clientes_routes.Carta'))
 
 
 @clientes_routes.route('/carta', methods=['GET'])
@@ -69,7 +67,7 @@ def Secciones():
                 data.append(seccion[0])
     if len(data) == 1:
         return redirect(url_for('clientes_routes.acorta_plato_url', nombre=data[0]))
-        
+    
 
     return render_template('cliente_seccion.html', secciones=data, nombre=session.get('carta'), establecimiento=session.get('establecimiento'))
 
