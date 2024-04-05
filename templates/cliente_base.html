@@ -25,7 +25,7 @@
     {% block content %}{% endblock %}
 
     <footer>
-        <a href="#" id="enl-carrito">
+        <a href="/pedido" id="enl-carrito">
         <div class="footer">
 
         <img src="../static/img/comer.png" id="imgcarrito" alt="">
@@ -123,7 +123,10 @@
             var valorCookie = todasLasCookies[nombreCookie];
             suma += valorCookie.precio * valorCookie.cantidad;
         }
-
+        if (isNaN(suma)) {
+            document.getElementById("preciotot").innerText = "(0.00€)";
+            return;
+        }
         var textoaniadir = "(" + suma.toFixed(2) + "€)";
         document.getElementById("preciotot").innerText = textoaniadir;
     }

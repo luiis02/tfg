@@ -4,6 +4,7 @@ from flask import redirect, url_for
 from src.database.dbcontroller import DBController
 from flask import request
 from src.models.carta import obtenCartas,eliminarCarta,crearCarta,editaCarta
+from datetime import datetime
 ##############################################################################################
 ##############################################################################################
 ##############################################################################################
@@ -92,3 +93,21 @@ def Plato():
             if plato['status'] == 1:
                 data.append({'nombre': plato['nombre'], 'descripcion': plato['descripcion'], 'precio': plato['precio']})
     return render_template('cliente_plato.html', platos=data, nombre=session.get('seccion'), establecimiento=session.get('establecimiento'))
+
+@clientes_routes.route('/pedido', methods=['GET', 'POST'])
+def Pedido():
+    data = []
+    if request.method == 'POST':
+        data = request.get_json()
+        print(data)
+    for plato in data:
+        fecha_hora_actual = datetime.now()
+        fecha_hora_formateada = fecha_hora_actual.strftime("%Y/%m/%d %H:%M:%S")
+        bd = DBController()
+        bd.connect()
+        count = bd.fetch_data("SELECT COUNT(*) FROM pedidos_activos ")
+        consulta = "INSERT INTO pedidos_activos (id, plato, cantidad, precio, usuario, mesa, fecha, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
+        valores = (count[0][0]+1,plato.get('nombre'), plato.get('cantidad'), plato.get('precio'), session.get('username'), session.get('mesa'), fecha_hora_formateada, 0)
+        bd.execute_query(consulta, valores)
+        bd.connection.commit()
+    return render_template('cliente_carrito.html', establecimiento=session.get('establecimiento'))
