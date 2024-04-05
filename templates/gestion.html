@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}
+Gestionar secciones
+{% endblock %}
+
+{% block content %}
+    <main>
+        <div class="breadcrums">
+            <a href="{{ base_domain }}/dashboard" class="e1">Home</a>
+            <p class="next"> ➤</p> <a href="" class="e2">Actual</a>
+        </div>
+        <div id="1">
+            <div>
+                <h2>Filtrar por categoría:</h2>
+                <select name="lenguaje">
+                    <option value="python">Python</option>
+                    <option value="java">Java</option>
+                    <option value="javascript">JavaScript</option>
+                    <option value="csharp">C#</option>
+                </select>
+            </div>
+
+            <div class="recuadro-tabla">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nª </th>
+                            <th>Hora</th>
+                            <th>Nombre del plato</th>
+                            <th>Cantidad</th>
+                            <th>Categoría</th>
+                            <th>Mesa</th>
+                            <th>Check</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr></tr>
+                        {% for pedido in pedidos %}
+                        <tr>
+                            
+                            <td>{{ pedido.id }}</td>
+                            <td>{{ pedido.fecha }}</td>
+                            <td>{{ pedido.plato }}</td>
+                            <td>{{ pedido.cantidad }}</td>
+                            <td></td>
+                            <td>{{ pedido.mesa}}</td>
+                            <td> <button>Finalizado</button><button>Error</button></td>
+                            
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="editform">
+                <h1 class="edit-title">Editar la sección</h1>
+                <div id="edit-container">
+                    <form id="editSeccionForm">
+                        <p class="xpalin">Nombre</p>
+                        <input type="text" name="nombre_seccion_editar" id="editNombreSeccion">
+                        <p class="xpalin">Índice</p>
+                        <input type="number" name="indice_editar" id="editIndice">
+                        <div id="staut-edi">
+                            <p class="xpalin">Estado:</p>
+                            <input type="checkbox" name="estado_editar" id="editEstado">
+                            <br>
+                        </div>
+
+                        <button type="button" onclick="enviarFormulario()">Guardar</button>
+                        <button type="button" onclick="cerrarFormulario()">Cerrar</button>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+
+    </main>
+    {% endblock %}
+    {% block scriptjs %}
+    <script src="{{ url_for('static', filename='js/carta.js') }}"></script>
+    {% endblock %}
