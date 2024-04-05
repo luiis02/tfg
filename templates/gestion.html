@@ -45,34 +45,16 @@ Gestionar secciones
                             <td>{{ pedido.cantidad }}</td>
                             <td></td>
                             <td>{{ pedido.mesa}}</td>
-                            <td> <button>Finalizado</button><button>Error</button></td>
+                            <td>
+                                <button onclick="enviarEstado('{{ pedido.id }}', 'fin')">Finalizado</button>
+                                <button onclick="enviarEstado('{{ pedido.id }}', 'error')">Error</button>
+                            </td>
                             
 
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
-            </div>
-
-            <div id="editform">
-                <h1 class="edit-title">Editar la sección</h1>
-                <div id="edit-container">
-                    <form id="editSeccionForm">
-                        <p class="xpalin">Nombre</p>
-                        <input type="text" name="nombre_seccion_editar" id="editNombreSeccion">
-                        <p class="xpalin">Índice</p>
-                        <input type="number" name="indice_editar" id="editIndice">
-                        <div id="staut-edi">
-                            <p class="xpalin">Estado:</p>
-                            <input type="checkbox" name="estado_editar" id="editEstado">
-                            <br>
-                        </div>
-
-                        <button type="button" onclick="enviarFormulario()">Guardar</button>
-                        <button type="button" onclick="cerrarFormulario()">Cerrar</button>
-                    </form>
-                </div>
-
             </div>
 
         </div>
@@ -84,4 +66,33 @@ Gestionar secciones
     {% endblock %}
     {% block scriptjs %}
     <script src="{{ url_for('static', filename='js/carta.js') }}"></script>
+
+    <script>
+    function enviarEstado(idPedido, estado) {
+            const datos = {
+                id: idPedido,
+                estado: estado
+            };
+
+            fetch('/gestion', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(datos)
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log(`Estado del pedido ${idPedido} actualizado a ${estado}`);
+                } else {
+                    console.error('Error al actualizar el estado del pedido');
+                }
+            })
+            .catch(error => {
+                console.error('Error en la solicitud:', error);
+            });
+        }
+
+    </script>
+
     {% endblock %}

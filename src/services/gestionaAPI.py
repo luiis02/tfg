@@ -23,6 +23,33 @@ def Gestion():
     if 'username' not in session:
         return redirect(url_for('user_routes.login'))
     
+    if request.method == 'POST':
+        data = request.get_json()
+        estado = data.get('estado')
+
+        if estado == 'fin':
+            bd = DBController()
+            bd.connect()
+
+            result = bd.fetch_data("SELECT * FROM pedidos_activos WHERE id = ?", (data.get('id'),))
+            bd.execute_query("DELETE FROM pedidos_activos WHERE id = ?", (data.get('id'),))
+            count = bd.fetch_data("SELECT COUNT(*) FROM pedidos_historicos")  # Obtener el conteo directamente
+            fecha_cierre_actual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            print( "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww")
+            print( "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww")
+            print( "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww")
+            print( "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww")
+            print( "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww")
+
+            print(count)
+            bd.execute_query("INSERT INTO pedidos_historicos (id, usuario, mesa, plato, cantidad, precio, fecha, fecha_cierre) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", 
+                (count[0][0] + 1, result[0][1], result[0][2], result[0][3], result[0][4], result[0][5], result[0][6], fecha_cierre_actual))
+            bd.disconnect()
+        else:
+            print("NO")
+
+
+
     bd = DBController()
     bd.connect()
     resultados = bd.fetch_data("SELECT * FROM pedidos_activos WHERE usuario = ?", (session.get('username'),))
