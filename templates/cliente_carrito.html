@@ -261,7 +261,7 @@
                 if (nombre == null) {
                     continue;
                 }
-                pedido.push({ nombre: nombreCookie, cantidad: valorCookie.cantidad, precio: valorCookie.precio });
+                pedido.push({ nombre: nombreCookie, cantidad: valorCookie.cantidad, precio: valorCookie.precio, categoria: valorCookie.categoria});
 
             }
         }
@@ -273,7 +273,7 @@
             console.log(jsonPedido);
             for (var nombreCookie in todasLasCookies) {
                 eliminarCookie(nombreCookie);
-                crearCookie(nombreCookie, { cantidad: 0, precio: 0 })
+                crearCookie(nombreCookie, { cantidad: 0, precio: 0, categoria: ""})
             }
 
             fetch('/pedido', {

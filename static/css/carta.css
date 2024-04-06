@@ -581,3 +581,85 @@ img#checkimg {
     margin-left: 10%;
     color: #7ed9ff;
 }
+
+.filtrocate {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+
+.filtrocatop {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #ffffff40;
+    color: #333;
+    cursor: pointer;
+}
+  /* Estilos para las opciones del select */
+  .filtrocatop option {
+    font-size: 14px; /* Tamaño de fuente */
+  }
+  
+  /* Estilos adicionales para cuando el usuario pasa el ratón por encima */
+  .filtrocatop:hover {
+    border-color: #006dfc; /* Cambia el color del borde */
+    background-color: #ffffff40 ;
+
+  }
+  
+  /* Estilos adicionales para cuando el elemento select tiene el foco */
+  .filtrocatop:focus {
+    outline: none; /* Elimina el contorno alrededor del elemento */
+    background-color: #ffffff40 ;
+    border-color: #555; /* Cambia el color del borde */
+  }
+
+  h2.titfiltr {
+    margin-left: 3vw;
+    margin-right: 1vw;
+    color: #0b3fb9;
+}   
+
+
+button.finok {
+    background-color: #70dd8c;
+    color: white;
+}
+
+button.finok:hover {
+    background-color: #45e66d;
+    color: white;
+    
+}
+
+button.findis {
+    background-color: #ff9999;
+    color: white;
+}
+
+button.findis:hover {
+    background-color: #ff7070;
+    color: white;
+}
+
+.templaetegrid{
+    display: grid;
+    grid-template-columns: 49% 49%;
+    grid-column-gap: 2%;
+}
+
+.girarota{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 3vw;
+}
+
+p#contadoractualizacion {
+    font-family: revert;
+    font-size: medium;
+    font-weight: 800;
+    color: #0056b3;
+}

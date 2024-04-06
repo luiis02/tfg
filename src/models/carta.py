@@ -84,6 +84,8 @@ def eliminarCarta(carta, usuario):
         bd = DBController()
         bd.connect()
         bd.execute_query("DELETE FROM cartas WHERE nombre = ? AND usuario = ?", (carta,usuario))
+        bd.execute_query("DELETE FROM seccion WHERE carta = ? AND usuario = ?", (carta,usuario))
+        bd.execute_query("DELETE FROM platos WHERE carta = ? AND usuario = ?", (carta,usuario))
         bd.connection.commit()
         bd.disconnect()
         return "OK"

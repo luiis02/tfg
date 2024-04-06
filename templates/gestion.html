@@ -10,14 +10,22 @@ Gestionar secciones
             <p class="next"> ➤</p> <a href="" class="e2">Actual</a>
         </div>
         <div id="1">
-            <div>
-                <h2>Filtrar por categoría:</h2>
-                <select name="lenguaje">
-                    <option value="python">Python</option>
-                    <option value="java">Java</option>
-                    <option value="javascript">JavaScript</option>
-                    <option value="csharp">C#</option>
+            <div class="templaetegrid">
+            <div class="filtrocate">
+                <h2 class="titfiltr">Filtrar por categoría:</h2>
+                <select name="lenguaje" onchange="filtrado()" class="filtrocatop">
+                    <option value="cualquiera">Cualquiera</option>
+                    {% for categoria in categorias %}
+                    <option value="{{categoria}}">{{categoria}}</option>
+
+                    {% endfor %}
                 </select>
+            </div>
+            <div class="contadorultima">
+                <div class="girarota">
+                    <p id="contadoractualizacion"></p>
+                </div>
+            </div>
             </div>
 
             <div class="recuadro-tabla">
@@ -43,11 +51,11 @@ Gestionar secciones
                             <td>{{ pedido.fecha }}</td>
                             <td>{{ pedido.plato }}</td>
                             <td>{{ pedido.cantidad }}</td>
-                            <td></td>
+                            <td class="cat-filtadro">{{ pedido.categoria }}</td>
                             <td>{{ pedido.mesa}}</td>
                             <td>
-                                <button onclick="enviarEstado('{{ pedido.id }}', 'fin')">Finalizado</button>
-                                <button onclick="enviarEstado('{{ pedido.id }}', 'error')">Error</button>
+                                <button class="finok" onclick="enviarEstado('{{ pedido.id }}', 'fin')">Finalizado</button>
+                                <button class="findis" onclick="enviarEstado('{{ pedido.id }}', 'error')">Error</button>
                             </td>
                             
 
@@ -82,17 +90,54 @@ Gestionar secciones
                 body: JSON.stringify(datos)
             })
             .then(response => {
-                if (response.ok) {
-                    console.log(`Estado del pedido ${idPedido} actualizado a ${estado}`);
-                } else {
-                    console.error('Error al actualizar el estado del pedido');
-                }
+                window.location.reload();
             })
             .catch(error => {
-                console.error('Error en la solicitud:', error);
+                window.location.reload();
             });
         }
 
+    function filtrado(){
+        var select = document.querySelector('select');
+        var categoria = select.value;
+        var cat = document.querySelectorAll('.cat-filtadro');
+        cat.forEach(function(e){
+            if(e.innerText != categoria && categoria != 'cualquiera'){
+                e.parentElement.style.display = 'none';
+            }else{
+                e.parentElement.style.display = 'table-row';
+            }   
+        });
+    }
+    
+    function recargarPagina() {
+        var segundosRestantes = 30; // Inicializa el contador en 30 segundos
+        var contadorElemento = document.getElementById('contadoractualizacion');
+
+        
+        function actualizarContador() {
+            if(segundosRestantes%2 == 0){
+                contadorElemento.textContent = '⏳ Actualizando pedidos en ' + segundosRestantes + ' segundos';    
+            }else{
+                contadorElemento.textContent = '⌛ Actualizando pedidos en ' + segundosRestantes + ' segundos';
+            }
+            
+            segundosRestantes--; 
+            if (segundosRestantes < 0) {
+                location.reload(); // Recarga la página cuando el contador llega a cero
+            } else {
+                setTimeout(actualizarContador, 1000); // Actualiza el contador cada segundo
+            }
+        }
+
+        // Llama a la función para que se ejecute inicialmente
+        actualizarContador();
+    }
+
+    // Llama a la función para que se ejecute cuando se cargue la página
+    window.onload = function() {
+        recargarPagina();
+    }
     </script>
 
     {% endblock %}

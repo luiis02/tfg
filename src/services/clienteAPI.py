@@ -21,6 +21,7 @@ clientes_routes = Blueprint("clientes_routes", __name__)
 
 @clientes_routes.route('/carta/<nombre>/<mesa>', methods=['GET'])
 def acorta_cartas_Url(nombre, mesa):
+    nombre = nombre.replace("_", " ")
     session['username'] = nombre
     session['mesa'] = mesa
     return redirect(url_for('clientes_routes.Carta'))
@@ -30,8 +31,9 @@ def acorta_cartas_Url(nombre, mesa):
 def Carta():
     if 'username' not in session:
         return redirect(url_for('user_routes.login'))
-    
+    print(session.get('username'))
     response = requests.get(url_for('cartas_routes.getCartas', _external=True), cookies={'auth': session.get('username')})
+    print(response.json())
     session['establecimiento'] = response.json().get('establecimiento')
     data = []
     if response.status_code == 200:
@@ -106,8 +108,8 @@ def Pedido():
         bd = DBController()
         bd.connect()
         count = bd.fetch_data("SELECT COUNT(*) FROM pedidos_activos ")
-        consulta = "INSERT INTO pedidos_activos (id, plato, cantidad, precio, usuario, mesa, fecha, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
-        valores = (count[0][0]+1,plato.get('nombre'), plato.get('cantidad'), plato.get('precio'), session.get('username'), session.get('mesa'), fecha_hora_formateada, 0)
+        consulta = "INSERT INTO pedidos_activos (id, plato, cantidad, precio, usuario, mesa, fecha, estado, categoria) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);"
+        valores = (count[0][0]+1,plato.get('nombre'), plato.get('cantidad'), plato.get('precio'), session.get('username'), session.get('mesa'), fecha_hora_formateada, 0, plato.get('categoria'))
         bd.execute_query(consulta, valores)
         bd.connection.commit()
     return render_template('cliente_carrito.html', establecimiento=session.get('establecimiento'))

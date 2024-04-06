@@ -19,7 +19,8 @@ def createMesa(usuario, crear):
         recover = bd.fetch_data("SELECT establecimiento FROM usuario WHERE id = ?;", (id_establecimiento,))
         for i in range(int(crear)):
             newMesa = existe[0][0] + i + 1
-            qr_code = f"https://127.0.0.1/carta/{recover[0][0]}/{newMesa}"
+            formatrecover = recover[0][0].replace(" ", "_")
+            qr_code = f"https://127.0.0.1/carta/{usuario}/{newMesa}"
             img = qrcode.make(qr_code)
             img_bytes = BytesIO()
             img.save(img_bytes)

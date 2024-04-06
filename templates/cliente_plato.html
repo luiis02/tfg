@@ -29,11 +29,11 @@
 
                 <div class="contadortotal">
                     <button class="elimina" id="elimina{{ plato.nombre }}"
-                        onclick="decrementCounter('cant{{ plato.nombre }}', '{{ plato.nombre }}')">-</button>
+                        onclick="decrementCounter('cant{{ plato.nombre }}', '{{ plato.nombre }}','{{ nombre }}')">-</button>
 
                     <b id="cant{{ plato.nombre }}">0</b>
                     <button class="aniade" id="aniade{{ plato.nombre }}"
-                        onclick="incrementCounter('cant{{ plato.nombre }}', '{{ plato.nombre }}')">+</button>
+                        onclick="incrementCounter('cant{{ plato.nombre }}', '{{ plato.nombre }}', '{{ nombre }}')">+</button>
                 </div>
             </div>
             <div class="subseccion2">
@@ -53,53 +53,42 @@
 
     {% block scriptjs %}
     <script>
-        // Función para incrementar el contador
-        function incrementCounter(idd, idd2) {
-            // Obtener el elemento del contador
+        function incrementCounter(idd, idd2, categ) {
             var contador = document.getElementById(idd);
-            // Obtener el valor actual del contador y convertirlo a un número
             var valorActual = parseInt(contador.innerText);
-            // Incrementar el valor del contador
             valorActual++;
-            // Actualizar el valor mostrado en el contador
             contador.innerText = valorActual;
-            getCount(idd2, valorActual);
+            getCount(idd2, valorActual, categ);
         }
 
         // Función para decrementar el contador
-        function decrementCounter(idd, idd2) {
-            // Obtener el elemento del contador
+        function decrementCounter(idd, idd2, categ) {
             var contador = document.getElementById(idd);
-            // Obtener el valor actual del contador y convertirlo a un número
             var valorActual = parseInt(contador.innerText);
-            // Verificar si el valor actual es mayor que cero para evitar números negativos
             if (valorActual > 0) {
-                // Decrementar el valor del contador
                 valorActual--;
-                // Actualizar el valor mostrado en el contador
                 contador.innerText = valorActual;
             }
-            getCount(idd2, valorActual);
+            getCount(idd2, valorActual, categ);
         }
 
-        function getCount(idd2, idd3) {
+        function getCount(idd2, idd3, categ) {
             var nombre = document.getElementById(idd2);
             var precio = nombre.querySelector("#namepre");
             var precioTexto = precio.innerText;
             var precioNumero = parseFloat(precioTexto.match(/[\d\.]+/)[0]);
             var valorCookie = obtenerCookie(idd2);
 
-            if (valorCookie != null) {
-                // Si la cookie existe, eliminarla y crear una nueva con el nuevo valor
-                eliminarCookie(idd2);
-                crearCookie(idd2, { cantidad: idd3, precio: precioNumero });
 
+            if (valorCookie != null) {
+                eliminarCookie(idd2);
+                crearCookie(idd2, { cantidad: idd3, precio: precioNumero, categoria: categ });
             } else {
-                // Si la cookie no existe, crear una nueva
-                crearCookie(idd2, { cantidad: idd3, precio: precioNumero });
+                crearCookie(idd2, { cantidad: idd3, precio: precioNumero, categoria: categ  });
             }
 
             var todasLasCookies = obtenerTodasLasCookies();
+            console.log(todasLasCookies);
             var suma = 0;
             for (var nombreCookie in todasLasCookies) {
                 var valorCookie = todasLasCookies[nombreCookie];
@@ -201,11 +190,6 @@
             if (valorCookie != 0 && nombreCookie != "total" && valorCookie.cantidad != 0) {
                 var nombre = document.getElementById(nombreCookie);
                 var cant = document.getElementById("cant" + nombreCookie);
-                if (nombreCookie == "CocaCola") {
-                    console.log("tEEEEEEEEEEEEEEEEEEEEEotal");
-                    console.log(cant);
-                    console.log("cant"+nombreCookie);
-                }
                 if (cant != null) {
                     
                     cant.innerText = valorCookie.cantidad;
