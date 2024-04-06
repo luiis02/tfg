@@ -31,9 +31,7 @@ def acorta_cartas_Url(nombre, mesa):
 def Carta():
     if 'username' not in session:
         return redirect(url_for('user_routes.login'))
-    print(session.get('username'))
     response = requests.get(url_for('cartas_routes.getCartas', _external=True), cookies={'auth': session.get('username')})
-    print(response.json())
     session['establecimiento'] = response.json().get('establecimiento')
     data = []
     if response.status_code == 200:
@@ -44,7 +42,6 @@ def Carta():
     
     if len(data) == 1:
         return redirect(url_for('clientes_routes.acorta_seccion_url', nombre=data[0]))
-        
     return render_template('cliente_carta.html', cartas=data, establecimiento=session.get('establecimiento'))
 
 @clientes_routes.route('/secciones/<nombre>', methods=['GET'])
@@ -58,7 +55,6 @@ def acorta_seccion_url(nombre):
 def Secciones():
     if 'username' not in session:
         return redirect(url_for('user_routes.login'))
-    
     response = requests.get(url_for('secciones_routes.getSeccion', _external=True), cookies={'auth': session.get('username'), 'carta': session.get('carta')})
     session['carta']=response.json().get('carta')
     
@@ -85,9 +81,7 @@ def acorta_plato_url(nombre):
 def Plato():
     if 'username' not in session:
         return redirect(url_for('user_routes.login'))
-    
     response = requests.get(url_for('platos_routes.getPlatos', _external=True), cookies={'auth': session.get('username'), 'carta': session.get('carta'), 'seccion': session.get('seccion')})
-    
     data = []
     if response.status_code == 200:
         platos = response.json().get('platos')
@@ -101,7 +95,6 @@ def Pedido():
     data = []
     if request.method == 'POST':
         data = request.get_json()
-        print(data)
     for plato in data:
         fecha_hora_actual = datetime.now()
         fecha_hora_formateada = fecha_hora_actual.strftime("%Y/%m/%d %H:%M:%S")

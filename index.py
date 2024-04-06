@@ -1,5 +1,6 @@
 from flask import Flask, redirect, render_template, session, url_for
 from flask import redirect, url_for
+
 import requests
 ##########################################################################
 ##################################### SRC ################################
@@ -16,6 +17,10 @@ from src.services.gestionaAPI import gestion_routes
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tu_clave_secreta_aqui'
 
+
+
+
+
 app.register_blueprint(secciones_routes)
 app.register_blueprint(cartas_routes)
 app.register_blueprint(user_routes)
@@ -28,6 +33,7 @@ app.register_blueprint(gestion_routes)
 
 
 @app.route('/dashboard')
+
 def dashboard():
     if 'username' not in session:
         return redirect(url_for('user_routes.login'))

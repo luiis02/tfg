@@ -74,6 +74,7 @@ def borrarSeccion(nombre, carta, usuario):
         bd = DBController()
         bd.connect()
         bd.execute_query("DELETE FROM seccion WHERE nombre = ? AND usuario = ? AND carta = ?", (nombre, usuario, carta))
+        bd.execute_query("DELETE FROM platos WHERE seccion = ? AND usuario = ? AND carta = ?", (nombre, usuario, carta))
         bd.connection.commit()
         bd.disconnect()
         return "OK"

@@ -4,140 +4,79 @@ Gestionar secciones
 {% endblock %}
 
 {% block content %}
-    <main>
+<main>
+    <div class="templaetegrid">
         <div class="breadcrums">
             <a href="{{ base_domain }}/dashboard" class="e1">Home</a>
             <p class="next"> ➤</p> <a href="" class="e2">Actual</a>
         </div>
-        <div id="1">
-            <div class="templaetegrid">
-            <div class="filtrocate">
-                <h2 class="titfiltr">Filtrar por categoría:</h2>
-                <select name="lenguaje" onchange="filtrado()" class="filtrocatop">
-                    <option value="cualquiera">Cualquiera</option>
-                    {% for categoria in categorias %}
-                    <option value="{{categoria}}">{{categoria}}</option>
-
-                    {% endfor %}
-                </select>
+        <div class="contadorultima">
+            <div class="girarota">
+                <p id="contadoractualizacion"></p>
             </div>
-            <div class="contadorultima">
-                <div class="girarota">
-                    <p id="contadoractualizacion"></p>
-                </div>
-            </div>
-            </div>
-
-            <div class="recuadro-tabla">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nª </th>
-                            <th>Hora</th>
-                            <th>Nombre del plato</th>
-                            <th>Cantidad</th>
-                            <th>Categoría</th>
-                            <th>Mesa</th>
-                            <th>Check</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        <tr></tr>
-                        {% for pedido in pedidos %}
-                        <tr>
-                            
-                            <td>{{ pedido.id }}</td>
-                            <td>{{ pedido.fecha }}</td>
-                            <td>{{ pedido.plato }}</td>
-                            <td>{{ pedido.cantidad }}</td>
-                            <td class="cat-filtadro">{{ pedido.categoria }}</td>
-                            <td>{{ pedido.mesa}}</td>
-                            <td>
-                                <button class="finok" onclick="enviarEstado('{{ pedido.id }}', 'fin')">Finalizado</button>
-                                <button class="findis" onclick="enviarEstado('{{ pedido.id }}', 'error')">Error</button>
-                            </td>
-                            
-
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-
         </div>
+    </div>
+
+    <div class="filtrocate">
+
+        <h2 class="titfiltr">Filtrar por categorias:</h2>
+        <div class="seccionesfiltromultiple">
+        {% for categoria in categorias %}
+        <div class="valuecehc">
+        <input type="checkbox" value="{{categoria}}" class="valueCategoría" onchange="filtrado()">{{categoria}}</option>
+    </div>
+
+        {% endfor %}
+        </div>
+    </div>
+
+    </div>
+    <div class="recuadro-tabla">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nª </th>
+                    <th>Hora</th>
+                    <th>Nombre del plato</th>
+                    <th>Cantidad</th>
+                    <th>Categoría</th>
+                    <th>Mesa</th>
+                    <th>Check</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr></tr>
+                {% for pedido in pedidos %}
+                <tr>
+
+                    <td>{{ pedido.id }}</td>
+                    <td>{{ pedido.fecha }}</td>
+                    <td>{{ pedido.plato }}</td>
+                    <td>{{ pedido.cantidad }}</td>
+                    <td class="cat-filtadro">{{ pedido.categoria }}</td>
+                    <td>{{ pedido.mesa}}</td>
+                    <td>
+                        <button class="finok" onclick="enviarEstado('{{ pedido.id }}', 'fin')">Finalizado</button>
+                        <button class="findis" onclick="enviarEstado('{{ pedido.id }}', 'error')">Error</button>
+                    </td>
+
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    </div>
 
 
 
 
-    </main>
-    {% endblock %}
-    {% block scriptjs %}
-    <script src="{{ url_for('static', filename='js/carta.js') }}"></script>
+</main>
+{% endblock %}
+{% block scriptjs %}
+<script src="{{ url_for('static', filename='js/carta.js') }}"></script>
 
-    <script>
-    function enviarEstado(idPedido, estado) {
-            const datos = {
-                id: idPedido,
-                estado: estado
-            };
 
-            fetch('/gestion', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(datos)
-            })
-            .then(response => {
-                window.location.reload();
-            })
-            .catch(error => {
-                window.location.reload();
-            });
-        }
-
-    function filtrado(){
-        var select = document.querySelector('select');
-        var categoria = select.value;
-        var cat = document.querySelectorAll('.cat-filtadro');
-        cat.forEach(function(e){
-            if(e.innerText != categoria && categoria != 'cualquiera'){
-                e.parentElement.style.display = 'none';
-            }else{
-                e.parentElement.style.display = 'table-row';
-            }   
-        });
-    }
-    
-    function recargarPagina() {
-        var segundosRestantes = 30; // Inicializa el contador en 30 segundos
-        var contadorElemento = document.getElementById('contadoractualizacion');
-
-        
-        function actualizarContador() {
-            if(segundosRestantes%2 == 0){
-                contadorElemento.textContent = '⏳ Actualizando pedidos en ' + segundosRestantes + ' segundos';    
-            }else{
-                contadorElemento.textContent = '⌛ Actualizando pedidos en ' + segundosRestantes + ' segundos';
-            }
-            
-            segundosRestantes--; 
-            if (segundosRestantes < 0) {
-                location.reload(); // Recarga la página cuando el contador llega a cero
-            } else {
-                setTimeout(actualizarContador, 1000); // Actualiza el contador cada segundo
-            }
-        }
-
-        // Llama a la función para que se ejecute inicialmente
-        actualizarContador();
-    }
-
-    // Llama a la función para que se ejecute cuando se cargue la página
-    window.onload = function() {
-        recargarPagina();
-    }
-    </script>
-
-    {% endblock %}
+{% endblock %}

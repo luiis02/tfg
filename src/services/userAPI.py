@@ -1,5 +1,6 @@
 from flask import jsonify, redirect, render_template, request, session, url_for
 from flask import redirect, url_for
+from flask_login import login_required, login_user
 from src.models.forms.registerForm import RegistrationForm
 from src.database.dbcontroller import DBController
 from src.models.forms.loginForm import LoginForm
@@ -58,7 +59,6 @@ def login():
         username = form.username.data
         password = form.password.data
         
-        #Servicio login usuario
         if LoginUser(username, password):
             return redirect(url_for('dashboard'))
         else:
