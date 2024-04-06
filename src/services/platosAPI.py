@@ -24,7 +24,7 @@ platos_routes = Blueprint("platos_routes", __name__)
 ##############################################################################################
 @platos_routes.route('/platos/<nombre>', methods=['GET', 'POST'])
 def platos(nombre):
-    if 'username' not in session or 'carta' not in session:
+    if 'username' not in session or 'carta' not in session or session['rol'] != 'admin':
         return redirect(url_for('user_routes.login'))
     session['seccion'] = nombre
     response = requests.get(url_for('platos_routes.getPlatos', _external=True), cookies={'auth': session.get('username'), 'carta': session.get('carta'), 'seccion': nombre})
@@ -79,7 +79,7 @@ def create_plato():
 
 @platos_routes.route('/removePlato', methods=['POST'])
 def remove_Plato():
-    if 'username' not in session:
+    if 'username' not in session or session['rol'] != 'admin':
         return redirect(url_for('user_routes.login'))
             
     data = request.get_json()  
@@ -94,7 +94,7 @@ def remove_Plato():
   
 @platos_routes.route('/editPlato', methods=['POST'])
 def edit_Plato():
-    if 'username' not in session:
+    if 'username' not in session or session['rol'] != 'admin':
         return redirect(url_for('user_routes.login'))
     nombre_anterior = request.form.get('edita')
     nombre_carta = request.form.get('nombre_seccion_editar')

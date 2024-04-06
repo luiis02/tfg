@@ -169,7 +169,8 @@ def LoginUser(username, password):
         init = True
 
     if  init:
-        session['username'] = username  
+        session['username'] = username
+        session['rol'] = 'admin'
     return init
 
 def ConfirmUser(username, codigo):
@@ -190,3 +191,4 @@ def ConfirmUser(username, codigo):
     else:
         bd.disconnect()
         return 1
+    

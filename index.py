@@ -35,7 +35,7 @@ app.register_blueprint(gestion_routes)
 @app.route('/dashboard')
 
 def dashboard():
-    if 'username' not in session:
+    if 'username' not in session or session['rol'] != 'admin':
         return redirect(url_for('user_routes.login'))
     
     # Hacer la solicitud y manejar la respuesta

@@ -24,6 +24,8 @@ def acorta_cartas_Url(nombre, mesa):
     nombre = nombre.replace("_", " ")
     session['username'] = nombre
     session['mesa'] = mesa
+    session['rol'] = 'cliente'
+
     return redirect(url_for('clientes_routes.Carta'))
 
 

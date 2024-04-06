@@ -21,7 +21,7 @@ secciones_routes = Blueprint("secciones_routes", __name__)
 
 @secciones_routes.route('/carta/<nombre>', methods=['GET', 'POST'])
 def seccion(nombre):
-    if 'username' not in session:
+    if 'username' not in session or session['rol'] != 'admin':
         return redirect(url_for('user_routes.login'))
     session['carta'] = nombre
     response = requests.get(url_for('secciones_routes.getSeccion', _external=True), cookies={'auth': session.get('username'), 'carta': session.get('carta')})
@@ -63,7 +63,7 @@ def create_seccion():
 
 @secciones_routes.route('/removeSeccion', methods=['POST'])
 def remove_Seccion():
-    if 'username' not in session:
+    if 'username' not in session or session['rol'] != 'admin':
         return redirect(url_for('user_routes.login'))
             
     data = request.get_json()  
@@ -78,7 +78,7 @@ def remove_Seccion():
     
 @secciones_routes.route('/editSeccion', methods=['POST'])
 def edit_Seccion():
-    if 'username' not in session:
+    if 'username' not in session or session['rol'] != 'admin':
         return redirect(url_for('user_routes.login'))
     nombre_anterior = request.form.get('edita')
     nombre_carta = request.form.get('nombre_seccion_editar')
@@ -106,7 +106,7 @@ def getSeccion():
     cookie_value2 = request.cookies.get('carta')
     session['username'] = cookie_value
     session['carta'] = cookie_value2
-    if 'username' not in session:
+    if 'username' not in session :
         return redirect(url_for('user_routes.login'))
     nombre = session['carta']
     # Llama a models

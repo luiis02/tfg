@@ -21,6 +21,8 @@ qr_routes = Blueprint("qr_routes", __name__)
 ##############################################################################################
 @qr_routes.route('/mesa', methods=['GET', 'POST'])
 def mesa():
+    if not session.get('username') or not session.get('rol') == 'admin':
+        return redirect(url_for('user_routes.login'))
     response = requests.get(url_for('qr_routes.getMesa', _external=True), cookies={'auth': session.get('username')})
     if response.status_code == 200:
         data = response.json()
@@ -33,7 +35,7 @@ def mesa():
 def CreateQR():
     data = request.get_json()
     crear = data.get("numero")
-    if not session["username"] or not crear:
+    if not session["username"] or not crear or session['rol'] != 'admin':
         return redirect(url_for('user_routes.login'))
     
     #Llamar a la funcion de models
@@ -67,7 +69,7 @@ def deco(img_base64):
 def deleteMesa():
     data = request.get_json()
     numero = data.get("numero")
-    if not session["username"] or not numero:
+    if not session["username"] or not numero or session['rol'] != 'admin':
         return redirect(url_for('user_routes.login'))
     
     status = eliminaMesa(session["username"], numero)

@@ -22,6 +22,7 @@ cartas_routes = Blueprint("cartas_routes", __name__)
 def getCartas():
     cookie_value = request.cookies.get('auth')
     session['username'] = cookie_value
+    session['rol'] = 'cliente'
     if 'username' not in session:
         return redirect(url_for('user_routes.login'))
     
@@ -34,7 +35,7 @@ def getCartas():
 
 @cartas_routes.route('/removeCarta', methods=['POST'])
 def remove_carta():
-    if 'username' not in session:
+    if 'username' not in session or session['rol'] != 'admin':
         return redirect(url_for('user_routes.login'))      
     data = request.get_json()  
     carta = data.get('cartaId') 
@@ -71,8 +72,9 @@ def create_carta():
 
 @cartas_routes.route('/editCarta', methods=['POST'])
 def edit_carta():
-    if 'username' not in session:
+    if 'username' not in session or session['rol'] != 'admin':
         return redirect(url_for('user_routes.login'))
+    
     nombre_anterior = request.form.get('edita')
     nombre_carta = request.form.get('nombre_carta_editar')
     indice_carta = request.form.get('indice_editar')

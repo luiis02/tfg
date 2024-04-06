@@ -13,7 +13,7 @@ gestion_routes = Blueprint("gestion_routes", __name__)
 ##############################################################################################
 @gestion_routes.route('/gestion', methods=['GET', 'POST'])
 def Gestion():
-    if 'username' not in session:
+    if 'username' not in session or session['rol'] != 'admin':
         return redirect(url_for('user_routes.login'))
     
     if request.method == 'POST':

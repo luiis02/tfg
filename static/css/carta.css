@@ -358,6 +358,8 @@ p#acti {
     border-radius: 20px;
     display: flex;
     flex-direction: column;
+    /* box-shadow: 0 0 0; */
+    box-shadow: 7px 5px 5px rgb(0 20 159 / 10%);
 }
 
 #datostitle{
@@ -441,6 +443,8 @@ p#acti {
     justify-content: center;
     align-items: flex-start;
     margin-top: 0%;
+    box-shadow: 7px 5px 5px rgb(0 20 159 / 0.05);
+
 }
 
 .dashboard{
