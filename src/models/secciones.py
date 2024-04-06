@@ -57,10 +57,12 @@ def obtenSecciones(nombre, usuario):
     except Exception as e:
         return e
 
-def editarSeccion(nombre, usuario, nombre_anterior, indice, status, carta):
+def editarSeccion(nombre, usuario, nombre_anterior, indice, status, carta,key):
     try:
         bd = DBController()
         bd.connect()
+        auth = bd.fetch_data("SELECT COUNT(*) FROM usuario WHERE usuario = ? AND passwd = ?", (usuario, key))
+        if auth[0][0] == 0: return "NO"
         result = bd.execute_query("UPDATE seccion SET nombre = ?, indice = ?, status = ? WHERE nombre = ? AND usuario = ? AND carta = ?", (nombre, indice, status, nombre_anterior, usuario, carta))
         if result == 0: return "Error, clave duplicada"
         bd.connection.commit()
@@ -69,10 +71,12 @@ def editarSeccion(nombre, usuario, nombre_anterior, indice, status, carta):
     except Exception as e:
         return str(e)
     
-def borrarSeccion(nombre, carta, usuario):
+def borrarSeccion(nombre, carta, usuario,key):
     try:
         bd = DBController()
         bd.connect()
+        auth = bd.fetch_data("SELECT COUNT(*) FROM usuario WHERE usuario = ? AND passwd = ?", (usuario, key))
+        if auth[0][0] == 0: return "NO"
         bd.execute_query("DELETE FROM seccion WHERE nombre = ? AND usuario = ? AND carta = ?", (nombre, usuario, carta))
         bd.execute_query("DELETE FROM platos WHERE seccion = ? AND usuario = ? AND carta = ?", (nombre, usuario, carta))
         bd.connection.commit()
@@ -81,10 +85,12 @@ def borrarSeccion(nombre, carta, usuario):
     except Exception as e:
         return e
     
-def crearSeccion(nombre_seccion, indice_seccion, status_seccion, usuario, carta):
+def crearSeccion(nombre_seccion, indice_seccion, status_seccion, usuario, carta, key):
     try:
         bd = DBController()
         bd.connect()
+        auth = bd.fetch_data("SELECT COUNT(*) FROM usuario WHERE usuario = ? AND passwd = ?", (usuario, key))
+        if auth[0][0] == 0: return "NO"
         existe = bd.fetch_data("SELECT COUNT(*) FROM seccion WHERE nombre = ? AND usuario = ? AND carta = ?", (nombre_seccion, usuario, carta))
         if existe[0][0] > 0: return "Error, clave duplicada"
         bd.execute_query("INSERT INTO seccion (nombre, indice, status, usuario, carta) VALUES (?,?,?,?,?)", (nombre_seccion, indice_seccion, status_seccion, usuario, carta))

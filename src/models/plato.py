@@ -15,6 +15,7 @@ def obtenPlatos(usuario, carta, seccion):
     try:
         bd = DBController()
         bd.connect()
+        
 
         # Verificar si la existen platos en la carta
         existe = bd.fetch_data("SELECT COUNT(*) FROM platos WHERE carta = ? AND usuario = ? AND seccion = ?", (carta, usuario, seccion))
@@ -34,7 +35,7 @@ def obtenPlatos(usuario, carta, seccion):
         return "OK", json_data
     except Exception as e: return e
 
-def crearPlato(nombre, descripcion, precio, indice, status, usuario, carta, seccion):
+def crearPlato(nombre, descripcion, precio, indice, status, usuario, carta, seccion,key):
     try:
         if status == 'on':
             status = True
@@ -42,6 +43,8 @@ def crearPlato(nombre, descripcion, precio, indice, status, usuario, carta, secc
             status = False
         bd = DBController()
         bd.connect()
+        auth = bd.fetch_data("SELECT COUNT(*) FROM usuario WHERE usuario = ? AND passwd = ?", (usuario, key))
+        if auth[0][0] == 0: return "NO"
         existe = bd.fetch_data("SELECT COUNT(*) FROM platos WHERE nombre = ? AND usuario = ? AND carta = ? AND seccion = ?", (nombre, usuario, carta, seccion))
         if existe[0][0] > 0: return "Error, clave duplicada"
         bd.execute_query("INSERT INTO platos (nombre, descripcion, indice, status, usuario, carta, seccion, precio) VALUES (?,?,?,?,?,?,?,?)", (nombre, descripcion, indice, status, usuario, carta, seccion,precio))
@@ -60,7 +63,7 @@ def eliminarPlato(nombre, carta, usuario, seccion):
         return "OK"
     except Exception as e: return e
 
-def editaPlato(nombre, descripcion, precio, indice, status, usuario, carta, seccion, nombre_anterior):
+def editaPlato(nombre, descripcion, precio, indice, status, usuario, carta, seccion, nombre_anterior,key):
     try:
         if status == 'on':
             status = True
@@ -68,6 +71,8 @@ def editaPlato(nombre, descripcion, precio, indice, status, usuario, carta, secc
             status = False
         bd = DBController()
         bd.connect()
+        auth = bd.fetch_data("SELECT COUNT(*) FROM usuario WHERE usuario = ? AND passwd = ?", (usuario, key))
+        if auth[0][0] == 0: return "NO"
         result = bd.execute_query("UPDATE platos SET nombre = ?, descripcion = ?, precio = ?, indice = ?, status = ? WHERE nombre = ? AND usuario = ? AND carta = ? AND seccion = ?", (nombre, descripcion, precio, indice, status, nombre_anterior, usuario, carta, seccion))
         if result == 0: return "Error, clave duplicada"
         bd.connection.commit()

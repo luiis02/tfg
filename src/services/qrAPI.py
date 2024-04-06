@@ -39,7 +39,7 @@ def CreateQR():
         return redirect(url_for('user_routes.login'))
     
     #Llamar a la funcion de models
-    result = createMesa(session["username"], crear)
+    result = createMesa(session["username"], crear, session["authapi"])
     if(result =="OK"): return jsonify({"message": "Datos recibidos correctamente"})
     else : return jsonify({"message": "Error al crear mesa"})
 
@@ -50,7 +50,7 @@ def getMesa():
         return redirect(url_for('user_routes.login'))
     
     #Llamar a la funcion de models
-    status, json_data= obtenerMesa(cookie_username)
+    status, json_data= obtenerMesa(cookie_username, session["authapi"])
     if status == "OK": return json_data
     else: return jsonify({"message": "Error al obtener datos de las mesas"})
 
@@ -72,7 +72,7 @@ def deleteMesa():
     if not session["username"] or not numero or session['rol'] != 'admin':
         return redirect(url_for('user_routes.login'))
     
-    status = eliminaMesa(session["username"], numero)
+    status = eliminaMesa(session["username"], numero, session["authapi"])
     if status == "OK": return jsonify({"message": "Datos recibidos correctamente"})
     else: return jsonify({"message": "Error al eliminar mesa"})
 

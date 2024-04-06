@@ -171,6 +171,7 @@ def LoginUser(username, password):
     if  init:
         session['username'] = username
         session['rol'] = 'admin'
+        session['authapi'] = password
     return init
 
 def ConfirmUser(username, codigo):

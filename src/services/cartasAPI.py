@@ -41,7 +41,7 @@ def remove_carta():
     carta = data.get('cartaId') 
     
     # Llama a models
-    status = eliminarCarta(carta,session['username'])
+    status = eliminarCarta(carta,session['username'],session['authapi'])
     if status == "OK":
         return jsonify({"message": "Carta eliminada correctamente"})
     else:
@@ -57,7 +57,7 @@ def create_carta():
 
 
     # Llama a models
-    status = crearCarta(nombre_carta, indice_carta, status_carta, session['username'])
+    status = crearCarta(nombre_carta, indice_carta, status_carta, session['username'], session['authapi'])
     if status == "OK":
         return jsonify({"message": "Carta creada correctamente"})
     else:

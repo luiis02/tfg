@@ -53,7 +53,7 @@ def create_seccion():
         status_seccion = True
     else:
         status_seccion = False
-    status = crearSeccion(nombre_seccion,indice_seccion,status_seccion,session['username'],session['carta'])
+    status = crearSeccion(nombre_seccion,indice_seccion,status_seccion,session['username'],session['carta'],session['authapi'])
     if status == "OK": return jsonify({"message": "Sección creada correctamente"})
     else:
         if status == "Error, clave duplicada":
@@ -70,7 +70,7 @@ def remove_Seccion():
     carta = data.get('cartaId') 
     
     # Llama a models
-    status = borrarSeccion(carta,session['carta'], session['username'])
+    status = borrarSeccion(carta,session['carta'], session['username'], session['authapi'])
     if status == "OK":
         return jsonify({"message": "Carta eliminada correctamente"})
     else:
@@ -90,7 +90,7 @@ def edit_Seccion():
         status_carta = False
     
     # Llama a models
-    status = editarSeccion(nombre_carta, session['username'], nombre_anterior, indice_carta, status_carta, session['carta'])
+    status = editarSeccion(nombre_carta, session['username'], nombre_anterior, indice_carta, status_carta, session['carta'], session['authapi'])
     if status == "OK":
         return jsonify({"message": "Carta editada correctamente"})
     else:

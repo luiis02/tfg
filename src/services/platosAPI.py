@@ -68,7 +68,7 @@ def create_plato():
     status_seccion = request.form.get('estado')
 
     # Llama a models
-    status = crearPlato(nombre_plato, descripcion_plato, precio, indice_seccion, status_seccion, session.get('username'), session.get('carta'), session.get('seccion'))
+    status = crearPlato(nombre_plato, descripcion_plato, precio, indice_seccion, status_seccion, session.get('username'), session.get('carta'), session.get('seccion'), session.get('authapi'))
     if status=="OK": return jsonify({"message": "Plato creado correctamente"})
     else:
         if status == "Error, clave duplicada":
@@ -85,8 +85,7 @@ def remove_Plato():
     data = request.get_json()  
     nombre = data.get('cartaId') 
 
-    #----------------------------------------------Dentro de models
-    status=eliminarPlato(nombre, session["carta"], session["username"], session["seccion"])
+    status=eliminarPlato(nombre, session["carta"], session["username"], session["seccion"], session["authapi"])
     if status=="OK": return jsonify({"message": "Carta eliminada correctamente"})
     else: return "Error eliminando carta"
     

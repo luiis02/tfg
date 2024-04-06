@@ -9,10 +9,12 @@ import json
 ##############################################################################################
 ##############################################################################################
 ##############################################################################################
-def createMesa(usuario, crear):
+def createMesa(usuario, crear, key):
     try:
         bd = DBController()
         bd.connect()
+        auth = bd.fetch_data("SELECT COUNT(*) FROM usuario WHERE usuario = ? AND passwd = ?", (usuario, key))
+        if auth[0][0] == 0: return "NO"
         id_establecimiento = bd.fetch_data("SELECT id FROM usuario WHERE usuario = ?;", (usuario,))
         id_establecimiento = id_establecimiento[0][0]
         existe = bd.fetch_data("SELECT COUNT(*) FROM mesas WHERE id_establecimiento = ?;", (id_establecimiento,))
@@ -33,10 +35,12 @@ def createMesa(usuario, crear):
 
 
 
-def obtenerMesa(usuario):
+def obtenerMesa(usuario, key):
     try:
         bd = DBController()
         bd.connect()
+        auth = bd.fetch_data("SELECT COUNT(*) FROM usuario WHERE usuario = ? AND passwd = ?", (usuario, key))
+        if auth[0][0] == 0: return "NO"
         id = bd.fetch_data("SELECT id FROM usuario WHERE usuario = ?;", (usuario,))
         id_establecimiento = id[0][0]
         num_mesas = bd.fetch_data("SELECT COUNT(*) FROM mesas WHERE id_establecimiento = ?;", (id_establecimiento,))
@@ -49,10 +53,12 @@ def obtenerMesa(usuario):
         return "OK", json_data
     except Exception as e: return e
 
-def eliminaMesa(usuario, numero):
+def eliminaMesa(usuario, numero,key):
     try:
         bd = DBController()
         bd.connect()
+        auth = bd.fetch_data("SELECT COUNT(*) FROM usuario WHERE usuario = ? AND passwd = ?", (usuario, key))
+        if auth[0][0] == 0: return "NO"
         id = bd.fetch_data("SELECT id FROM usuario WHERE usuario = ?;", (usuario,))
         id_establecimiento = id[0][0]
         bd.execute_query("DELETE FROM mesas WHERE id_establecimiento = ? AND numero_mesa = ?;", (id_establecimiento, numero))

@@ -79,10 +79,13 @@ def obtenCartas(usuario):
     except Exception as e:
         return "NO"
     
-def eliminarCarta(carta, usuario):        
+def eliminarCarta(carta, usuario, key):  
+    
     try:
         bd = DBController()
         bd.connect()
+        auth = bd.fetch_data("SELECT COUNT(*) FROM usuario WHERE usuario = ? AND passwd = ?", (usuario, key))
+        if auth[0][0] == 0: return "NO"
         bd.execute_query("DELETE FROM cartas WHERE nombre = ? AND usuario = ?", (carta,usuario))
         bd.execute_query("DELETE FROM seccion WHERE carta = ? AND usuario = ?", (carta,usuario))
         bd.execute_query("DELETE FROM platos WHERE carta = ? AND usuario = ?", (carta,usuario))
@@ -91,7 +94,7 @@ def eliminarCarta(carta, usuario):
         return "OK"
     except Exception as e: return "NO"
 
-def crearCarta(nombre_carta, indice_carta, status_carta, usuario):
+def crearCarta(nombre_carta, indice_carta, status_carta, usuario, key):
     try:
         if status_carta == 'on':
             status_carta = True
@@ -99,6 +102,8 @@ def crearCarta(nombre_carta, indice_carta, status_carta, usuario):
             status_carta = False
         bd = DBController()
         bd.connect()
+        auth = bd.fetch_data("SELECT COUNT(*) FROM usuario WHERE usuario = ? AND passwd = ?", (usuario, key))
+        if auth[0][0] == 0: return "NO"
         existe = bd.fetch_data("SELECT COUNT(*) FROM cartas WHERE nombre = ? AND usuario = ?", (nombre_carta, usuario))
         if existe[0][0] > 0: return "Error, clave duplicada"
         bd.execute_query("INSERT INTO cartas (nombre, indice, status, usuario) VALUES (?,?,?,?)", (nombre_carta, indice_carta, status_carta, usuario))

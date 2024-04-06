@@ -443,7 +443,7 @@ p#acti {
     justify-content: center;
     align-items: flex-start;
     margin-top: 0%;
-    box-shadow: 7px 5px 5px rgb(0 20 159 / 0.05);
+    box-shadow: 7px 5px 5px rgb(0 20 159 / 0.05 );
 
 }
 
