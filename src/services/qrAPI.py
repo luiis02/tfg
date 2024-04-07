@@ -21,7 +21,9 @@ qr_routes = Blueprint("qr_routes", __name__)
 ##############################################################################################
 @qr_routes.route('/mesa', methods=['GET', 'POST'])
 def mesa():
+    auth_crear_mesa=0
     if not session.get('username') or not session.get('rol') == 'admin':
+        auth_crear_mesa=1
         return redirect(url_for('user_routes.login'))
     response = requests.get(url_for('qr_routes.getMesa', _external=True), cookies={'auth': session.get('username')})
     if response.status_code == 200:
@@ -39,18 +41,20 @@ def CreateQR():
         return redirect(url_for('user_routes.login'))
     
     #Llamar a la funcion de models
-    result = createMesa(session["username"], crear, session["authapi"])
+    result = createMesa(session["username"], crear, session["authapi"] )
     if(result =="OK"): return jsonify({"message": "Datos recibidos correctamente"})
     else : return jsonify({"message": "Error al crear mesa"})
 
 @qr_routes.route('/getMesa', methods=['GET', 'POST'])
 def getMesa():
+
     cookie_username = request.cookies.get('auth')
+    
     if not cookie_username:
         return redirect(url_for('user_routes.login'))
-    
     #Llamar a la funcion de models
-    status, json_data= obtenerMesa(cookie_username, session["authapi"])
+    status, json_data= obtenerMesa(cookie_username)
+
     if status == "OK": return json_data
     else: return jsonify({"message": "Error al obtener datos de las mesas"})
 

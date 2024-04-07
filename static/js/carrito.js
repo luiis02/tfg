@@ -206,7 +206,8 @@ generaCarrito();
 sumafinal()
 
 
-function enviarPedido() {
+function enviarPedido(event ) {
+    event.preventDefault(); 
     var todasLasCookies = obtenerTodasLasCookies();
     var pedido = [];
     for (var nombreCookie in todasLasCookies) {
@@ -230,7 +231,7 @@ function enviarPedido() {
             eliminarCookie(nombreCookie);
             crearCookie(nombreCookie, { cantidad: 0, precio: 0, categoria: ""})
         }
-
+        
         fetch('/pedido', {
             method: 'POST',
             headers: {
@@ -238,11 +239,14 @@ function enviarPedido() {
             },
             body: jsonPedido
         })
-            .then(response => {
-                window.location.href = "/carta";
-            })
-            .catch(error => {
-                window.location.href = "/carta";
-            });
+        .then(response => {
+            console.log(response);
+            window.location.href = "/pedidoFin";
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            window.location.href = "/pedidoFin";
+
+        });
     }
 }

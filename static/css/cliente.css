@@ -220,3 +220,92 @@ a.platosec {
     color: #2d292d;
     font-weight: 700;
 }
+
+
+img.pedidoconfirmado-img {
+    max-width: 30vh;
+}
+
+h1.pedidoconfirmado {
+    color: #3e93ff;
+    text-align: center;
+    font-weight: 900;
+    font-family: serif;
+    font-family: "Lilita One";
+}
+
+.pedidofoto {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.enl-finales {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+button.pedir2 {
+    margin: 2vh;
+}
+
+button.pedir2 {
+    background-color: transparent;
+    border: 2px solid #008d1d;
+    color: #00712e;
+    padding: 10px 20px;
+    font-weight: 800;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #00712e; /* Fondo negro al pasar el ratón */
+    color: #fff; /* Texto blanco al pasar el ratón */
+    transition: all 0.3s ease;
+    width: 60vw;
+}
+button.pedir2:hover {
+    background-color: #fff;
+    color: #00712e;
+}
+
+
+button.llamar2 {
+    background-color: transparent;
+    border: 2px solid #ffae00;
+    color: #00712e;
+    padding: 10px 20px;
+    font-weight: 800;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #ffae00; /* Fondo negro al pasar el ratón */
+    color: #fff; /* Texto blanco al pasar el ratón */
+    transition: all 0.3s ease;
+    width: 60vw;
+}
+button.llamar2:hover {
+    background-color: #fff;
+    color: #ffae00;
+}
+
+img.pedidoconfirmado-img2 {
+    margin-top: 10vh;
+    max-width: 30vw;
+}
+
+.header {
+    
+    margin-bottom: 2vh;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+}
+
+.addr {
+    margin: 0px;
+    padding: 0px;
+    margin-top: 2vh;
+    margin-bottom: 1px;
+    background-color: #8cbfff;
+    font-family: none;
+}

@@ -155,3 +155,9 @@ function mostrarMensajeTemporal(mensaje, segundos) {
     }, 1000); // Actualiza el contador cada segundo
 }
 
+function cerrarFormulario() {
+    var edtiform = document.getElementById("editform");
+    edtiform.style.display = "none";
+}
+
+

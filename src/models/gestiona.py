@@ -1,13 +1,10 @@
 
 from src.database.dbcontroller import DBController
-from flask import request
-from src.models.carta import obtenCartas,eliminarCarta,crearCarta,editaCarta
 from datetime import datetime
 ##############################################################################################
 ##############################################################################################
 ##############################################################################################
-import json
-import requests
+
 
 def marcaPedido(estado,data):
     bd = DBController()
@@ -17,8 +14,8 @@ def marcaPedido(estado,data):
         bd.execute_query("DELETE FROM pedidos_activos WHERE id = ?", (data.get('id'),))
         count = bd.fetch_data("SELECT COUNT(*) FROM pedidos_historicos")  # Obtener el conteo directamente
         fecha_cierre_actual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        bd.execute_query("INSERT INTO pedidos_historicos (id, usuario, mesa, plato, cantidad, precio, fecha, fecha_cierre) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", 
-            (count[0][0] + 1, result[0][1], result[0][2], result[0][3], result[0][4], result[0][5], result[0][6], fecha_cierre_actual))
+        bd.execute_query("INSERT INTO pedidos_historicos (id, usuario, mesa, plato, cantidad, precio, fecha, fecha_cierre, categoria) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+            (count[0][0] + 1, result[0][1], result[0][2], result[0][3], result[0][4], result[0][5], result[0][6], fecha_cierre_actual, result[0][8]))
     else:
         bd.execute_query("DELETE FROM pedidos_activos WHERE id = ?", (data.get('id'),))
         bd.disconnect()
@@ -26,7 +23,7 @@ def marcaPedido(estado,data):
 def obtenpedidos(usuario):
     bd = DBController()
     bd.connect()
-    resultados = bd.fetch_data("SELECT * FROM pedidos_activos WHERE usuario = ? ORDER BY fecha DESC", (usuario,))
+    resultados = bd.fetch_data("SELECT * FROM pedidos_activos WHERE usuario = ? ORDER BY fecha ASC", (usuario,))
     bd.disconnect()
     
     resultados_serializables = []

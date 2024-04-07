@@ -108,3 +108,8 @@ def Pedido():
         bd.execute_query(consulta, valores)
         bd.connection.commit()
     return render_template('cliente_carrito.html', establecimiento=session.get('establecimiento'))
+
+
+@clientes_routes.route('/pedidoFin', methods=['GET'])
+def pedidoFin():
+    return render_template('cliente_carrito_fin.html')

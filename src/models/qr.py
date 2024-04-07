@@ -35,12 +35,11 @@ def createMesa(usuario, crear, key):
 
 
 
-def obtenerMesa(usuario, key):
+def obtenerMesa(usuario):
     try:
         bd = DBController()
         bd.connect()
-        auth = bd.fetch_data("SELECT COUNT(*) FROM usuario WHERE usuario = ? AND passwd = ?", (usuario, key))
-        if auth[0][0] == 0: return "NO"
+
         id = bd.fetch_data("SELECT id FROM usuario WHERE usuario = ?;", (usuario,))
         id_establecimiento = id[0][0]
         num_mesas = bd.fetch_data("SELECT COUNT(*) FROM mesas WHERE id_establecimiento = ?;", (id_establecimiento,))

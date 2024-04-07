@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carta del {{ establecimiento }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cliente.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header">
+            <img class="pedidoconfirmado-img2" src="../static/img/casilla-verificacion-3d-marca-verificacion-ilustracion-3d_115990-1862-removebg-preview.png" alt="">
+        </div>
+
+    </header>
+    <main>
+        <h1 class="pedidoconfirmado">Estamos preparando tu pedido</h1>
+        <div class="pedidofoto">
+        <img class="pedidoconfirmado-img" src="../static/img/_164ba060-43f4-45a8-a9f5-1883e41a6a20-removebg-preview.png"
+            alt="">
+        </div>
+
+        <div class="enl-finales">
+            <button class="pedir2">Volver a pedir</button>
+            <button class="llamar2">Llamar a un camarero</button>
+        </div>
+    </main>
+    <footer>
+        <div class="footer">
+            <address class="addr">Powered by ApuntaJefe</address>
+        </div>
+</body>
+<script>
+    document.querySelector('.pedir2').addEventListener('click', () => {
+        window.location.href = '/carta';
+    });
+    document.querySelector('.llamar2').addEventListener('click', () => {
+        window.location.href = '/pedidoFin';
+    });
+</script>
+
+</html>

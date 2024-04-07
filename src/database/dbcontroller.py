@@ -10,7 +10,7 @@ class DBController:
         try:
             self.connection = sqlite3.connect(self.db_name)
             self.cursor = self.connection.cursor()
-            print("Conexión exitosa a la base de datos")
+            #print("Conexión exitosa a la base de datos")
         except sqlite3.Error as error:
             print("Error al conectar a la base de datos:", error)
 
@@ -18,7 +18,7 @@ class DBController:
         if self.connection:
             self.cursor.close()
             self.connection.close()
-            print("Desconexión exitosa de la base de datos")
+            #print("Desconexión exitosa de la base de datos")
 
     def execute_query(self, query, params=None):
         try:
@@ -27,7 +27,7 @@ class DBController:
             else:
                 self.cursor.execute(query)
             self.connection.commit()
-            print("Consulta ejecutada exitosamente")
+            #print("Consulta ejecutada exitosamente")
             return 1
         except sqlite3.DatabaseError as error:
             print("Error al ejecutar la consulta:", error)
@@ -41,7 +41,7 @@ class DBController:
             else:
                 self.cursor.execute(query)
             rows = self.cursor.fetchall()
-            print("Datos obtenidos exitosamente")
+            #print("Datos obtenidos exitosamente")
             return rows
         except sqlite3.DatabaseError as error:
             print("Error al obtener los datos:", error)

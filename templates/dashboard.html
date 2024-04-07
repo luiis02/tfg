@@ -6,7 +6,7 @@ ApuntaJefe: {{ establecimiento }}
 {% block content %}
     <main>
         <div class="principalcontainer">
-            <div class="datosnegocio">
+            <div class="datosnegocio" id="cl1">
                 <p id="datostitle">Datos sobre el establecimiento</p>
                 <strong id="text-neg">⚠️​ Configura tu cuenta para obtener más información</strong>
                 <ul class="minimalista">
@@ -18,7 +18,7 @@ ApuntaJefe: {{ establecimiento }}
                 
             </div>
             
-            <div class="datosnegocio">
+            <div class="datosnegocio" id="cl2">
                 <p id="datostitle">Gestiona tus pedidos</p>
                 <button id="pedidosactivos" onclick="window.location.href='/gestion'">Comienzar a atender</button>
 
@@ -77,12 +77,25 @@ ApuntaJefe: {{ establecimiento }}
 
 
         <div id="editform" style="display: none;">
-            <form id="editCartaForm">
+            <div id="examw">
+            <h1 class="edit-title">Editar la carta</h1>
+            <div class="edit-title">
+            
+            <form id="editSeccionForm">
+                <p class="xpalin">Nombre</p>
                 <input type="text" name="nombre_carta_editar" id="editNombreCarta">
+                <p class="xpalin">Indice</p>
                 <input type="number" name="indice_editar" id="editIndice">
-                <input type="checkbox" name="estado_editar" id="editEstado">
+                <div id="staut-edi">
+                    <p class="status">Estado</p>
+                    <input type="checkbox" name="estado_editar" id="editEstado">
+                </div>
                 <button type="button" onclick="enviarFormulario()">Guardar</button>
+                <button type="button" onclick="cerrarFormulario()">Cerrar</button>
+
             </form>
+            </div>
+
         </div>
 
 

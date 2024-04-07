@@ -193,3 +193,24 @@ img#checkimg {
     max-width: 75%;
     padding: 4%;
 }
+
+@media (max-width: 765px) { 
+
+    .container {
+        width: 100vw;
+    }
+
+    #count {
+        /* margin-left: 10%; */
+        /* display: flex; */
+        color: #7ed9ff;
+        /* justify-content: flex-start; */
+        /* align-content: center; */
+        /* flex-direction: row-reverse; */
+        margin-right: 10px;
+    }
+    p#descripmsg {
+        width: 80vw;
+        margin-left: 2%;
+    }
+}

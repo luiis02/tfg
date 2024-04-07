@@ -31,7 +31,7 @@ Gestionar secciones
     </div>
 
     </div>
-    <div class="recuadro-tabla">
+    <div class="recuadro-tabla" id="recuadro-tabla2">
         <table>
             <thead>
                 <tr>
@@ -57,8 +57,8 @@ Gestionar secciones
                     <td class="cat-filtadro">{{ pedido.categoria }}</td>
                     <td>{{ pedido.mesa}}</td>
                     <td>
-                        <button class="finok" onclick="enviarEstado('{{ pedido.id }}', 'fin')">Finalizado</button>
-                        <button class="findis" onclick="enviarEstado('{{ pedido.id }}', 'error')">Error</button>
+                        <button class="finok" id="btncambiarest" onclick="enviarEstado('{{ pedido.id }}', 'fin')">Finalizado</button>
+                        <button class="findis" id="btncambiarest" onclick="enviarEstado('{{ pedido.id }}', 'error')">Error</button>
                     </td>
 
 
@@ -77,6 +77,7 @@ Gestionar secciones
 {% endblock %}
 {% block scriptjs %}
 <script src="{{ url_for('static', filename='js/carta.js') }}"></script>
+<script src="{{ url_for('static', filename='js/gestiona.js') }}"></script>
 
 
 {% endblock %}
