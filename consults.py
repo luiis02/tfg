@@ -1,27 +1,16 @@
 from src.database.dbcontroller import DBController
-
-def vaciar():
-    a = DBController()
-    a.connect()
-    a.execute_query("DELETE FROM usuario_sin_confirmar;")
-    a.execute_query("DELETE FROM usuario;")
-#    a.execute_query("DELETE FROM cartas;")
-    a.connection.commit()
-    a.disconnect()
-
-def userRoot():
-    a = DBController()
-    a.connect()
-    root = "root".encode('utf-8')
-    a.execute_query("INSERT INTO usuario (nombre, apellido, establecimiento, provincia, email, passwd, usuario, telefono) VALUES ('root', 'root', 'root', 'root', 'root', ?, 'root', 'root')", (root,))
-    a.connection.commit()
-    a.disconnect()
+from datetime import datetime
 
 bd = DBController()
 bd.connect()
-#a = bd.fetch_data("SELECT COUNT(*) FROM platos WHERE carta = ? AND usuario = ? AND seccion = ?;", ('prueba', 'root', 'estas'))
-#print(a[0][0])
-bd.execute_query("DELETE FROM seccion WHERE usuario = ? AND carta = ?", ('root','prueba2'))
-bd.connection.commit()
-bd.disconnect()
 
+strin = "2024-04-07 01:56:44"
+datetime_obj = datetime.strptime(strin, "%Y-%m-%d %H:%M:%S")
+fecha_cierre_actual = datetime_obj.strftime("%Y-%m-%d %H:%M:%S")
+print(fecha_cierre_actual)
+
+res = bd.fetch_data("SELECT * FROM pedidos_historicos WHERE fecha > ?", (fecha_cierre_actual,))
+for i in res:
+    print(i)
+
+bd.disconnect()

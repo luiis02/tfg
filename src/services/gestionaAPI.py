@@ -21,6 +21,8 @@ def Gestion():
         estado = data.get('estado')
         marcaPedido(estado, data)
     resultados_serializables, categorias_carta = obtenpedidos(session.get('username'))
+    print(resultados_serializables)
+    
     return render_template('gestion.html', pedidos=resultados_serializables, username=session.get('username'), establecimiento=session.get('establecimiento'), categorias=categorias_carta)
 
 

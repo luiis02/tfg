@@ -103,7 +103,7 @@ def edit_Plato():
     status_carta = request.form.get('estado_editar')
     
     #----------------------------------------------Dentro de models
-    status = editaPlato(nombre_carta, descripcion_carta, precio_carta, indice_carta, status_carta, session["username"], session["carta"], session["seccion"], nombre_anterior)
+    status = editaPlato(nombre_carta, descripcion_carta, precio_carta, indice_carta, status_carta, session["username"], session["carta"], session["seccion"], nombre_anterior, session["authapi"])
     if status=="OK": return jsonify({"message": "Carta editada correctamente"})
     else:
         if status == "Error, clave duplicada":

@@ -56,31 +56,17 @@ CREATE TABLE mesas (
     img_qr BLOB
 );
 
+CREATE TABLE mesas_activas (
+    id_mesa INT REFERENCES mesas(numero_mesa),
+    id_establecimiento INT REFERENCES usuario(id),
+    fecha_primer_pedido DATE,
+);
 
-
-
-#############################################JSON API############################################################
-
-
-######### 1* API carta
-establecimiento
-num_cartas
-num_secciones
-num_platos
-cartas
-    nombre
-    indice
-    status
-secciones
-    nombre
-    carta
-    indice
-    status
-platos
-    nombre
-    descripcion
-    precio
-    status
-    seccion
-    carta
-    indice
+CREATE TABLE mesa_finalizada (
+    id_mesa INT REFERENCES mesas(numero_mesa),
+    id_establecimiento INT REFERENCES usuario(id),
+    fecha_primer_pedido DATE,
+    fecha_cierre DATE,
+    propina FLOAT,
+    gasto_total FLOAT
+);

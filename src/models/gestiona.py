@@ -14,8 +14,13 @@ def marcaPedido(estado,data):
         bd.execute_query("DELETE FROM pedidos_activos WHERE id = ?", (data.get('id'),))
         count = bd.fetch_data("SELECT COUNT(*) FROM pedidos_historicos")  # Obtener el conteo directamente
         fecha_cierre_actual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        bd.execute_query("INSERT INTO pedidos_historicos (id, usuario, mesa, plato, cantidad, precio, fecha, fecha_cierre, categoria) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", 
-            (count[0][0] + 1, result[0][1], result[0][2], result[0][3], result[0][4], result[0][5], result[0][6], fecha_cierre_actual, result[0][8]))
+        fecha_str = result[0][6]  
+        fecha_datetime = datetime.strptime(fecha_str, "%Y/%m/%d %H:%M:%S")
+        fecha_cierre_actual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        bd.execute_query(
+            "INSERT INTO pedidos_historicos (id, usuario, mesa, plato, cantidad, precio, fecha, fecha_cierre, categoria) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+            (count[0][0] + 1, result[0][1], result[0][2], result[0][3], result[0][4], result[0][5], fecha_datetime, fecha_cierre_actual, result[0][8])
+        )
     else:
         bd.execute_query("DELETE FROM pedidos_activos WHERE id = ?", (data.get('id'),))
         bd.disconnect()
@@ -29,6 +34,11 @@ def obtenpedidos(usuario):
     resultados_serializables = []
 
     for resultado in resultados:
+        fecha_str = resultado[6]  # Suponiendo que resultado[6] es una cadena que representa una fecha
+        fecha_datetime = datetime.strptime(fecha_str, "%Y/%m/%d %H:%M:%S")
+        fecha_formateada = fecha_datetime.strftime("%Y/%m/%d %H:%M:%S")
+
+
         resultado_dict = {
             'id': resultado[0],
             'usuario': resultado[1],
@@ -36,7 +46,7 @@ def obtenpedidos(usuario):
             'plato': resultado[3],
             'cantidad': resultado[4],
             'precio': resultado[5],
-            'fecha': resultado[6],
+            'fecha': str(fecha_formateada),
             'estado': resultado[7],
             'categoria': resultado[8]
         }
