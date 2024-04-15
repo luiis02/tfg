@@ -32,7 +32,8 @@ function editform(nombre, indice, estado) {
 }
 
 function enviarFormulario() {
-    var form = document.getElementById("editCartaForm");
+    var form = document.getElementById("editSeccionForm");
+    console.log("Formulario:", form);
     var formData = new FormData(form);
     formData.append("edita", edita); // Agregar la variable "edita" al formulario
 

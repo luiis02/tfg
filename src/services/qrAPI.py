@@ -52,9 +52,10 @@ def getMesa():
     
     if not cookie_username:
         return redirect(url_for('user_routes.login'))
+    
     #Llamar a la funcion de models
     status, json_data= obtenerMesa(cookie_username)
-
+    print(status)
     if status == "OK": return json_data
     else: return jsonify({"message": "Error al obtener datos de las mesas"})
 

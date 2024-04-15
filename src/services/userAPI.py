@@ -101,38 +101,40 @@ def CreateUser(nombre, apellido, establecimiento, provincia, email, password, us
     db = DBController()
     db.connect()
 
-    resultados = db.fetch_data("SELECT * FROM usuario WHERE usuario = ?", (username,))
+    resultados = db.fetch_data("SELECT * FROM usuario WHERE usuario = %s", (username,))
     if resultados:
         db.disconnect()
         return 1
 
-    resultados = db.fetch_data("SELECT * FROM usuario WHERE email = ?", (email,))
+    resultados = db.fetch_data("SELECT * FROM usuario WHERE email = %s", (email,))
     if resultados:
         db.disconnect()
         return 2
             
-    resultados = db.fetch_data("SELECT * FROM usuario WHERE telefono = ?", (telefono,))
+    resultados = db.fetch_data("SELECT * FROM usuario WHERE telefono = %s", (telefono,))
     if resultados:
         db.disconnect()
         return 3    
-    resultados = db.fetch_data("SELECT * FROM usuario_sin_confirmar WHERE usuario = ?", (username,))
+    resultados = db.fetch_data("SELECT * FROM usuario_sin_confirmar WHERE usuario = %s", (username,))
     if resultados:
         db.disconnect()
         return 1
 
-    resultados = db.fetch_data("SELECT * FROM usuario_sin_confirmar WHERE email = ?", (email,))
+    resultados = db.fetch_data("SELECT * FROM usuario_sin_confirmar WHERE email = %s", (email,))
     if resultados:
         db.disconnect()
         return 2
             
-    resultados = db.fetch_data("SELECT * FROM usuario_sin_confirmar WHERE telefono = ?", (telefono,))
+    resultados = db.fetch_data("SELECT * FROM usuario_sin_confirmar WHERE telefono = %s", (telefono,))
     if resultados:
         db.disconnect()
         return 3
 
     codigo = str(random.randint(100000, 999999))
     password = password.encode('utf-8')
-    db.execute_query("INSERT INTO usuario_sin_confirmar (nombre, apellido, establecimiento, provincia, email, passwd, usuario, telefono, codigo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", (nombre, apellido, establecimiento, provincia, email, password, username, telefono, codigo))
+    query = "INSERT INTO usuario_sin_confirmar (nombre, apellido, establecimiento, provincia, email, passwd, usuario, telefono, codigo) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    params = (nombre, apellido, establecimiento, provincia, email, password, username, telefono, codigo)
+    db.execute_query(query, params)
     db.connection.commit()
     db.disconnect()
 
@@ -162,7 +164,7 @@ def LoginUser(username, password):
     db = DBController()
     db.connect()
     password = password.encode('utf-8')
-    resultados = db.fetch_data("SELECT * FROM usuario WHERE usuario = ? AND passwd = ?", (username, password))
+    resultados = db.fetch_data("SELECT * FROM usuario WHERE usuario = %s AND passwd = %s", (username, password))
     db.disconnect()
     init = False
     for resultado in resultados:
@@ -177,14 +179,14 @@ def LoginUser(username, password):
 def ConfirmUser(username, codigo):
     bd = DBController()
     bd.connect()
-    resultados = bd.fetch_data("SELECT * FROM usuario_sin_confirmar WHERE codigo = ?", (codigo,))
+    resultados = bd.fetch_data("SELECT * FROM usuario_sin_confirmar WHERE codigo = %s", (codigo,))
     if resultados:
         datos = resultados[0]
         bd.disconnect()
-        if datos[6] == username:
-            bd.connect()
-            bd.execute_query("INSERT INTO usuario (nombre, apellido, establecimiento, provincia, email, passwd, usuario, telefono) VALUES (?,?,?,?,?,?,?,?)", datos[0:8])
-            bd.execute_query("DELETE FROM usuario_sin_confirmar WHERE usuario = ?", (username,))
+        if datos[7] == username:
+            bd.connect()          
+            bd.execute_query("INSERT INTO usuario (nombre, apellido, establecimiento, provincia, email, passwd, usuario, telefono) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", datos[1:9])
+            bd.execute_query("DELETE FROM usuario_sin_confirmar WHERE usuario = %s", (username,))
             bd.connection.commit()
             return 0
         else:

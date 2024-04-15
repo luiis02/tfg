@@ -1,16 +1,10 @@
 from src.database.dbcontroller import DBController
-from datetime import datetime
+import mysql.connector
 
 bd = DBController()
 bd.connect()
 
-strin = "2024-04-07 01:56:44"
-datetime_obj = datetime.strptime(strin, "%Y-%m-%d %H:%M:%S")
-fecha_cierre_actual = datetime_obj.strftime("%Y-%m-%d %H:%M:%S")
-print(fecha_cierre_actual)
-
-res = bd.fetch_data("SELECT * FROM pedidos_historicos WHERE fecha > ?", (fecha_cierre_actual,))
-for i in res:
-    print(i)
+query = "SELECT * FROM users"
+rows = bd.fetch_data(query)
 
 bd.disconnect()

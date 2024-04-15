@@ -88,6 +88,7 @@ def Plato():
     if response.status_code == 200:
         platos = response.json().get('platos')
         for plato in platos:
+            if plato['descripcion'] == "None": plato['descripcion'] = ""
             if plato['status'] == 1:
                 data.append({'nombre': plato['nombre'], 'descripcion': plato['descripcion'], 'precio': plato['precio']})
     return render_template('cliente_plato.html', platos=data, nombre=session.get('seccion'), establecimiento=session.get('establecimiento'))
@@ -103,7 +104,7 @@ def Pedido():
         bd = DBController()
         bd.connect()
         count = bd.fetch_data("SELECT COUNT(*) FROM pedidos_activos ")
-        consulta = "INSERT INTO pedidos_activos (id, plato, cantidad, precio, usuario, mesa, fecha, estado, categoria) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);"
+        consulta = "INSERT INTO pedidos_activos (id, plato, cantidad, precio, usuario, mesa, fecha, estado, categoria) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
         valores = (count[0][0]+1,plato.get('nombre'), plato.get('cantidad'), plato.get('precio'), session.get('username'), session.get('mesa'), fecha_hora_formateada, 0, plato.get('categoria'))
         bd.execute_query(consulta, valores)
         bd.connection.commit()

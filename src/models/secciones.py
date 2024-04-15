@@ -18,21 +18,21 @@ def obtenSecciones(nombre, usuario):
         bd.connect()
 
         # Verificar si la carta existe
-        existe = bd.fetch_data("SELECT COUNT(*) FROM cartas WHERE nombre = ? AND usuario = ?", (nombre, usuario))
+        existe = bd.fetch_data("SELECT COUNT(*) FROM cartas WHERE nombre = %s AND usuario = %s", (nombre, usuario))
         if existe[0][0] == 0: return "NO",json({"error": "La carta no existe"})
 
         # Verificar si existen secciones en esa carta
-        existe = bd.fetch_data("SELECT COUNT(*) FROM seccion WHERE carta = ? AND usuario = ?", (nombre, usuario))
+        existe = bd.fetch_data("SELECT COUNT(*) FROM seccion WHERE carta = %s AND usuario = %s", (nombre, usuario))
         num_secciones = existe[0][0]
         
         # Verificar si existen platos para esa seccion
-        existe = bd.fetch_data("SELECT COUNT(*) FROM seccion WHERE carta = ? AND usuario = ?", (nombre, usuario))
+        existe = bd.fetch_data("SELECT COUNT(*) FROM seccion WHERE carta = %s AND usuario = %s", (nombre, usuario))
         num_platos = existe[0][0]
         
         data = {"carta": nombre, "num_secciones": num_secciones, "num_platos": num_platos,"secciones": [], "platos":[]}
 
         if num_secciones > 0:
-            secciones = bd.fetch_data("SELECT nombre, indice, status FROM seccion WHERE carta = ? AND usuario = ? ORDER BY indice", (nombre, usuario))
+            secciones = bd.fetch_data("SELECT nombre, indice, status FROM seccion WHERE carta = %s AND usuario = %s ORDER BY indice", (nombre, usuario))
             for seccion in secciones:
                 nombre_seccion = seccion[0]
                 indice_seccion = seccion[1]
@@ -40,7 +40,7 @@ def obtenSecciones(nombre, usuario):
                 data['secciones'].append((nombre_seccion, indice_seccion, status_seccion))
 
         if num_platos > 0:
-            platos = bd.fetch_data("SELECT nombre, descripcion, precio, status, seccion, carta, indice FROM platos WHERE carta = ? AND usuario = ? ORDER BY indice", (nombre, usuario))
+            platos = bd.fetch_data("SELECT nombre, descripcion, precio, status, seccion, carta, indice FROM platos WHERE carta = %s AND usuario = %s ORDER BY indice", (nombre, usuario))
             for plato in platos:
                 nombre_plato = plato[0]
                 descripcion_plato = plato[1]
@@ -61,9 +61,12 @@ def editarSeccion(nombre, usuario, nombre_anterior, indice, status, carta,key):
     try:
         bd = DBController()
         bd.connect()
-        auth = bd.fetch_data("SELECT COUNT(*) FROM usuario WHERE usuario = ? AND passwd = ?", (usuario, key))
+        auth = bd.fetch_data("SELECT COUNT(*) FROM usuario WHERE usuario = %s AND passwd = %s", (usuario, key))
         if auth[0][0] == 0: return "NO"
-        result = bd.execute_query("UPDATE seccion SET nombre = ?, indice = ?, status = ? WHERE nombre = ? AND usuario = ? AND carta = ?", (nombre, indice, status, nombre_anterior, usuario, carta))
+
+        if indice == "": indice = 0
+        if status == '': status = None
+        result = bd.execute_query("UPDATE seccion SET nombre = %s, indice = %s, status = %s WHERE nombre = %s AND usuario = %s AND carta = %s", (nombre, indice, status, nombre_anterior, usuario, carta))
         if result == 0: return "Error, clave duplicada"
         bd.connection.commit()
         bd.disconnect()
@@ -75,10 +78,10 @@ def borrarSeccion(nombre, carta, usuario,key):
     try:
         bd = DBController()
         bd.connect()
-        auth = bd.fetch_data("SELECT COUNT(*) FROM usuario WHERE usuario = ? AND passwd = ?", (usuario, key))
+        auth = bd.fetch_data("SELECT COUNT(*) FROM usuario WHERE usuario = %s AND passwd = %s", (usuario, key))
         if auth[0][0] == 0: return "NO"
-        bd.execute_query("DELETE FROM seccion WHERE nombre = ? AND usuario = ? AND carta = ?", (nombre, usuario, carta))
-        bd.execute_query("DELETE FROM platos WHERE seccion = ? AND usuario = ? AND carta = ?", (nombre, usuario, carta))
+        bd.execute_query("DELETE FROM seccion WHERE nombre = %s AND usuario = %s AND carta = %s", (nombre, usuario, carta))
+        bd.execute_query("DELETE FROM platos WHERE seccion = %s AND usuario = %s AND carta = %s", (nombre, usuario, carta))
         bd.connection.commit()
         bd.disconnect()
         return "OK"
@@ -89,11 +92,14 @@ def crearSeccion(nombre_seccion, indice_seccion, status_seccion, usuario, carta,
     try:
         bd = DBController()
         bd.connect()
-        auth = bd.fetch_data("SELECT COUNT(*) FROM usuario WHERE usuario = ? AND passwd = ?", (usuario, key))
+        auth = bd.fetch_data("SELECT COUNT(*) FROM usuario WHERE usuario = %s AND passwd = %s", (usuario, key))
         if auth[0][0] == 0: return "NO"
-        existe = bd.fetch_data("SELECT COUNT(*) FROM seccion WHERE nombre = ? AND usuario = ? AND carta = ?", (nombre_seccion, usuario, carta))
+        existe = bd.fetch_data("SELECT COUNT(*) FROM seccion WHERE nombre = %s AND usuario = %s AND carta = %s", (nombre_seccion, usuario, carta))
         if existe[0][0] > 0: return "Error, clave duplicada"
-        bd.execute_query("INSERT INTO seccion (nombre, indice, status, usuario, carta) VALUES (?,?,?,?,?)", (nombre_seccion, indice_seccion, status_seccion, usuario, carta))
+
+        if indice_seccion == "": indice_seccion = 0
+        if status_seccion == '': status_seccion = None
+        bd.execute_query("INSERT INTO seccion (nombre, indice, status, usuario, carta) VALUES (%s,%s,%s,%s,%s)", (nombre_seccion, indice_seccion, status_seccion, usuario, carta))
         bd.connection.commit()
         bd.disconnect()
         return "OK"
