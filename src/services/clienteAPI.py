@@ -103,9 +103,8 @@ def Pedido():
         fecha_hora_formateada = fecha_hora_actual.strftime("%Y/%m/%d %H:%M:%S")
         bd = DBController()
         bd.connect()
-        count = bd.fetch_data("SELECT COUNT(*) FROM pedidos_activos ")
-        consulta = "INSERT INTO pedidos_activos (id, plato, cantidad, precio, usuario, mesa, fecha, estado, categoria) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
-        valores = (count[0][0]+1,plato.get('nombre'), plato.get('cantidad'), plato.get('precio'), session.get('username'), session.get('mesa'), fecha_hora_formateada, 0, plato.get('categoria'))
+        consulta = "INSERT INTO pedidos_activos (plato, cantidad, precio, usuario, mesa, fecha, categoria) VALUES (%s, %s, %s, %s, %s, %s, %s);"
+        valores = (plato.get('nombre'), plato.get('cantidad'), plato.get('precio'), session.get('username'), session.get('mesa'), fecha_hora_formateada, plato.get('categoria'))
         bd.execute_query(consulta, valores)
         bd.connection.commit()
     return render_template('cliente_carrito.html', establecimiento=session.get('establecimiento'))

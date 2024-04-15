@@ -41,9 +41,7 @@ function filtrado() {
                 break;
             }
         }
-        if (!categoryFound) {
-            categoria.parentElement.style.display = 'none';
-        }
+
     });
     
 }
