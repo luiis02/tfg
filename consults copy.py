@@ -3,14 +3,9 @@ import random
 alternativas = ["Cocacola", "Caña", "Fanta", "Pepsi", "Sprite"]
 titulos = ['Precio', 'Tiempo', 'Popularidad']
 
-def generaMatriz(tam_titulos=0, tam_alternativas=0):
-    if(tam_titulos == 0):
-        tam_titulos = tam_alternativas
-    elif(tam_alternativas == 0):
-        tam_alternativas = tam_titulos
-
-    filas = tam_alternativas + 2
-    columnas = tam_titulos + 2
+def generaMatriz(tam_titulos, tam_alternativas):
+    filas = tam_alternativas + 5
+    columnas = tam_titulos + 5
     matriz = [[" " for _ in range(columnas)] for _ in range(filas)]
     return matriz
 
@@ -130,38 +125,36 @@ def generaCriterios(alternativas, titulos):
     
     return matriz, matriz_vectores
 
+def matrizFinal(alternativas,titulos):
+    
+    matriz_peso,vector = generarPesos(titulos)
 
-
-
-def matriz_final(alternativas,titulos):
-    matriz_fin = generaMatriz(len(titulos),len(alternativas))
-    matriz_ponderacion, vector = generarPesos(titulos)
-    print(vector)
-    matriz,matriz_v = generaCriterios(alternativas, titulos)
-    for i in range(len(titulos)):
-        matriz_fin[0][i+1] = titulos[i]
-        if (i == len(titulos)-1):
-            matriz_fin[0][i+2] = "Ponderación"
+    matriz = generaMatriz(len(alternativas), len(titulos))
     for i in range(len(alternativas)):
-        matriz_fin[i+1][0] = alternativas[i]
+        matriz[i+1][0] = alternativas[i]
         if (i == len(alternativas)-1):
-            matriz_fin[i+2][0] = "Promedio"
+            matriz[i+2][0] = "Ponderación"
+            for j in range(len(vector)):
+                matriz[i+2][j+1] = vector[j]
     for i in range(len(titulos)):
-        for j in range(len(alternativas)):
-            matriz_fin[j+1][i+1] = matriz_v[i][j]
-    for i in range(len(titulos)):
-        matriz_fin[len(alternativas)+1][i+1] = matriz_ponderacion[i+1][len(titulos)+1]
-    
-    for i in range(len(alternativas)):
-        for j in range(len(titulos)):
-            if(matriz_fin[i+1][len(titulos)+1]==" "): 
-                matriz_fin[i+1][len(titulos)+1] = 0
-            #matriz_fin[i+1][len(titulos)+1]=0
-            matriz_fin[i+1][len(titulos)+1] += matriz_fin[len(alternativas)+1][j+1] * matriz_fin[i+1][j+1]
-            
-    print(" & GENERANDO MATRIZ FINAL")   
-    
-    imprimeMatriz(matriz_fin)
+        matriz[0][i+1] = titulos[i]
+        if (i == len(titulos)-1):
+            matriz[0][i+2] = "Priorización"
 
+    matriz_crit, matriz_vectores = generaCriterios(alternativas, titulos)
+    
+    for i in range(1, len(matriz)-1):
+        for j in range(1, len(matriz[0])-1):
+            if(matriz[i][j]==" "):
+                matriz[i][j] = matriz_vectores[j-1][i-1]
+    
+    for i in range(1, len(matriz)-1):
+        suma = 0
+        for j in range(1, len(matriz[0])-1):
+            suma += float(matriz[i][j])*float(matriz_peso[i][len(titulos)+1])
+        matriz[i][len(matriz[0])-1] = suma
 
-matriz_final(alternativas, titulos)
+    print(" & GENERANDO MATRIZ FINAL ")
+    imprimeMatriz(matriz)
+
+matrizFinal(alternativas,titulos)
