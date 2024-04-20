@@ -109,6 +109,8 @@ def calculaalternativa(maxi,mini, titulo, usuario):
         return 1
     if titulo == "tiempo":
         return objetivo_tiempo(usuario, maxi, mini)
+    if titulo == "popularidad":
+        return objetivo_popularidad(usuario, maxi, mini)
     bd = DBController()
     bd.connect()
     maxi = bd.fetch_data("SELECT id FROM platos WHERE nombre = %s AND usuario = %s", (maxi, usuario,))
@@ -209,7 +211,6 @@ def matriz_final(usuario,carta, seccion):
             matriz_fin[i+1][len(titulos)+1] += matriz_fin[len(alternativas)+1][j+1] * matriz_fin[i+1][j+1]
             
     print(" & GENERANDO MATRIZ FINAL")   
-    
     imprimeMatriz(matriz_fin)
 
 def objetivo_tiempo(usuario, plato1, plato2):
@@ -254,5 +255,43 @@ def objetivo_tiempo(usuario, plato1, plato2):
         return 9
     elif media_general < -15:
         return 1/9
+
+    return 1
+def objetivo_popularidad(usuario, plato1, plato2):
+    bd = DBController()
+    bd.connect()
+    total_popularidad_1 = 0
+    popularidad_pedido1 = bd.fetch_data("SELECT cantidad FROM pedidos_historicos WHERE usuario = %s AND plato = %s", (usuario, plato1,))
+    for i in range(len(popularidad_pedido1)):
+        total_popularidad_1 += popularidad_pedido1[i][0]
+    
+    popularidad_pedido2 = bd.fetch_data("SELECT cantidad FROM pedidos_historicos WHERE usuario = %s AND plato = %s", (usuario, plato2,))
+    total_popularidad_2 = 0
+    for i in range(len(popularidad_pedido2)):
+        total_popularidad_2 += popularidad_pedido2[i][0]
+
+    total_popularidad = total_popularidad_2 + total_popularidad_1
+    porcentaje_plato1 = total_popularidad_1 / total_popularidad * 100
+    
+    if porcentaje_plato1 < 10:
+        return 1/9
+    elif porcentaje_plato1 < 20:
+        return 1/7
+    elif porcentaje_plato1 < 30:
+        return 1/5
+    elif porcentaje_plato1 < 43:
+        return 1/3
+    elif porcentaje_plato1 < 57:
+        return 1
+    elif porcentaje_plato1 < 60:
+        return 3
+    elif porcentaje_plato1 < 70:
+        return 5
+    elif porcentaje_plato1 < 80:
+        return 7
+    elif porcentaje_plato1 < 90:
+        return 9
+    else: return 1
+
 
 matriz_final("root","Desayunos","Cafes")
