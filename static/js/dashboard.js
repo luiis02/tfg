@@ -161,4 +161,25 @@ function cerrarFormulario() {
     edtiform.style.display = "none";
 }
 
+function iapromote(){
+    var status2 = document.getElementById("iaprom");
+    fetch("/funcionalidad",{
+        method: "POST",
+        body: JSON.stringify({funcion:'ahp', status: status.checked}),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response => {
+        window.location.reload();
+        if (!response.ok) {
+            throw new Error("Error " + response.status + ": " + response.statusText);
+        }
+    })
+    .catch(error => {
+        window.location.reload();
+        console.error(error);
+    }
+    );
+}
 

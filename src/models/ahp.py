@@ -1,4 +1,3 @@
-import random
 from src.database.dbcontroller import DBController
 from datetime import timedelta
 
@@ -212,6 +211,7 @@ def matriz_final(usuario,carta, seccion):
             
     print(" & GENERANDO MATRIZ FINAL")   
     imprimeMatriz(matriz_fin)
+    return platos_ordenados(matriz_fin, alternativas, titulos)
 
 def objetivo_tiempo(usuario, plato1, plato2):
     bd = DBController()
@@ -257,22 +257,25 @@ def objetivo_tiempo(usuario, plato1, plato2):
         return 1/9
 
     return 1
+
 def objetivo_popularidad(usuario, plato1, plato2):
     bd = DBController()
     bd.connect()
-    total_popularidad_1 = 0
-    popularidad_pedido1 = bd.fetch_data("SELECT cantidad FROM pedidos_historicos WHERE usuario = %s AND plato = %s", (usuario, plato1,))
-    for i in range(len(popularidad_pedido1)):
-        total_popularidad_1 += popularidad_pedido1[i][0]
-    
-    popularidad_pedido2 = bd.fetch_data("SELECT cantidad FROM pedidos_historicos WHERE usuario = %s AND plato = %s", (usuario, plato2,))
-    total_popularidad_2 = 0
-    for i in range(len(popularidad_pedido2)):
-        total_popularidad_2 += popularidad_pedido2[i][0]
+    try:
+        total_popularidad_1 = 0
+        popularidad_pedido1 = bd.fetch_data("SELECT cantidad FROM pedidos_historicos WHERE usuario = %s AND plato = %s", (usuario, plato1,))
+        for i in range(len(popularidad_pedido1)):
+            total_popularidad_1 += popularidad_pedido1[i][0]
+        
+        popularidad_pedido2 = bd.fetch_data("SELECT cantidad FROM pedidos_historicos WHERE usuario = %s AND plato = %s", (usuario, plato2,))
+        total_popularidad_2 = 0
+        for i in range(len(popularidad_pedido2)):
+            total_popularidad_2 += popularidad_pedido2[i][0]
 
-    total_popularidad = total_popularidad_2 + total_popularidad_1
-    porcentaje_plato1 = total_popularidad_1 / total_popularidad * 100
-    
+        total_popularidad = total_popularidad_2 + total_popularidad_1
+        porcentaje_plato1 = total_popularidad_1 / total_popularidad * 100
+    except:
+        return 1    
     if porcentaje_plato1 < 10:
         return 1/9
     elif porcentaje_plato1 < 20:
@@ -293,5 +296,16 @@ def objetivo_popularidad(usuario, plato1, plato2):
         return 9
     else: return 1
 
+def platos_ordenados(matriz, alternativas, titulo):
+    platos = []
+    for i in range(len(alternativas)):
+        platos.append([alternativas[i], matriz[i+1][len(titulo)+1]])
+    platos.sort(key=lambda x: x[1], reverse=True)
+    print("---------Platos ordenados----------")
+    platos_short = []
+    for i in range(len(platos)):
+        platos_short.append(platos[i][0])
+        print(platos[i][0])
+    return platos
 
-matriz_final("root","Desayunos","Cafes")
+

@@ -8,6 +8,7 @@ import base64
 import json
 from src.database.dbcontroller import DBController
 from src.database.dbcontroller import DBController
+from src.models.ahp import matriz_final
 ##############################################################################################
 ##############################################################################################
 ##############################################################################################
@@ -26,10 +27,18 @@ def obtenPlatos(usuario, carta, seccion):
 
         data = {"num_platos": existe[0][0], "platos": []}
         if existe[0][0] > 0:
-            platos = bd.fetch_data("SELECT nombre,precio,descripcion,status,indice FROM platos WHERE carta = %s AND usuario = %s AND seccion = %s", (carta, usuario, seccion))
-            for plato in platos:
-                data["platos"].append({"nombre": plato[0], "precio": plato[1], "descripcion": plato[2], "status": plato[3], "indice": plato[4]})
-        
+            ia_power = bd.fetch_data("SELECT COUNT(*) FROM funcionalidades where usuario=%s and funcionalidad='ahp'", (usuario,))
+            if ia_power == 0:
+                platos = bd.fetch_data("SELECT nombre,precio,descripcion,status,indice FROM platos WHERE carta = %s AND usuario = %s AND seccion = %s", (carta, usuario, seccion))
+                for plato in platos:
+                    data["platos"].append({"nombre": plato[0], "precio": plato[1], "descripcion": plato[2], "status": plato[3], "indice": plato[4]})
+            else:
+                platos_ordernados = matriz_final(usuario, carta, seccion)
+                for plato in platos_ordernados:
+                    result = bd.fetch_data("SELECT precio, descripcion, status, indice FROM platos WHERE nombre = %s AND carta = %s AND usuario = %s AND seccion = %s", (plato[0], carta, usuario, seccion))
+                    data["platos"].append({"nombre": plato[0], "precio": result[0][0], "descripcion": result[0][1], "status": result[0][2], "indice": result[0][3]})
+
+                
         bd.disconnect()
         json_data = json.dumps(data)
         return "OK", json_data
