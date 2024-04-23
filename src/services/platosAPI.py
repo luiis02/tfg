@@ -41,8 +41,8 @@ def platos(nombre):
             indice_plato = plato['indice']
             status_plato = "Inactivo" if plato['status'] == 0 else "Activo"
             platos.append((nombre_plato, descripcion_plato, precio_plato, indice_plato, status_plato))
-        
-        return render_template('platos.html', username=session.get('username'), count_platos=count_platos, secciones=platos, nombre=session.get('carta'), establecimiento=session.get('establecimiento'), seccion=nombre)
+        print(session.get('ahp'))
+        return render_template('platos.html', username=session.get('username'), count_platos=count_platos, secciones=platos, nombre=session.get('carta'), establecimiento=session.get('establecimiento'), seccion=nombre, ahp = session.get('ahp'))
 
 @platos_routes.route('/getPlatos', methods=['GET'])
 def getPlatos():

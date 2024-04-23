@@ -55,7 +55,7 @@ p.change {
     font-family: system-ui;
     font-size: larger;
     margin-top: 2vh;
-    margin-bottom: 5vh;
+    margin-bottom: 2vh;
 }
 div#namepla {
     align-items: flex-end;
@@ -78,7 +78,7 @@ div#namepre {
     display: flex;
     justify-content: flex-end;
     margin-right: 2vw;
-    align-items: flex-end;
+    align-items: flex-start;
 }
 .aniade {
     background-color: #4CAF50;
@@ -141,6 +141,11 @@ footer {
     bottom: 0;
     left: 0;
     text-align: center;
+    z-index: 1000; /* Asegura que el footer esté sobre otros elementos */
+}
+
+body {
+    margin-bottom: 20vh; 
 }
 
 .footer {
@@ -308,4 +313,23 @@ img.pedidoconfirmado-img2 {
     margin-bottom: 1px;
     background-color: #8cbfff;
     font-family: none;
+}
+
+.iarecomendationclient {
+    background-color: #b3d6d9c7;
+    color: black;
+    font-weight: 600;
+    padding: 10px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    max-width: 80%;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2vh;
+}
+
+
+.envolveria{
+    display: flex;
+    justify-content: center;
 }

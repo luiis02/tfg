@@ -28,8 +28,8 @@ def obtenPlatos(usuario, carta, seccion):
         data = {"num_platos": existe[0][0], "platos": []}
         if existe[0][0] > 0:
             ia_power = bd.fetch_data("SELECT COUNT(*) FROM funcionalidades where usuario=%s and funcionalidad='ahp'", (usuario,))
-            if ia_power == 0:
-                platos = bd.fetch_data("SELECT nombre,precio,descripcion,status,indice FROM platos WHERE carta = %s AND usuario = %s AND seccion = %s", (carta, usuario, seccion))
+            if ia_power[0][0] == 0:
+                platos = bd.fetch_data("SELECT nombre,precio,descripcion,status,indice FROM platos WHERE carta = %s AND usuario = %s AND seccion = %s ORDER BY `platos`.`indice` ASC", (carta, usuario, seccion))
                 for plato in platos:
                     data["platos"].append({"nombre": plato[0], "precio": plato[1], "descripcion": plato[2], "status": plato[3], "indice": plato[4]})
             else:

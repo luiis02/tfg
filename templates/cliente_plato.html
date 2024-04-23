@@ -4,9 +4,9 @@
     <h1 class="back">Volver a...</h1>
     <div class="bc">
         <a href="/carta" class="breadcrcla">Cartas</a>
-        <p class="change">⮞</p>
+        <p class="change">〰️​</p>
         <a href="/secciones" class="breadcrcla">Secciones</a>
-        <p class="change">⮞</p>
+        <p class="change">〰️​</p>
         <a href="#" class="breadcrcla">Actual</a>
     </div>
 </div>
@@ -17,41 +17,48 @@
 <div class="menu">
     <h1 class="tit1">En {{ nombre }} tenemos...</h1>
     <div class="submenu">
-        {% for plato in platos %}
-        <div class="platos" id="{{plato.nombre}}">
-            <div class="subseccion1">
-                <div id="namepla">
-                    <b> {{ plato.nombre }} </b>
-                </div>
-                <div id="namepre">
-                    {{ plato.precio }}€
-                </div>
-
-                <div class="contadortotal">
-                    <button class="elimina" id="elimina{{ plato.nombre }}"
-                        onclick="decrementCounter('cant{{ plato.nombre }}', '{{ plato.nombre }}','{{ nombre }}')">-</button>
-
-                    <b id="cant{{ plato.nombre }}">0</b>
-                    <button class="aniade" id="aniade{{ plato.nombre }}"
-                        onclick="incrementCounter('cant{{ plato.nombre }}', '{{ plato.nombre }}', '{{ nombre }}')">+</button>
-                </div>
+        {% if ahp %}
+        <div class="envolveria">
+            <div class="iarecomendationclient">
+                <p>🤖​ Recomendaciones basadas en IA</p>
             </div>
-            <div class="subseccion2">
-                {{ plato.descripcion }}
+        </div>
+        {% endif %}
+    {% for plato in platos %}
+    <div class="platos" id="{{plato.nombre}}">
+        <div class="subseccion1">
+            <div id="namepla">
+                <b> {{ plato.nombre }} </b>
+            </div>
+            <div id="namepre">
+                {{ plato.precio }}€
             </div>
 
-            <hr class="separapla">
+            <div class="contadortotal">
+                <button class="elimina" id="elimina{{ plato.nombre }}"
+                    onclick="decrementCounter('cant{{ plato.nombre }}', '{{ plato.nombre }}','{{ nombre }}')">-</button>
 
+                <b id="cant{{ plato.nombre }}">0</b>
+                <button class="aniade" id="aniade{{ plato.nombre }}"
+                    onclick="incrementCounter('cant{{ plato.nombre }}', '{{ plato.nombre }}', '{{ nombre }}')">+</button>
+            </div>
+        </div>
+        <div class="subseccion2">
+            {{ plato.descripcion }}
         </div>
 
-        {% endfor %}
-
+        <hr class="separapla">
 
     </div>
-    {% endblock %}
+
+    {% endfor %}
 
 
-    {% block scriptjs %}
-        <script src="{{ url_for('static', filename='js/plato.js') }}"></script>
+</div>
+{% endblock %}
 
-    {% endblock %}
+
+{% block scriptjs %}
+<script src="{{ url_for('static', filename='js/plato.js') }}"></script>
+
+{% endblock %}

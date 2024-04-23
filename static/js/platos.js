@@ -23,6 +23,7 @@ document.getElementById("createSeccionForm").addEventListener("submit", function
         mostrarMensajeTemporal("No se puede crear un plato sin nombre", 7);
         return;
     }
+    if (formData.get("descripción") === "") formData.set("descripción", " ");
     if (formData.get("precio") === "") formData.set("precio", 0);
     fetch("/createPlato", {
         method: "POST",

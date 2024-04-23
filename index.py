@@ -42,14 +42,14 @@ def dashboard():
     response = requests.get(url_for('cartas_routes.getCartas', _external=True), cookies={'auth': session.get('username')})
     response2 = requests.get(url_for('funcionalidades_routes.getfuncionalidades', _external=True),cookies={'auth': session.get('username')})
     
-    ahp = "Desactivado: "
+    ahp = False
     if response2.status_code == 200:
         data = response2.json()
         for funcionalidad in data:
             if funcionalidad[2] == 'ahp':
-                ahp = "Activado: "
-                print("AHP")
-    
+                ahp = True
+
+    session['ahp'] = ahp    
 
     if response.status_code == 200:  # Verificar si la solicitud fue exitosa
         data = response.json()  # Convertir la respuesta JSON en un diccionario

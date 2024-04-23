@@ -25,7 +25,15 @@ def acorta_cartas_Url(nombre, mesa):
     session['username'] = nombre
     session['mesa'] = mesa
     session['rol'] = 'cliente'
-
+    bd = DBController()
+    bd.connect()
+    consulta_previa = "SELECT id FROM usuario WHERE usuario = %s"
+    consulta_previa = bd.fetch_data(consulta_previa, (nombre,))
+    print(consulta_previa[0][0])
+    consulta = "SELECT COUNT(*) FROM mesas WHERE id_establecimiento = %s AND numero_mesa=%s"
+    consulta = bd.fetch_data(consulta, (consulta_previa[0][0],mesa))
+    if consulta[0][0] == 0:
+        return redirect(url_for('user_routes.login'))
     return redirect(url_for('clientes_routes.Carta'))
 
 
@@ -85,13 +93,14 @@ def Plato():
         return redirect(url_for('user_routes.login'))
     response = requests.get(url_for('platos_routes.getPlatos', _external=True), cookies={'auth': session.get('username'), 'carta': session.get('carta'), 'seccion': session.get('seccion')})
     data = []
+    
     if response.status_code == 200:
         platos = response.json().get('platos')
         for plato in platos:
             if plato['descripcion'] == "None": plato['descripcion'] = ""
             if plato['status'] == 1:
                 data.append({'nombre': plato['nombre'], 'descripcion': plato['descripcion'], 'precio': plato['precio']})
-    return render_template('cliente_plato.html', platos=data, nombre=session.get('seccion'), establecimiento=session.get('establecimiento'))
+    return render_template('cliente_plato.html', platos=data, nombre=session.get('seccion'), establecimiento=session.get('establecimiento'), ahp=session.get('ahp'))
 
 @clientes_routes.route('/pedido', methods=['GET', 'POST'])
 def Pedido():

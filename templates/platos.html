@@ -11,8 +11,15 @@
             <p class="next"> ➤</p> <a href="" class="e3">Actual</a>
         </div>
         <div id="1">
+            <div class="recuadro-tabla">
+                {% if ahp %}
+                    <p>🤖​ Resultados ordenados por IA en base a gustos de consumidores</p>
+                {% endif %}
+            </div>
             <div class="tittlecontainer">
                 <h1 class="titulo">{{seccion}} ({{nombre}}):</h1>
+            </div>
+            <div>
             </div>
             <div class="recuadro-tabla">
                 <table>
@@ -67,7 +74,6 @@
                 <div id="container-instr">
                     <span id="close-instructions" onclick="cerrarInstrucciones()">X</span>
                     <h2 id="title-inst">Instrucciones de uso</h2>
-                    
                     <br>
                     <ul class="instruccioneslista">
                         <li>Para añadir una seccion rellena el formulario de la primera fila de la tabla</li>
