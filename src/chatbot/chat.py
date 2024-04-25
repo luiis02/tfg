@@ -1,12 +1,14 @@
-#chat.py
 import os,random,json,torch
 from model import NeuralNet
 from nltk_utils import bag_of_words, tokenize
-
+#from src.chatbot.generate import generaJSON
+from generate import generaJSON
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-with open("intents.json") as json_data:
-    intents = json.load(json_data)
+#with open("intents.json") as json_data:
+    #intents = json.load(json_data)
+intents = generaJSON()
+print(type(intents))
 
 data_dir = os.path.join(os.path.dirname(__file__))
 FILE = os.path.join(data_dir, 'chatdata.pth')

@@ -7,7 +7,14 @@ bd = DBController()
 bd.connect()
 
 # Ejecutar una consulta
-bd.execute_query("INSERT INTO tag (sentence, uso, realimentacion) VALUES ('1', 1, 10)", "")
+bd.execute_query("INSERT INTO intents (tag, Tipo, Texto, indice_apoyo) VALUES ('pedir', 1,%s,2)", ("Pedido anotado",))
+bd.execute_query("INSERT INTO intents (tag, Tipo, Texto, indice_apoyo) VALUES ('pedir', 1,%s,2)", ("Pedido recibido",))
+bd.execute_query("INSERT INTO intents (tag, Tipo, Texto, indice_apoyo) VALUES ('pedir', 1,%s,2)", ("Recibido en cocina",))
+
+
+
+
+
 
 # Desconectar de la base de datos
 bd.disconnect()
