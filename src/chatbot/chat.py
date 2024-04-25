@@ -37,22 +37,18 @@ def get_response(msg):
 
     probs = torch.softmax(output, dim=1)
     prob = probs[0][predicted.item()]
-    if prob.item() > 0.75:
+    print(prob.item())
+    if prob.item() > 0.65:
         for intent in intents['intents']:
             if tag == intent["tag"]:
                 return random.choice(intent['responses'])
-    return "I do not understand..."
+    return "No te he entendido. Que querias..."
 
 def reentrena():
-    status = input("a. Una accion fue realizada incorrectamente \n b. Una accion no fue realizada \n")
-    if status == "a":
-        print("Por favor, describa la accion que fue realizada incorrectamente")
-    if status == "b":
-        numero = input("Cual de estas categoria se ajusta más a su necesidad? \n1. Salud\n2. Educación\n3. Deportes\n4. Tecnología\n")
-        frase = input("Con que frase se ha referido a esa categoría: \n")
-        print("Categoria: ",numero, "Frase: ",frase)
-        print("Gracias por su respuesta, estamos reentrenando el modelo para mejorar su experiencia")
-
+    numero = input("Cual de estas categoria se ajusta más a su necesidad? \n1. Salud\n2. Educación\n3. Deportes\n4. Tecnología\n")
+    frase = input("Con que frase se ha referido a esa categoría: \n")
+    print("Categoria: ",numero, "Frase: ",frase)
+    print("Gracias por su respuesta, estamos reentrenando el modelo para mejorar su experiencia")
 
 if __name__ == "__main__":
     print("Let's chat! (type 'quit' to exit)")

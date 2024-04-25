@@ -1,23 +1,110 @@
 {
     "intents": [
-        {
-            "tag": "saludos",
-            "patterns": [
-                "Hi",
-                "Hey",
-                "Hola",
-                "Hola que tal",
-                "Buenos dias",
-                "buenas tardes",
-                "buenas noches",
-                "hola como estas",
-                "hola que tal",
-                "saludos"
-            ],
-            "responses": [
-                "Hola, ¿en qué puedo ayudarte?",
-                "Bienvenido, ¿en qué puedo ayudarte?"
-            ]
-        }
+      {
+        "tag": "saludos",
+        "patterns": [
+          "Hi",
+          "Hey",
+          "Hola",
+          "Hola que tal",
+          "Buenos dias",
+          "Buenas tardes",
+          "Buenas noches",
+          "Saludos"
+        ],
+        "responses": [
+          "Hey :-)",
+          "Hola, en que te puedo ayudar",
+          "Bienvenido, ¿en que puedo ayudarte?",
+          "Estoy encantado de poder ayudarte"
+        ]
+      },
+      {
+        "tag": "despedida",
+        "patterns": ["Adios", 
+        "Hasta luego", 
+        "Hasta pronto", 
+        "Nos vemos", 
+        "Chao", 
+        "Bye"],
+        "responses": [
+          "Adios, que tengas un buen dia",
+          "Hasta luego, cuidate",
+          "Nos vemos, gracias por tu visita"
+        ]
+      },
+      {
+        "tag": "agradecimientos",
+        "patterns": ["Gracias", 
+        "Muchas gracias",
+        "Gracias por tu ayuda"
+        ],
+        "responses": ["De nada",
+          "No hay de que",
+          "Estoy para ayudarte"
+        ]
+
+      },
+      {
+        "tag": "camarero",
+        "patterns": [
+          "camarero",
+          "puede venir un camarero?",
+          "necesito un camarero",
+          "camarero por favor",
+          "solicitar camarero",
+          "necesito ayuda",
+          "mesero",
+          "mesera",
+          "puede venir un mesero?",
+          "necesito que me atiendan presencialmente",
+          "atencion real"
+        ],
+        "responses": [
+          "Un camarero vendra enseguida",
+          "Claro, en un momento llega el camarero",
+          "El camarero ha sido avisado"
+        ]
+      },        
+      {
+        "tag": "pagar",
+        "patterns": [
+          "Cuanto es?",
+          "Cuanto tengo que pagar?",
+          "Quiero pagar",
+          "Quiero la cuenta",
+          "La cuenta por favor",
+          "Puedo pagar?",
+          "Pagar",
+          "La multa por favor"
+        ],
+        "responses": [
+          "Claro, enseguida le traigo la cuenta",
+          "Un momento, le traigo la cuenta"
+        ]
+      },
+      {
+        "tag": "pedir",
+        "patterns": [
+          "Quiero",
+          "Me gustaria",
+          "Deseo",
+          "Necesito",
+          "Quiero pedir",
+          "Me gustaria pedir",
+          "Ponme",
+          "Dame",
+          "Traeme",
+          "Quiero ordenar",
+          "Quiero hacer un pedido",
+          "Quiero hacer un encargo",
+          "Anota"
+        ],
+        "responses": [
+          "Pedido anotado",
+          "Pedido recibido",
+          "Recibido en cocina"
+        ]
+      }
     ]
-}
+  }
