@@ -2,37 +2,38 @@
 <html>
 
 <head>
-    
+
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/carta.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <link rel="icon" href="../static/img/image-removebg-preview.png">
 </head>
 
 <body>
     <header>
         <nav>
             <div class="img-container">
-             <img id="logo" src="../static/img/image-removebg-preview.png" alt="">
+                <img id="logo" src="../static/img/image-removebg-preview.png" alt="">
             </div>
             <div class="empresaName">
                 <h1>{{ establecimiento }}</h1>
                 <h3 id="subtitulo"> by ApuntaJefe</h3>
-          
+
             </div>
             <div class="container-submenu">
                 <ul id="submenu">
                     <li><a class="submenuenl" href="{{ base_domain }}/dashboard">Inicio</a></li>
                     <li><a class="submenuenl" href="{{ base_domain }}/mesa">Mesas</a></li>
+                    <li><a class="submenuenl" href="{{ base_domain }}/gestion">Atender </a></li>
                     <li><a class="submenuenl" href="{{ base_domain }}/cierresesion">Cerrar sesión</a></li>
                 </ul>
             </div>
         </nav>
     </header>
-    
+
     <div id="burbleadvice">
         <img id="checkimg"
             src="../static/img/casilla-verificacion-3d-marca-verificacion-ilustracion-3d_115990-1862-removebg-preview.png"
@@ -41,10 +42,96 @@
         <p id="count">7</p>
     </div>
     {% block content %}{% endblock %}
+    {% block content_bot %}
+    <div class="bot-dudas">
+        <button class="bot_chat" onclick="enablechatbot()">
+            <img id="logo-gif" src="../static/img/robot-bender-6.gif" alt="">
+        </button>
+    </div>
+    <div class="global-chat-text">
+        <div class="bot-title">
+            <h2>Crubo</h2>
+            <p> (asistente virtual)</p>
+            <br>
+        </div>
+        <div class="bot-text-conver">
+
+        </div>
+        <div>
+            <p id="escribiendochat">Escribiendo...</p>
+        </div>
+        <div class="form-chatbot">
+            <input type="text" class="escribe-dudas" placeholder="Escriba sus dudas aquí...">
+            <button onclick="postConver()">🤖</button>
+        </div>
+
+    </div>
+
+    {% endblock %}
+
+    <script>
+        function enablechatbot() {
+            var chatText = document.querySelector('.global-chat-text');
+            if (chatText) {
+                if (chatText.style.display === 'block') {
+                    chatText.style.display = 'none';
+                } else {
+                    chatText.style.display = 'block';
+                }
+            }
+        }
 
 
+        function insertaMsgUSER(msg) {
+            var contenedor = document.querySelector('.bot-text-conver');
+            var nuevoMensaje = document.createElement('p');
+            nuevoMensaje.textContent = msg;
+            nuevoMensaje.classList.add('pregunta-userabot');
+            contenedor.appendChild(nuevoMensaje);
+        }
+        function insertaMsgBot(msg) {
+            var contenedor = document.querySelector('.bot-text-conver');
+            var nuevoMensaje = document.createElement('p');
+            nuevoMensaje.textContent = msg;
+            nuevoMensaje.classList.add('respuesta-bot');
+            contenedor.appendChild(nuevoMensaje);
+        }
+        function postConver() {
+            document.getElementById('escribiendochat').style.display = 'flex';
+            var inputValor = document.querySelector('.escribe-dudas').value;
+            document.querySelector('.escribe-dudas').value = '';
+            var datos = {
+                dudas: inputValor
+            };
+            var requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(datos)
+            };
+            insertaMsgUSER(inputValor);
+
+            fetch('/getRespuestaAPI', requestOptions)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Hubo un problema al enviar la solicitud.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Respuesta del servidor:', data);
+                    document.getElementById('escribiendochat').style.display = 'none';
+                    insertaMsgBot(data.mensaje);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+            });
+        }
+
+    </script>
     {% block scriptjs %}{% endblock %}
-    
+
 </body>
 
 </html>

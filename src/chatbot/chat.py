@@ -3,10 +3,9 @@ from model import NeuralNet
 from nltk_utils import bag_of_words, tokenize
 #from src.chatbot.generate import generaJSON
 from generate import generaJSON
+
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-#with open("intents.json") as json_data:
-    #intents = json.load(json_data)
 intents = generaJSON()
 print(type(intents))
 
@@ -40,7 +39,7 @@ def get_response(msg):
     probs = torch.softmax(output, dim=1)
     prob = probs[0][predicted.item()]
     print(prob.item())
-    if prob.item() > 0.65:
+    if prob.item() > 0.7:
         for intent in intents['intents']:
             if tag == intent["tag"]:
                 return random.choice(intent['responses'])
@@ -53,7 +52,7 @@ def reentrena():
     print("Gracias por su respuesta, estamos reentrenando el modelo para mejorar su experiencia")
 
 if __name__ == "__main__":
-    print("Let's chat! (type 'quit' to exit)")
+    print("Chateemos! (pulsa 'quit' para cerrar el chatbot)")
     while True:
         sentence = input("You: ")
         if sentence == "quit":
