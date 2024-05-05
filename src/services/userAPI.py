@@ -5,6 +5,7 @@ from src.models.forms.registerForm import RegistrationForm
 from src.database.dbcontroller import DBController
 from src.models.forms.loginForm import LoginForm
 from src.models.forms.confirmForm import ConfirmForm
+
 ##############################################################################################
 ##############################################################################################
 ##############################################################################################
@@ -17,18 +18,26 @@ import requests
 ##############################################################################################
 ##############################################################################################
 from flask import Blueprint, render_template, redirect, url_for, session, request, jsonify
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from src.models.forms.confirmForm import ConfirmForm
 user_routes = Blueprint("user_routes", __name__)
 ##############################################################################################
 ##############################################################################################
 ##############################################################################################
 
+class User(UserMixin):
+    def __init__(self, id):
+        self.id = id
+
+
+     
 '''
     - Ruta: register
     - Método: GET, POST
     - Descripción: Permite el registro de un usuario en la aplicación. Crea un formulario 
       y en funcion del estado devuelto por el servicio redirige o muestra un error.
 '''
+
 @user_routes.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
@@ -58,7 +67,6 @@ def login():
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
-        
         if LoginUser(username, password):
             return redirect(url_for('dashboard'))
         else:
@@ -83,7 +91,9 @@ def confirm(username):
 
 
 @user_routes.route('/cierresesion')
+@login_required
 def cierresesion():
+    logout_user() 
     session.pop('username', None)
     return redirect(url_for('user_routes.login'))
 
@@ -174,6 +184,8 @@ def LoginUser(username, password):
         session['username'] = username
         session['rol'] = 'admin'
         session['authapi'] = password
+        user = User(username)
+        login_user(user)  
     return init
 
 def ConfirmUser(username, codigo):

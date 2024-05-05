@@ -1,13 +1,8 @@
 
-from flask import jsonify, redirect, render_template, request, session, url_for
+from flask import jsonify, redirect, request, session, url_for
 from flask import redirect, url_for
-from src.database.dbcontroller import DBController
 from flask import request
 from src.models.carta import obtenCartas,eliminarCarta,crearCarta,editaCarta
-##############################################################################################
-##############################################################################################
-##############################################################################################
-import json
 ##############################################################################################
 ##############################################################################################
 ##############################################################################################

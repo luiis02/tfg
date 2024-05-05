@@ -3,11 +3,12 @@ from model import NeuralNet
 from nltk_utils import bag_of_words, tokenize
 #from src.chatbot.generate import generaJSON
 from generate import generaJSON
+#from src.database.dbcontroller import DBController
+from dbcontroller import DBController
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 intents = generaJSON()
-print(type(intents))
 
 data_dir = os.path.join(os.path.dirname(__file__))
 FILE = os.path.join(data_dir, 'chatdata.pth')
@@ -23,8 +24,8 @@ model_state = data["model_state"]
 model = NeuralNet(input_size, hidden_size, output_size).to(device)
 model.load_state_dict(model_state)
 model.eval()
-
 bot_name = "iris-NLP"
+
 def get_response(msg):
     sentence = tokenize(msg)
     X = bag_of_words(sentence, all_words)
@@ -45,13 +46,23 @@ def get_response(msg):
                 return random.choice(intent['responses'])
     return "No te he entendido. Que querias..."
 
-def reentrena():
-    numero = input("Cual de estas categoria se ajusta más a su necesidad? \n1. Salud\n2. Educación\n3. Deportes\n4. Tecnología\n")
-    frase = input("Con que frase se ha referido a esa categoría: \n")
-    print("Categoria: ",numero, "Frase: ",frase)
+def reentrena(frase):
+    val = input("Te ha sido de ayuda? (S/N):")
+    bd = DBController()
+    bd.connect()
+    if val == "S":
+        bd.execute_query("UPDATE intents set indice_apoyo=indice_apoyo+1 where texto=%s", (frase,))
+    else:
+        numero = input("Cual de estas categoria se ajusta más a su necesidad? \n1. Saludar  \n2. Solicitar un camarero \n3. Hacer un pedido\n4. Pagar\n")
+        print("Categoria: ",numero, "Frase: ",frase)
+        if numero == "1": categoria = "saludos"
+        if numero == "2": categoria = "camarero"
+        if numero == "3": categoria = "pedir"
+        if numero == "4": categoria = "pagar"
+        bd.execute_query("INSERT INTO intents (indice_apoyo, tag, Tipo, Texto) VALUES (2, %s,0, %s)", (categoria,frase,))
     print("Gracias por su respuesta, estamos reentrenando el modelo para mejorar su experiencia")
 
-if __name__ == "__main__":
+def chatbot_mini():
     print("Chateemos! (pulsa 'quit' para cerrar el chatbot)")
     while True:
         sentence = input("You: ")
@@ -59,9 +70,18 @@ if __name__ == "__main__":
             break
         resp = get_response(sentence)
         print(resp)
-    input("Te ha sido de ayuda? (S/N):")
-    if input == "S":
-        print("Gracias por tu respuesta")
-    else:
-        reentrena()
+        aleatorio = random.randint(0, 10)
+        if aleatorio == 9:
+            reentrena(sentence)
 
+def chatbot_mini_asincrono(sentence):
+    resp = get_response(sentence)
+    print(resp)
+    aleatorio = random.randint(0, 10)
+    if aleatorio == 9:
+        reentrena(sentence)
+    return resp
+
+chatbot_mini_asincrono("Me preparas una cocacola y tres gintonics")
+
+#chatbot_mini()

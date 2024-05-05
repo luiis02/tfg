@@ -1,6 +1,6 @@
-from flask import Flask, redirect, render_template, session, url_for
-from flask import redirect, url_for, request
-
+from flask import Flask, render_template, session, url_for
+from flask import url_for
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 import requests
 ##########################################################################
 ##################################### SRC ################################
@@ -15,12 +15,11 @@ from src.services.clienteAPI import clientes_routes
 from src.services.gestionaAPI import gestion_routes
 from src.services.funcionalidadesAPI import funcionalidades_routes
 from src.services.chatbot_soporteAPI import chatbot_routes
+from src.services.userAPI import User
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tu_clave_secreta_aqui'
-
-
-
-
+login_manager = LoginManager(app)
 
 app.register_blueprint(secciones_routes)
 app.register_blueprint(cartas_routes)
@@ -33,12 +32,14 @@ app.register_blueprint(gestion_routes)
 app.register_blueprint(funcionalidades_routes)
 app.register_blueprint(chatbot_routes)
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User(user_id)
+
 
 @app.route('/dashboard')
-
+@login_required
 def dashboard():
-    if 'username' not in session or session['rol'] != 'admin':
-        return redirect(url_for('user_routes.login'))
     
     # Hacer la solicitud y manejar la respuesta
     response = requests.get(url_for('cartas_routes.getCartas', _external=True), cookies={'auth': session.get('username')})
@@ -71,17 +72,6 @@ def dashboard():
         # Manejar el caso donde la solicitud no fue exitosa
         return "Error al obtener las cartas", 500  # Puedes personalizar el mensaje de error y el código de estado según sea necesario
 
-@app.route('/post', methods=['POST'])
-def handle_post():
-    data = request.form.get('data') # Obtener los datos enviados en la solicitud POST
-    print('Datos recibidos:', data)
-    return 'Solicitud POST recibida correctamente'
-
-
-
-
-
 if __name__ == '__main__':
-    #app.run(debug=True)
-    app.run(host='0.0.0.0', port=8000, debug=True)
+    app.run(host='0.0.0.0', port=8000, debug=False)
 

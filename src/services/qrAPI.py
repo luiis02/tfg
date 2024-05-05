@@ -1,29 +1,22 @@
 from flask import jsonify, redirect, render_template, request, session, url_for
 from flask import redirect, url_for
-from io import BytesIO
-from src.database.dbcontroller import DBController
 from src.models.qr import createMesa, obtenerMesa, eliminaMesa
 ##############################################################################################
 ##############################################################################################
 ##############################################################################################
-import qrcode
 import base64
 import requests
-import json
 ##############################################################################################
 ##############################################################################################
 ##############################################################################################
 from flask import Blueprint, render_template, redirect, url_for, session, request, jsonify
-from src.models.forms.confirmForm import ConfirmForm
 qr_routes = Blueprint("qr_routes", __name__)
 ##############################################################################################
 ##############################################################################################
 ##############################################################################################
 @qr_routes.route('/mesa', methods=['GET', 'POST'])
 def mesa():
-    auth_crear_mesa=0
     if not session.get('username') or not session.get('rol') == 'admin':
-        auth_crear_mesa=1
         return redirect(url_for('user_routes.login'))
     response = requests.get(url_for('qr_routes.getMesa', _external=True), cookies={'auth': session.get('username')})
     if response.status_code == 200:

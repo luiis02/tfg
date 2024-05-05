@@ -986,13 +986,18 @@ input#bttndivsubmit {
     top: 50%;
     left: 10%;
     transform: translate(-50%, -50%);
-    background-color: #ffffff;
+    background-color: #f5f5f5;
     border-bottom-right-radius: 10px;
     border-top-right-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); 
 }
 
 
+.form-chatbot {
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 
 .bot-title {
     display: flex;
@@ -1029,8 +1034,9 @@ input#bttndivsubmit {
 }
 
 .escribe-dudas{
+    all: unset;
     margin-left: 10px;
-    width: max-content;
+    width: max-content !important;
 }
 
 
@@ -1052,3 +1058,8 @@ p#escribiendochat {
     font-family: none;
     color: #555555;
 }
+
+
+
+
+
