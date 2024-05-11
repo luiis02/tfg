@@ -36,6 +36,9 @@ app.register_blueprint(chatbot_routes)
 def load_user(user_id):
     return User(user_id)
 
+@app.route('/')
+def index():
+    return render_template('landing.html',)
 
 @app.route('/dashboard')
 @login_required

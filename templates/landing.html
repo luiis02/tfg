@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="../static/css/landing.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="../static/img/image-removebg-preview.png">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Obtenemos todos los enlaces del menú
+            const links = document.querySelectorAll('.menuhead nav ul li a');
+            
+            // Iteramos sobre cada enlace
+            links.forEach(link => {
+                // Agregamos un evento de clic a cada enlace
+                link.addEventListener('click', function (event) {
+                    event.preventDefault(); // Evitamos el comportamiento predeterminado del enlace
+                    const targetId = this.getAttribute('href'); // Obtenemos el ID del destino del enlace
+                    const targetSection = document.querySelector(targetId); // Buscamos el elemento con el ID correspondiente
+                    if (targetSection) {
+                        // Desplazamos suavemente hasta el elemento
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <header>
+        <div class="menuhead">
+            <nav>
+                <ul>
+                    <li><a href="#quienes-somos">Inicio</a></li>
+                    <li><a href="#quienes-somos">Quienes somos</a></li>
+                    <li><a href="#como-funciona">Como funciona</a></li>
+                    <li><a href="#blog">Blog</a></li>
+                    <li><a href="#precios">Precios</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="loginhead">
+            <nav>
+                <ul>
+                    <li><a href="login">Iniciar sesion</a></li>
+                    <li><a href="register">Registrarse</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="imagenesIA">
+        <img class="img1-ia" src="../static/img/camareros.jpg" alt="">
+    </div>
+    <div class="titulodiv">
+        <h1 class="titulopag">ApuntaJefe</h1>
+        <div class="subtit"> Y revoluciona tu negocio</div>
+    </div>
+    <div class="separador"></div>
+    <div id="quienes-somos" class="quinessomos">
+        <h2>¿Quienes somos?</h2>
+        <p>Somos una empresa que se dedica a la creacion de aplicaciones para la gestion de negocios, con el fin de
+            facilitar la vida de los emprendedores y empresarios, ayudandoles a llevar un control de sus negocios de una
+            manera mas eficiente y sencilla.</p>
+    </div>
+    <div id="como-funciona" class="comofunciona">
+        <h2>¿Como funciona?</h2>
+        <p>ApuntaJefe es una aplicacion web que te permite llevar un control de tu negocio de una manera sencilla y
+            eficiente, con la posibilidad de llevar un control de tus ventas, gastos, inventario y empleados, ademas de
+            poder generar reportes de tus ventas y gastos, y llevar un control de tus empleados. <br><br> Por si te
+            queda cualquier duda, hemos puesto un video de youtube explicando que hace nuestra herramienta</p>
+        <div id="tutorialDemostra">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/lJIrF4YjHfQ?si=abKHKaUQcoubl30R"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </div>
+    <div id="blog" class="blog">
+        <h2>Blog</h2>
+        <p><span class="fecha-post">11/05/2024</span> <span class="title-post">¡El comienzo de algo realmente
+                emocionante!</span> <br> <br> Estamos a punto de
+            iniciar un proyecto innovador que cambiará por completo la forma en que trabaja la hostelería. Este es solo
+            el primer
+            paso hacia un futuro lleno de oportunidades y avances tecnológicos. Para mantenerte informado sobre cada
+            paso de nuestro progreso y ser el primero en experimentar esta emocionante tecnología, hemos lanzado nuestra
+            newsletter exclusiva. Únete a nosotros para obtener acceso privilegiado a actualizaciones, avances y
+            lanzamientos anticipados. ¡No te pierdas esta emocionante aventura hacia el futuro!</p>
+            <div class="suscribenews">
+                <p>Para no perderte ninguna novedad suscribete a nuestra newsletter. Y consigue acceso prioritario</p>
+                <button class="contrata">Suscribirse ahora</button>
+            </div>
+    </div>
+    <div id="precios" class="precios">
+        <h2>Precios</h2>
+        <div class="opcprecio">
+            <figure>
+                <div class="pricetitle">Starter</div>
+                <div class="ventajaslista">
+                    <ul>
+                        <li>✔️ Atender por QR</li>
+                        <li>✔️ Control de ventas</li>
+                        <li>✔️ Control de gastos</li>
+                        <li>✔️ QR ilimitados</li>
+                        <li>✔️ Cartas ilimitadas</li>
+                        <li>✔️ Cancela cuando quieras</li>
+                        <li>❌ Reportes IA</li>
+                        <li>❌ Soporte tecnico</li>
+                    </ul>
+                </div>
+                <div class="price">
+                    <div class="price-old">5€/mes</div>
+                    <div class="priceactual">0€/mes</div>
+                </div>
+                <button class="contrata">Contratar!</button>
+            </figure>
+            <figure>
+                <div class="pricetitle">Advanced</div>
+                <div class="ventajaslista">
+                    <ul>
+                        <li>✔️ Atender por QR</li>
+                        <li>✔️ Control de ventas</li>
+                        <li>✔️ Control de gastos</li>
+                        <li>✔️ QR ilimitados</li>
+                        <li>✔️ Cartas ilimitadas</li>
+                        <li>✔️ Cancela cuando quieras</li>
+                        <li>✔️ Reportes IA</li>
+                        <li>✔️ Soporte tecnico</li>
+                    </ul>
+                </div>
+                <div class="price">
+                    <div class="price-old">10€/mes</div>
+                    <div class="priceactual">1€/mes</div>
+                </div>
+                <button class="contrata">Proximamente!</button>
+
+            </figure>
+        </div>
+    </div>
+
+</body>
+
+</html>

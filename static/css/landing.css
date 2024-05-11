@@ -1,0 +1,327 @@
+/* Estilos para el cuerpo de la página */
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom, #000000, #0c1445, #25338d, #3141ac, rgb(0, 88, 146), rgb(2, 132, 219)); /* Colores de gradiente para simular una galaxia */
+    background-blend-mode: screen; /* Mezcla de colores para el efecto de galaxia */
+    color: #fff; /* Color de texto claro para contrastar con el fondo */
+    font-family: 'RocknRoll One', sans-serif; /* Fuente personalizada */
+}
+
+/* Estilos para el encabezado */
+header {
+    color: #fff;
+    padding: 20px 0;
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+
+
+.menuhead,
+.loginhead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menuhead ul,
+.loginhead ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.menuhead ul li,
+.loginhead ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+.menuhead ul li:last-child,
+.loginhead ul li:last-child {
+    margin-right: 0;
+}
+
+.menuhead ul li a,
+.loginhead ul li a {
+    text-decoration: none;
+    color: #fff;
+}
+
+/* Estilos para el título principal */
+.titulodiv {
+    text-align: center;
+    margin-top: -50px;
+}
+
+.titulopag {
+    font-size: 10rem;
+    margin: 0;
+    color: #fff;
+}
+
+.subtit {
+    font-size:3rem;
+    color: #fff; 
+}
+
+/* Estilos para las secciones */
+.quinessomos,
+.comofunciona,
+.blog,
+.precios {
+    padding: 50px 20px;
+}
+
+.quinessomos h2, .comofunciona h2, .blog h2, .precios h2 {
+    font-size: 2rem;
+    color: #f9f9f9;
+    text-shadow: 0 0 10px rgb(181 181 181 / 80%);
+}
+
+.quinessomos p, .comofunciona p, .blog p, .precios p {
+    font-size: 1rem;
+    color: #fdfdfd;
+    padding: 20vw;
+    padding-top: 0;
+    padding-bottom: 0vh;
+}
+
+/* Estilos para las listas */
+.quinessomos ul,
+.comofunciona ul,
+.precios ul {
+    margin-top: 20px;
+}
+
+.quinessomos ul li,
+.comofunciona ul li,
+.precios ul li {
+    margin-bottom: 10px;
+    color: #666; /* Color de texto más suave para los elementos de lista */
+}
+
+/* Estilos para los enlaces */
+a {
+    color: #007bff; /* Color de enlaces estándar */
+}
+
+a:hover {
+    color: #0056b3; /* Color de enlaces al pasar el cursor */
+}
+
+
+.img1-ia {
+    border-radius: 80%;
+    width: 30%;
+    box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.5);
+}
+
+.imagenesIA {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.loginhead {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 5vw;
+}
+
+.menuhead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 5vw;
+}
+
+span.fecha-post {
+    color: #ffd600;
+    font-weight: 800;
+}
+
+span.title-post {
+    font-weight: 800;
+}
+
+input[type="email"] {
+    width: 30vw;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    background-color: #f0f8fff2;
+}
+
+/* Estilos adicionales cuando el campo de entrada está enfocado */
+input[type="email"]:focus {
+    outline: none;
+    border-color: #007bff; /* Cambia el color del borde cuando el campo está enfocado */
+}
+
+
+/* Estilos para la sección de precios */
+.precios {
+    margin-top: 50px;
+}
+
+
+.precios figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 40px;
+    background-color: aliceblue;
+    width: max-content;
+    padding: 5%;
+    border-radius: 25px;
+}
+
+.precios .pricetitle {
+    font-size: 2rem;
+    color: #007bff;
+    margin: 0;
+}
+
+/* Estilos para la lista de ventajas */
+.precios .ventajastitle {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* Estilos para la lista de ventajas */
+.precios .ventajaslista {
+    margin-bottom: 20px;
+}
+
+/* Estilos para los elementos de la lista de ventajas */
+.precios .ventajaslista ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.precios .ventajaslista ul li {
+    margin-bottom: 5px;
+}
+
+/* Estilos para el precio */
+.precios .price {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Estilos para el precio antiguo */
+.precios .price-old {
+    color: #999; /* Color gris para el precio antiguo */
+    text-decoration: line-through; /* Tachado para el precio antiguo */
+    margin-bottom: 5px;
+}
+
+/* Estilos para el precio actual */
+.precios .priceactual {
+    font-size: 1.5rem;
+    color: #333;
+}
+
+
+.opcprecio{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 20px;
+}
+
+button.contrata {
+    margin-top: 2vh;
+    padding: 10px 20px; /* Padding para espacio interno */
+    font-size: 1rem; /* Tamaño de fuente */
+    background-color: #007bff; /* Color de fondo azul */
+    color: #fff; /* Color de texto blanco */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+    transition: background-color 0.3s ease; /* Transición suave para el cambio de color de fondo */
+}
+
+/* Estilos adicionales cuando el botón está enfocado */
+button.contrata:focus {
+    outline: none; /* Elimina el contorno predeterminado */
+}
+
+/* Estilos adicionales cuando el botón está activo */
+button.contrata:active {
+    transform: translateY(1px); /* Efecto de desplazamiento hacia abajo al hacer clic */
+}
+
+/* Estilos adicionales cuando el cursor pasa por encima del botón */
+button.contrata:hover {
+    background-color: #0056b3; /* Cambia el color de fondo a un tono más oscuro al pasar el cursor */
+}
+
+.separador{
+    margin-top: 20vh;
+}
+
+/* Estilos para los enlaces del menú */
+.menuhead nav ul li a {
+    text-decoration: none;
+    color: #ffffff; 
+    position: relative; 
+}
+
+.menuhead nav ul li a::after {
+    content: ''; 
+    position: absolute; 
+    width: 100%; 
+    height: 2px; 
+    background-color: transparent; /* Color de la línea transparente por defecto */
+    bottom: -5px; /* Distancia de la línea desde la parte inferior del enlace */
+    left: 0; /* Alineación a la izquierda */
+    transition: background-color 0.3s ease; /* Transición suave para el color de fondo */
+}
+
+/* Estilos adicionales cuando el cursor pasa por encima del enlace */
+.menuhead nav ul li a:hover::after {
+    background-color: #007bff; /* Cambio de color de la línea al pasar el cursor */
+}
+
+.loginhead nav ul li a {
+    text-decoration: none;
+    color: #f1f1f1; /* Color del texto */
+    position: relative; /* Para posicionar la línea debajo */
+}
+
+/* Estilos para la línea debajo del enlace */
+.loginhead nav ul li a::after {
+    content: ''; /* Contenido vacío */
+    position: absolute; /* Posicionamiento absoluto con respecto al enlace */
+    width: 100%; /* Ancho completo */
+    height: 2px; /* Grosor de la línea */
+    background-color: transparent; /* Color de la línea transparente por defecto */
+    bottom: -5px; /* Distancia de la línea desde la parte inferior del enlace */
+    left: 0; /* Alineación a la izquierda */
+    transition: background-color 0.3s ease; /* Transición suave para el color de fondo */
+}
+
+/* Estilos adicionales cuando el cursor pasa por encima del enlace */
+.loginhead nav ul li a:hover::after {
+    background-color: #007bff; /* Cambio de color de la línea al pasar el cursor */
+}
+
+div#tutorialDemostra {
+    display: flex;
+    justify-content: center;
+}
+
+.suscribenews {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+}
