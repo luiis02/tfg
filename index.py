@@ -1,7 +1,7 @@
-from flask import Flask, render_template, session, url_for
-from flask import url_for
+from flask import Flask,request, render_template, session, url_for, redirect
+from flask import url_for, flash, get_flashed_messages, make_response
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
-import requests
+import requests, json
 ##########################################################################
 ##################################### SRC ################################
 ##########################################################################
@@ -16,6 +16,7 @@ from src.services.gestionaAPI import gestion_routes
 from src.services.funcionalidadesAPI import funcionalidades_routes
 from src.services.chatbot_soporteAPI import chatbot_routes
 from src.services.userAPI import User
+from src.modelo_solicitudes.prediccion import clasificar_frase
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tu_clave_secreta_aqui'
@@ -35,6 +36,54 @@ app.register_blueprint(chatbot_routes)
 @login_manager.user_loader
 def load_user(user_id):
     return User(user_id)
+
+@app.before_request
+def clear_flash():
+    if len(get_flashed_messages()) > 0:
+        flash("")
+    if request.method == 'GET': metodo = "GET"
+    else: metodo = "POST"
+    
+    http_version = request.environ.get('SERVER_PROTOCOL')
+
+    request_string = f"{metodo} {request.path}"
+    
+    print(request_string)
+    if clasificar_frase(request_string) == "Ataque":
+        if request.cookies.get('human') != 'yes':
+            response = make_response(redirect(url_for("botpage")))
+            response.set_cookie('ruta', request.path)
+            return response
+            print("----------------------------- ATAQUE")
+            return redirect(url_for('botpage'))
+    else:
+        print("----------------------------- NORMAL")
+
+@app.route("/botpage/", methods=["GET", "POST"])
+def botpage():
+    sitekey = "6LfXEq8UAAAAAEcgY_bRY7PyaWy7O2Y43DKYteZB"
+    if request.method == "POST":
+        captcha_response = request.form['g-recaptcha-response']
+        if esHumano(captcha_response):
+            print("YES")
+            ruta_cookie = request.cookies.get('ruta')
+            response = make_response(redirect(ruta_cookie))
+            response.set_cookie('human', 'yes')
+            return response
+        else:
+            status = "Sorry ! Bots are not allowed."
+            print("NO")
+    return render_template("botpage.html", sitekey=sitekey)
+                
+
+                
+def esHumano(captcha_response):
+    secret = "6LfXEq8UAAAAACPtCIXcmbiVhVjf9mj_xRFmhs-b"
+    payload = {'response':captcha_response, 'secret':secret}
+    response = requests.post("https://www.google.com/recaptcha/api/siteverify", payload)
+    response_text = json.loads(response.text)
+    return response_text['success']
+
 
 @app.route('/')
 def index():
@@ -72,8 +121,7 @@ def dashboard():
 
         return render_template('dashboard.html',establecimiento= data.get('establecimiento',0),count_menus= data.get('num_secciones',0),count_platos= data.get('num_platos',0), username=session.get("username"), count_cartas=count_cartas, cartas=cartas_vector, ahp=ahp)
     else:
-        # Manejar el caso donde la solicitud no fue exitosa
-        return "Error al obtener las cartas", 500  # Puedes personalizar el mensaje de error y el código de estado según sea necesario
+        return "Error al obtener las cartas", 500  
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000, debug=False)
