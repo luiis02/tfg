@@ -22,7 +22,7 @@ def createMesa(usuario, crear, key):
         for i in range(int(crear)):
             newMesa = existe[0][0] + i + 1
             formatrecover = recover[0][0].replace(" ", "_")
-            qr_code = f"https://127.0.0.1/carta/{usuario}/{newMesa}"
+            qr_code = f"http://192.168.1.2:8000/carta/{usuario}/{newMesa}"
             img = qrcode.make(qr_code)
             img_bytes = BytesIO()
             img.save(img_bytes)
