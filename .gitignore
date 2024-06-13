@@ -4,11 +4,17 @@
 *.obj
 *.elf
 
+# Ignore the models
+*.h5
+*.pkl
+
 # Ignore executables
 *.exe
 *.out
 *.app
 
+# Ignore the xls
+*.xlsx
 # Ignore libraries
 *.a
 *.lib
@@ -22,4 +28,3 @@ dist/
 venv/
 pycache/
 __pycache__/
-
