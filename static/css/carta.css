@@ -1070,3 +1070,40 @@ header {
     color: aliceblue;
     margin-bottom: 2vh;
 }
+#drag-drop-area {
+    border: 2px dashed #cccccc;
+    border-radius: 10px;
+    width: 90vw;
+    height: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #888888;
+    background-color: #ffffff;
+}
+
+#drag-drop-area:hover {
+    border-color: #aaaaaa;
+    color: #666666;
+}
+
+#fileInput {
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    cursor: pointer;
+}
+
+#drag-drop-area::before {
+    content: "Arrastra y suelta una foto de tu plato!";
+    text-align: center;
+    font-size: 14px;
+    padding: 20px;
+    color: inherit;
+}
+
+    div#recubrimientoinput {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }

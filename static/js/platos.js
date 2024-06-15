@@ -179,3 +179,27 @@ function mostrarMensajeTemporal(mensaje, segundos) {
         }
     }, 1000); // Actualiza el contador cada segundo
 }
+
+
+document.getElementById('fileInput').addEventListener('change', function() {
+    var file = this.files[0];
+    if (file) {
+        var formData = new FormData();
+        formData.append('file', file);
+        fetch('/posteaIA', {
+        method: 'POST',
+        body: formData  
+    })
+    .then(response => response.json())
+    .then(data => {
+            var nombreSeccionInput = document.getElementsByName('nombre_seccion')[0];
+            var descripcionInput = document.getElementById('descrip');
+            data.resultado = data.resultado.charAt(0).toUpperCase() + data.resultado.slice(1)
+            nombreSeccionInput.value = data.resultado;
+            descripcionInput.value = data.descripcion;  
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+        }
+});

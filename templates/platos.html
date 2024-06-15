@@ -14,6 +14,12 @@
             <div class="tittlecontainer">
                 <h1 class="titulo">{{seccion}} ({{nombre}}):</h1>
             </div>
+            <div id="recubrimientoinput">
+                <div id="drag-drop-area">
+                    <input type="file" id="fileInput">
+                </div>
+            </div>
+
             <div class="recuadro-tabla">
                 <table>
                     <thead>
@@ -32,7 +38,7 @@
                             <form id="createSeccionForm">
                                 <td><input type="text" name="nombre_seccion"></td>
                                 <td>
-                                <textarea name="descripción" id="descrip-text" cols="30" rows="1"></textarea>
+                                <textarea name="descripción" id="descrip" cols="30" rows="1"></textarea>
                             </td>
                                 
                                 <td><input type="number" name="precio" step="any"></td>

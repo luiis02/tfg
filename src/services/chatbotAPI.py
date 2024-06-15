@@ -14,7 +14,7 @@ def generaDescripcion():
         'Content-Type': 'application/json',
         'Authorization': f'Bearer {api_key}'
     }
-
+    print(producto, codigo_postal)
     data = {
         'model': 'gpt-3.5-turbo-16k-0613',  
         'messages': [

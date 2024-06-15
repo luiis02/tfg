@@ -6,6 +6,7 @@ os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 from flask import Flask,request, render_template, session, url_for, redirect
 from flask import url_for, flash, get_flashed_messages, make_response, jsonify
 import requests, json
+from werkzeug.utils import secure_filename
 ##########################################################################
 ##################################### SRC ################################
 ##########################################################################
@@ -19,6 +20,7 @@ from src.services.clienteAPI import clientes_routes
 from src.services.gestionaAPI import gestion_routes
 from src.modelo_solicitudes.prediccion import clasificar_frase
 from src.services.chatbotAPI import chatbot_routes
+from src.modelo_img.prediccion import predecir_imagen
 
 
 
@@ -86,6 +88,30 @@ def not_found(error):
     response = jsonify({"message": "Resource not found"})
     response.status_code = 404
     return response
+
+
+
+@app.route('/posteaIA', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No se encontró el archivo'}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No se seleccionó ningún archivo'}), 400
+
+    if file:
+        filename = secure_filename('imagentemporal')
+        filepath = os.path.join('', filename)
+        file.save(filepath)
+        resultado = predecir_imagen(None, filepath, None)
+
+        url = 'http://192.168.0.2:8000/describeIA'  
+        data = {'producto': resultado, 'codigo_postal': '28001'}  
+        response = requests.post(url, json=data)
+        print(response.text)
+
+        return jsonify({'resultado': resultado, 'descripcion': response.json()['descripcion']})
 
 
 @app.route('/dashboard')

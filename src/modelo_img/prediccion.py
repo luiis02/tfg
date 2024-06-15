@@ -19,6 +19,9 @@ def procesar_imagen(ruta_imagen, tamaño=(225, 225)):
         return None
 
 def predecir_imagen(modelo, ruta_imagen, encoder):
+    modelo_guardado = 'src/modelo_img/model.h5'
+    modelo = load_model(modelo_guardado)
+    encoder = joblib.load('src/modelo_img/etiqueta_encoder.pkl')
     # Procesar la imagen
     imagen_procesada = procesar_imagen(ruta_imagen)
     if imagen_procesada is None:
@@ -33,53 +36,6 @@ def predecir_imagen(modelo, ruta_imagen, encoder):
     etiqueta_predicha = encoder.inverse_transform(clase_predicha)
     
     print(f'La imagen {ruta_imagen} se predice como: {etiqueta_predicha[0]}')
+    return etiqueta_predicha[0]
 
-# Cargar el modelo entrenado
-modelo_guardado = 'model.h5'
-model = load_model(modelo_guardado)
 
-# Cargar etiqueta_encoder desde el archivo pickle
-etiqueta_encoder = joblib.load('etiqueta_encoder.pkl')
-
-# Predecir una imagen
-ruta_imagen_prediccion = 'pruebas/burguer1.jpeg'
-predecir_imagen(model, ruta_imagen_prediccion, etiqueta_encoder)
-
-ruta_imagen_prediccion = 'pruebas/burguer2.jpeg'
-predecir_imagen(model, ruta_imagen_prediccion, etiqueta_encoder)
-
-ruta_imagen_prediccion = 'pruebas/pizza.jpeg'
-predecir_imagen(model, ruta_imagen_prediccion, etiqueta_encoder)
-
-ruta_imagen_prediccion = 'pruebas/pizza2.jpeg'
-predecir_imagen(model, ruta_imagen_prediccion, etiqueta_encoder)
-
-ruta_imagen_prediccion = 'pruebas/pizza3.jpeg'
-predecir_imagen(model, ruta_imagen_prediccion, etiqueta_encoder)
-
-ruta_imagen_prediccion = 'pruebas/pizza4.jpeg'
-predecir_imagen(model, ruta_imagen_prediccion, etiqueta_encoder)
-
-ruta_imagen_prediccion = 'pruebas/spaguettis.jpeg'
-predecir_imagen(model, ruta_imagen_prediccion, etiqueta_encoder)
-
-ruta_imagen_prediccion = 'pruebas/spaguettis2.jpeg'
-predecir_imagen(model, ruta_imagen_prediccion, etiqueta_encoder)
-
-ruta_imagen_prediccion = 'pruebas/tercio.jpeg'
-predecir_imagen(model, ruta_imagen_prediccion, etiqueta_encoder)
-
-ruta_imagen_prediccion = 'pruebas/tercio2.jpeg'
-predecir_imagen(model, ruta_imagen_prediccion, etiqueta_encoder)
-
-ruta_imagen_prediccion = 'pruebas/vino1.jpeg'
-predecir_imagen(model, ruta_imagen_prediccion, etiqueta_encoder)
-
-ruta_imagen_prediccion = 'pruebas/huevos_rotos1.jpeg'
-predecir_imagen(model, ruta_imagen_prediccion, etiqueta_encoder)
-
-ruta_imagen_prediccion = 'pruebas/habas1.jpeg'
-predecir_imagen(model, ruta_imagen_prediccion, etiqueta_encoder)
-
-ruta_imagen_prediccion = 'pruebas/palmera1.jpeg'
-predecir_imagen(model, ruta_imagen_prediccion, etiqueta_encoder)
