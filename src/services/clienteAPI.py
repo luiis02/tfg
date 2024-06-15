@@ -103,9 +103,10 @@ def Pedido():
         bd = DBController()
         bd.connect()
         count = bd.fetch_data("SELECT MAX(id) FROM pedidos_activos ")
-        print(count[0][0])
+        if(count[0][0] == None): total = 0
+        else: total = count[0][0]
         consulta = "INSERT INTO pedidos_activos (id, plato, cantidad, precio, usuario, mesa, fecha, estado, categoria) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);"
-        valores = (count[0][0]+1,plato.get('nombre'), plato.get('cantidad'), plato.get('precio'), session.get('username'), session.get('mesa'), fecha_hora_formateada, 0, plato.get('categoria'))
+        valores = (total+1,plato.get('nombre'), plato.get('cantidad'), plato.get('precio'), session.get('username'), session.get('mesa'), fecha_hora_formateada, 0, plato.get('categoria'))
         bd.execute_query(consulta, valores)
         bd.connection.commit()
     return render_template('cliente_carrito.html', establecimiento=session.get('establecimiento'))
