@@ -21,8 +21,7 @@ from src.services.gestionaAPI import gestion_routes
 from src.modelo_solicitudes.prediccion import clasificar_frase
 from src.services.chatbotAPI import chatbot_routes
 from src.modelo_img.prediccion import predecir_imagen
-
-
+from src.models.sugerenciaPrecios import analizador
 
 
 
@@ -105,13 +104,13 @@ def upload_file():
         filepath = os.path.join('', filename)
         file.save(filepath)
         resultado = predecir_imagen(None, filepath, None)
-
+        precio = analizador(resultado)
         url = 'http://192.168.0.2:8000/describeIA'  
         data = {'producto': resultado, 'codigo_postal': '28001'}  
         response = requests.post(url, json=data)
         print(response.text)
-
-        return jsonify({'resultado': resultado, 'descripcion': response.json()['descripcion']})
+        print(precio)
+        return jsonify({'resultado': resultado, 'descripcion': response.json()['descripcion'], 'precio': precio})
 
 
 @app.route('/dashboard')

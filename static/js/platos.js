@@ -194,9 +194,15 @@ document.getElementById('fileInput').addEventListener('change', function() {
     .then(data => {
             var nombreSeccionInput = document.getElementsByName('nombre_seccion')[0];
             var descripcionInput = document.getElementById('descrip');
+            var precioInput = document.getElementById('precioSuggested');
             data.resultado = data.resultado.charAt(0).toUpperCase() + data.resultado.slice(1)
             nombreSeccionInput.value = data.resultado;
             descripcionInput.value = data.descripcion;  
+            precioInput.value = data.precio;
+            var msgPrice = document.getElementById('suggestidpricemsg');
+            if (precioInput.value !== "") {
+                msgPrice.style.display = 'flex';
+            }
         })
         .catch((error) => {
             console.error('Error:', error);

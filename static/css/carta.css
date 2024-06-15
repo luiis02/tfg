@@ -1107,3 +1107,9 @@ header {
         justify-content: center;
         align-items: center;
     }
+
+#suggestidpricemsg{
+    display: none;
+    color: #8b8b8b;
+    font-size: small;
+}
