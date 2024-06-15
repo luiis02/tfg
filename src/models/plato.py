@@ -8,14 +8,15 @@ import base64
 import json
 from src.database.dbcontroller import DBController
 from src.database.dbcontroller import DBController
+from src.models.ahp import AHP
 ##############################################################################################
 ##############################################################################################
 ##############################################################################################
-def obtenPlatos(usuario, carta, seccion):
+def obtenPlatos(usuario, carta, seccion, ahp=0):
     try:
         bd = DBController()
         bd.connect()
-        
+        vector_nombres = AHP()
 
         # Verificar si la existen platos en la carta
         existe = bd.fetch_data("SELECT COUNT(*) FROM platos WHERE carta = ? AND usuario = ? AND seccion = ?", (carta, usuario, seccion))
@@ -27,9 +28,15 @@ def obtenPlatos(usuario, carta, seccion):
         data = {"num_platos": existe[0][0], "platos": []}
         if existe[0][0] > 0:
             platos = bd.fetch_data("SELECT * FROM platos WHERE carta = ? AND usuario = ? AND seccion = ?", (carta, usuario, seccion))
-            for plato in platos:
-                data["platos"].append({"nombre": plato[0], "precio": plato[7], "descripcion": plato[1], "status": plato[6], "indice": plato[5]})
-        
+            if ahp == 1:
+                for ordenado in vector_nombres:
+                    for plato in platos:
+                        if plato[0] == ordenado:
+                            data["platos"].append({"nombre": plato[0], "precio": plato[7], "descripcion": plato[1], "status": plato[6], "indice": plato[5]})
+            else:
+                for plato in platos:
+                    data["platos"].append({"nombre": plato[0], "precio": plato[7], "descripcion": plato[1], "status": plato[6], "indice": plato[5]})
+            
         bd.disconnect()
         json_data = json.dumps(data)
         return "OK", json_data

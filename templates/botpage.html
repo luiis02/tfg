@@ -7,6 +7,68 @@
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
+    <style>
+        body {
+    background-color: #0e0e0e;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    padding: 20px;
+}
+
+h1 {
+    color: #66d9ef;
+    font-size: 2em;
+    margin-bottom: 30px;
+}
+
+form {
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: #1a1a1a;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+.g-recaptcha {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+input[type="submit"] {
+    background-color: #66d9ef;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #4cb8d1;
+}
+
+p {
+    color: #a6e22e;
+    font-size: 1.2em;
+    margin-top: 20px;
+}
+
+#content {
+    max-width: 25vw;
+    max-height: 100%;
+    position: absolute;
+    top: 10vh;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
+    </style>
     <h1>Sabemos que no eres un bot, pero por si acaso...</h1>
     <form action="/botpage/" method="POST">
         <div class="g-recaptcha" data-sitekey="{{ sitekey }}"></div>
@@ -16,5 +78,6 @@
     {% if status %}
     <p>{{ status }}</p>
     {% endif %}
+    <div id="content" class="tenor-gif-embed" data-postid="22899434" data-share-method="host" data-aspect-ratio="1" data-width="100%"><a href="https://tenor.com/view/i-got-a-bad-feeling-about-this-swat-team-south-park-s14e1-pulling-a-tiger-gif-22899434">I Got A Bad Feeling About This Swat Team GIF</a>from <a href="https://tenor.com/search/i+got+a+bad+feeling+about+this-gifs">I Got A Bad Feeling About This GIFs</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
 </body>
 </html>

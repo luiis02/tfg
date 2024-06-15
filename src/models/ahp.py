@@ -142,9 +142,12 @@ def ponderarAlternativas(bd, criterio, usuario='root', carta='Desayuno', seccion
 
     return pesos_alternativas
 
-def AHP():
+import numpy as np
+
+def AHP(usuario='root', carta='Desayuno', seccion='Cafes'):
     bd = DBController()
     bd.connect()
+
     criterios = [row[0] for row in bd.fetch_data("SELECT * FROM criterios")]
 
     ponderacionCriterios = ponderarCriterios(bd)
@@ -156,9 +159,38 @@ def AHP():
 
     print("\n\n\nPESOS DE LOS CRITERIOS:")
     print(ponderacionCriterios)
+
     print("\n\n\nPESOS DE LAS ALTERNATIVAS PARA CADA CRITERIO:")
     for ponderacion in ponderacionAlternativasCriterios:
         print(ponderacion)
 
+    ponderacionAlternativasCriterios = np.array(ponderacionAlternativasCriterios).T
+    puntuaciones_finales = np.dot(ponderacionAlternativasCriterios, ponderacionCriterios)
+
+    print("\n\n\nPUNTUACIONES FINALES DE LAS ALTERNATIVAS:")
+    for i, puntuacion in enumerate(puntuaciones_finales, start=1):
+        print(f"Puntuación de la Alternativa {i}: {puntuacion}")
+
+    platos_consult = bd.fetch_data(
+        "SELECT * FROM platos WHERE carta = ? AND usuario = ? AND seccion = ?",
+        (carta, usuario, seccion)
+    )
+    print("\n\n\nPLATOS DISPONIBLES:")
+    for plato in platos_consult:
+        print(plato[0])
+
+    plato_puntuacion = {plato[0]: puntuaciones_finales[i] for i, plato in enumerate(platos_consult)}
+
+    print("\n\n\nPUNTUACIONES DE LOS PLATOS ORDENADAS:")
+    for plato, puntuacion in sorted(plato_puntuacion.items(), key=lambda item: item[1], reverse=True):
+        print(f"{plato}: {puntuacion}")
+
+    print("\n\n\nPLATOS ORDENADOS POR PUNTUACIÓN:")
+    platos = []
+    for plato in sorted(plato_puntuacion, key=plato_puntuacion.get, reverse=True):
+        platos.append(plato)
+        print(plato)
+
     bd.disconnect()
 
+    return platos
