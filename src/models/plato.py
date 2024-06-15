@@ -16,7 +16,7 @@ def obtenPlatos(usuario, carta, seccion, ahp=0):
     try:
         bd = DBController()
         bd.connect()
-        vector_nombres = AHP()
+        vector_nombres = AHP(usuario, carta, seccion)
 
         # Verificar si la existen platos en la carta
         existe = bd.fetch_data("SELECT COUNT(*) FROM platos WHERE carta = ? AND usuario = ? AND seccion = ?", (carta, usuario, seccion))

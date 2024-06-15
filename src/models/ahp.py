@@ -155,7 +155,7 @@ def AHP(usuario='root', carta='Desayuno', seccion='Cafes'):
 
     for criterio in criterios:
         print(f"\n\n\nCRITERIO: {criterio}")
-        ponderacionAlternativasCriterios.append(ponderarAlternativas(bd, criterio))
+        ponderacionAlternativasCriterios.append(ponderarAlternativas(bd, criterio, usuario, carta, seccion))
 
     print("\n\n\nPESOS DE LOS CRITERIOS:")
     print(ponderacionCriterios)
