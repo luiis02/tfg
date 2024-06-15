@@ -2,7 +2,6 @@
 <html>
 
 <head>
-    
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/carta.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -10,18 +9,20 @@
     <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <style>
+
+    </style>
 </head>
 
 <body>
     <header>
         <nav>
             <div class="img-container">
-             <img id="logo" src="../static/img/image-removebg-preview.png" alt="">
+                <img id="logo" src="../static/img/image-removebg-preview.png" alt="">
             </div>
             <div class="empresaName">
                 <h1>{{ establecimiento }}</h1>
                 <h3 id="subtitulo"> by ApuntaJefe</h3>
-          
             </div>
             <div class="container-submenu">
                 <ul id="submenu">
@@ -42,9 +43,72 @@
     </div>
     {% block content %}{% endblock %}
 
+    <div id="chat-icon">
+        <img src="https://blogs.uoc.edu/epce/wp-content/uploads/sites/159/2017/02/robot-BOTTER.png" alt="Chat Icon">
+    </div>
+    <div id="chat-popup">
+        <header>Chat con Sepy</header>
+        <div class="chat-content" id="chat-content"></div>
+        <div class="chat-input">
+            <input type="text" placeholder="Para que sirve el índice..." id="chat-input">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
 
     {% block scriptjs %}{% endblock %}
     
+    <script>
+        document.getElementById('chat-icon').addEventListener('click', function() {
+            var chatPopup = document.getElementById('chat-popup');
+            if (chatPopup.style.display === 'none' || chatPopup.style.display === '') {
+                chatPopup.style.display = 'block';
+            } else {
+                chatPopup.style.display = 'none';
+            }
+        });
+
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value;
+            if (message.trim() !== '') {
+                addMessageToChat(message, 'user');
+                input.value = '';
+            }
+        }
+
+        async function addMessageToChat(message, role) {
+            const chatContent = document.getElementById('chat-content');
+            const messageElement = document.createElement('div');
+            messageElement.textContent = message;
+            if (role === 'user') {
+                messageElement.className = 'chat-message-user';
+            } else {
+                messageElement.className = 'chat-message';
+            }
+            chatContent.appendChild(messageElement);
+            chatContent.scrollTop = chatContent.scrollHeight;
+            if (role === 'user') {
+            const response = await fetch('/soporteIA', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ msg: message })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                addMessageToChat(data.respuesta, 'bot');
+            } else {
+                addMessageToChat('Error al obtener la respuesta del servidor.', 'bot');
+            }
+        }
+        }
+
+        setTimeout(() => {
+            addMessageToChat('Hola, soy Sepy, ¿en qué puedo ayudarte?', 'bot');
+        }, 1);
+    </script>
 </body>
 
 </html>

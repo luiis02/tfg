@@ -28,3 +28,7 @@ dist/
 venv/
 pycache/
 __pycache__/
+
+# Ignore the data and training for photos
+data/
+pruebas/

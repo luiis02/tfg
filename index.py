@@ -18,6 +18,7 @@ from src.services.qrAPI import qr_routes
 from src.services.clienteAPI import clientes_routes
 from src.services.gestionaAPI import gestion_routes
 from src.modelo_solicitudes.prediccion import clasificar_frase
+from src.services.chatbotAPI import chatbot_routes
 
 
 
@@ -35,6 +36,7 @@ app.register_blueprint(platos_routes)
 app.register_blueprint(qr_routes)
 app.register_blueprint(clientes_routes)
 app.register_blueprint(gestion_routes)
+app.register_blueprint(chatbot_routes)
 
 
 @app.before_request
