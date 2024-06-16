@@ -1012,7 +1012,7 @@ input#bttndivsubmit {
 #chat-popup {
     border: 1px solid #ccc;
     width: 100%;
-    height: 100%;
+    height: 80%;
     max-width: 600px;
     max-height: 800px;
     flex-direction: column;
