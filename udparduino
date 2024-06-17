@@ -5,35 +5,37 @@
 const char* ssid = "TP-Link_C7D4";
 const char* password = "56027563";
 
-// Configura el pin del micrófono y el búfer
-const int micPin = 34;  // Pin ADC donde está conectado el OUT del MAX9814
-const int sampleRate = 16000;  // Frecuencia de muestreo aumentada a 16 kHz
-const int duration = 2;  // Duración del segmento en segundos
-const int bufferSize = sampleRate * duration;  // Tamaño del búfer para 2 segundos
-int16_t buffer[bufferSize];
+
+const char* serverIp = "192.168.0.2"; // Cambia esta IP por la de tu servidor
+const unsigned int serverPort = 12345;  // Cambia este puerto si es necesario
 
 WiFiUDP udp;
+const int analogPin = 34; // Pin ADC del ESP32 donde está conectado el micrófono
+
+const int sampleRate = 16000; // Frecuencia de muestreo (16 kHz)
+const int samplesPerPacket = 512; // Número de muestras por paquete
+int16_t audioBuffer[samplesPerPacket];
 
 void setup() {
   Serial.begin(115200);
-  analogReadResolution(12); 
   WiFi.begin(ssid, password);
+
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
+    Serial.println("Conectando a WiFi...");
   }
+
+  Serial.println("Conectado a WiFi");
 }
 
 void loop() {
-  // Captura la señal de audio
-  for (int i = 0; i < bufferSize; i++) {
-    buffer[i] = analogRead(micPin);
+  for (int i = 0; i < samplesPerPacket; i++) {
+    int analogValue = analogRead(analogPin);
+    audioBuffer[i] = analogValue;
     delayMicroseconds(1000000 / sampleRate);
   }
 
-  // Envia el audio a través de UDP
-  if (WiFi.status() == WL_CONNECTED) {
-    udp.beginPacket("192.168.0.2", 1234);  // Dirección IP y puerto del servidor UDP
-    udp.write((uint8_t*)buffer, bufferSize * sizeof(int16_t));
-    udp.endPacket();
-  }
+  udp.beginPacket(serverIp, serverPort);
+  udp.write((uint8_t*)audioBuffer, sizeof(audioBuffer));
+  udp.endPacket();
 }
