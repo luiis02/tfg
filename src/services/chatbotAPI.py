@@ -3,12 +3,13 @@ chatbot_routes = Blueprint("chatbot_routes", __name__)
 import requests
 import json
 
+api_key = 'sk-proj-32XqN4cv9rGWph5rRYmwT3BlbkFJ78jZpRO3kuMEM0BCi8JY'
+
 @chatbot_routes.route('/describeIA', methods=['POST'])
 def generaDescripcion():
     data = request.get_json()
     producto = data.get('producto')
     codigo_postal = data.get('codigo_postal')
-    api_key = 'sk-proj-32XqN4cv9rGWph5rRYmwT3BlbkFJ78jZpRO3kuMEM0BCi8JY'
     url = 'https://api.openai.com/v1/chat/completions'
     headers = {
         'Content-Type': 'application/json',
@@ -38,7 +39,6 @@ def generaDescripcion():
 def generaChat():
     data = request.get_json()
     msg = data.get('msg')
-    api_key = 'sk-proj-32XqN4cv9rGWph5rRYmwT3BlbkFJ78jZpRO3kuMEM0BCi8JY'
     url = 'https://api.openai.com/v1/chat/completions'
     headers = {
         'Content-Type': 'application/json',
@@ -64,3 +64,37 @@ def generaChat():
         print(f"Error: {response.status_code}")
         print(response.text)
         return None
+
+@chatbot_routes.route('/pedidosIA', methods=['POST'])
+def buscaPlatos():
+    data = request.get_json()
+    msg = data.get('msg')
+    lista_platos = data.get('lista_platos')
+    promt = "Te voy a pasar una lista de platos devuélveme en el formato pedido que quiere el usuario dada la frase. Sin texto adicional ni explicaciones solo el formato de salida Lista de platos: "+ lista_platos + " Frase del usuario: " + msg + " Formato: {[{plato: 'plato1',cantidad: '1',},...]}"
+    
+    url = 'https://api.openai.com/v1/chat/completions'
+    
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': f'Bearer {api_key}'
+    }
+
+    data = {
+        'model': 'gpt-3.5-turbo-16k-0613',  
+        'messages': [
+            {'role': 'system', 'content': promt},
+        ],
+        'max_tokens': 350
+    }
+
+    response = requests.post(url, headers=headers, data=json.dumps(data))
+    if response.status_code == 200:
+        response_data = response.json()
+        respuesta = response_data['choices'][0]['message']['content']
+        return jsonify({'respuesta': respuesta})
+        
+    else:
+        print(f"Error: {response.status_code}")
+        print(response.text)
+        return None
+    
