@@ -6,10 +6,10 @@ const char* ssid = "TP-Link_C7D4";
 const char* password = "56027563";
 
 // Configura el pin del micrófono y el búfer
-const int micPin = 34; 
-const int sampleRate = 16000;  
-const int duration = 2;  
-const int bufferSize = sampleRate * duration;  
+const int micPin = 34;  // Pin ADC donde está conectado el OUT del MAX9814
+const int sampleRate = 16000;  // Frecuencia de muestreo aumentada a 16 kHz
+const int duration = 2;  // Duración del segmento en segundos
+const int bufferSize = sampleRate * duration;  // Tamaño del búfer para 2 segundos
 int16_t buffer[bufferSize];
 
 WiFiUDP udp;
@@ -24,13 +24,15 @@ void setup() {
 }
 
 void loop() {
+  // Captura la señal de audio
   for (int i = 0; i < bufferSize; i++) {
     buffer[i] = analogRead(micPin);
     delayMicroseconds(1000000 / sampleRate);
   }
 
+  // Envia el audio a través de UDP
   if (WiFi.status() == WL_CONNECTED) {
-    udp.beginPacket("192.168.0.2", 1234);  
+    udp.beginPacket("192.168.0.2", 1234);  // Dirección IP y puerto del servidor UDP
     udp.write((uint8_t*)buffer, bufferSize * sizeof(int16_t));
     udp.endPacket();
   }
