@@ -41,7 +41,7 @@ def seccion(nombre):
         return render_template('carta.html',establecimiento=session.get('establecimiento'), nombre=nombre, count_secciones=count_secciones, secciones=secciones)
     else:
         # Manejar el caso donde la solicitud no fue exitosa
-        return "Error al obtener las cartas", 500  # Puedes personalizar el mensaje de error y el código de estado según sea necesario
+        return "Error al obtener las cartas", 500  
 
 
 @secciones_routes.route('/createSeccion', methods=['POST'])

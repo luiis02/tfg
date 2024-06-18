@@ -1,4 +1,5 @@
 from flask import Blueprint, redirect, url_for, session, request, jsonify
+from src.models.plato import obtenerNombrePlatos
 chatbot_routes = Blueprint("chatbot_routes", __name__)
 import requests
 import json
@@ -65,13 +66,18 @@ def generaChat():
         print(response.text)
         return None
 
+
+
 @chatbot_routes.route('/pedidosIA', methods=['POST'])
 def buscaPlatos():
-    data = request.get_json()
-    msg = data.get('msg')
-    lista_platos = data.get('lista_platos')
-    promt = "Te voy a pasar una lista de platos devuélveme en el formato pedido que quiere el usuario dada la frase. Sin texto adicional ni explicaciones solo el formato de salida Lista de platos: "+ lista_platos + " Frase del usuario: " + msg + " Formato: {[{plato: 'plato1',cantidad: '1',},...]}"
-    
+    if request.cookies.get('usuarioIA') is None or request.cookies.get('mesaIA') is None:
+        return url_for("/login")
+
+    platos = obtenerNombrePlatos(request.cookies.get('usuarioIA'))
+    platos = json.loads(platos)
+    lista_platos = ", ".join([f"{plato['nombre']} - {plato['precio']} - {plato['seccion']}" for plato in platos["platos"]])
+    msg = request.args.get('msg')  
+    promt = "Te voy a pasar una lista de platos devuélveme en el formato pedido que quiere el usuario dada la frase. Sin texto adicional ni explicaciones solo el formato de salida. IMPORTANTE SI NO APARECE UN PLATO EN LA LISTA NO LO AÑADAS Lista de platos: "+ lista_platos + " Frase del usuario: " + msg + " Formato: {[{plato: 'plato1', precio: '1', categoeria: 'categoria1',cantidad: '1',},...]}"
     url = 'https://api.openai.com/v1/chat/completions'
     
     headers = {
@@ -90,11 +96,36 @@ def buscaPlatos():
     response = requests.post(url, headers=headers, data=json.dumps(data))
     if response.status_code == 200:
         response_data = response.json()
-        respuesta = response_data['choices'][0]['message']['content']
-        return jsonify({'respuesta': respuesta})
-        
+        contenido = response_data['choices'][0]['message']['content']
+
+        try:
+            platos = json.loads(contenido)
+        except json.JSONDecodeError as e:
+            print(f"Error al decodificar JSON: {e}")
+            platos = []
+
+        for plato in platos:
+            nombre_plato = plato['plato']
+            precio = plato['precio']
+            cantidad = plato['cantidad']
+
+        # Ahora hacemos el POST a la dirección especificada
+        try:
+            url = 'http://192.168.0.2:8000/generaPedidoIA'
+            response_post = requests.post(url, json={'respuesta': platos, 'nombre': request.cookies.get('usuarioIA'), 'mesa': request.cookies.get('mesaIA')  })
+            if response_post.status_code == 200:
+                return jsonify(response_post.json())  
+            else:
+                print(f"Error en el POST: {response_post.status_code}")
+                return jsonify({'error': 'Hubo un problema al hacer el POST'})
+        except requests.exceptions.RequestException as e:
+            print(f"Error en la solicitud POST: {e}")
+            return jsonify({'error': 'Excepción en la solicitud POST'})
+
     else:
         print(f"Error: {response.status_code}")
         print(response.text)
-        return None
+        return jsonify({'error': 'Hubo un problema al hacer la solicitud'})
+
+
     

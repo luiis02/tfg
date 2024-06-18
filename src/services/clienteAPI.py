@@ -112,6 +112,28 @@ def Pedido():
     return render_template('cliente_carrito.html', establecimiento=session.get('establecimiento'))
 
 
+@clientes_routes.route('/generaPedidoIA', methods=['POST'])
+def PedidoIA():
+    data = request.get_json()
+    
+    bd = DBController()  
+    bd.connect()  
+
+    for item in data.get('respuesta', []):
+        fecha_hora_actual = datetime.now()
+        fecha_hora_formateada = fecha_hora_actual.strftime("%Y/%m/%d %H:%M:%S")
+        count = bd.fetch_data("SELECT MAX(id) FROM pedidos_activos ")
+        if(count[0][0] == None): total = 0
+        else: total = count[0][0]
+        consulta = "INSERT INTO pedidos_activos (id, plato, cantidad, precio, usuario, mesa, fecha, estado, categoria) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);"
+        valores = (total + 1, item.get('plato'), item.get('cantidad'), item.get('precio'), data.get('nombre'), data.get('mesa'), fecha_hora_formateada, 0, item.get('categoria'))
+        bd.execute_query(consulta, valores)
+        bd.connection.commit()
+
+    bd.disconnect()  
+    return jsonify(data), 200  
+
+
 @clientes_routes.route('/pedidoFin', methods=['GET'])
 def pedidoFin():
     return render_template('cliente_carrito_fin.html')

@@ -86,3 +86,28 @@ def editaPlato(nombre, descripcion, precio, indice, status, usuario, carta, secc
         bd.disconnect()
         return "OK"
     except Exception as e: return e
+
+
+def obtenerNombrePlatos(usuario):
+    try:
+        bd = DBController()
+        bd.connect()
+        data = {"platos": []}
+        
+        platos = bd.fetch_data("SELECT * FROM platos WHERE usuario = ? AND status = 1", (usuario,))
+        
+        for plato in platos:
+            data["platos"].append({
+                "nombre": plato[0], 
+                "precio": plato[7], 
+                "descripcion": plato[1], 
+                "status": plato[6], 
+                "indice": plato[5],
+                "seccion": plato[4]
+            })
+        
+        bd.disconnect()
+        json_data = json.dumps(data)
+        return json_data
+    except Exception as e:
+        return str(e)
