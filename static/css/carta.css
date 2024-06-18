@@ -1112,4 +1112,5 @@ header {
     display: none;
     color: #8b8b8b;
     font-size: small;
+    justify-content: center;
 }
