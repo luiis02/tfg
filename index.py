@@ -105,7 +105,7 @@ def upload_file():
         file.save(filepath)
         resultado = predecir_imagen(None, filepath, None)
         precio = analizador(resultado)
-        url = 'http://192.168.0.2:8000/describeIA'  
+        url = 'http://192.168.1.67:8000/describeIA'  
         data = {'producto': resultado, 'codigo_postal': '28001'}  
         response = requests.post(url, json=data)
         print(response.text)

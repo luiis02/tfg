@@ -5,8 +5,8 @@
 *.elf
 
 # Ignore the models
-*.h5
-*.pkl
+#*.h5
+#*.pkl
 
 # Ignore executables
 *.exe
@@ -21,6 +21,9 @@
 
 # Ignore log files
 *.log
+
+# Ignore ZIP
+*.zip
 
 # Ignore build directories
 build/

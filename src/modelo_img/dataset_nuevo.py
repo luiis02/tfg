@@ -74,8 +74,9 @@ def crear_generadores(X_train, X_val, y_train, y_val, batch_size):
     return train_generator, val_generator
 
 def crear_modelo(input_shape, num_clases):
-    base_model = EfficientNetB0(weights='imagenet', include_top=False, input_shape=input_shape)
     
+    # Modelo base
+    base_model = EfficientNetB0(weights='imagenet', include_top=False, input_shape=input_shape)
     model = Sequential()
     model.add(base_model)
     model.add(GlobalAveragePooling2D())
